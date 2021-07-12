@@ -80,7 +80,7 @@ class ProductRepository implements ProductRepositoryInterface
     public function allComboProduct()
     {
         return ComboProduct::whereHas('combo_products.productSku', function ($query) {
-            $query->HasStock();
+            $query;
         })->latest()->get();
     }
 
@@ -91,7 +91,7 @@ class ProductRepository implements ProductRepositoryInterface
 
     public function allProduct()
     {
-        return ProductSku::with("product")->HasStock()->latest()->get();
+        return ProductSku::with("product")->latest()->get();
     }
 
     public function searchBased($search_keyword)
@@ -120,6 +120,7 @@ class ProductRepository implements ProductRepositoryInterface
             $comboProduct->total_regular_price = $data['selling_price'];
             $comboProduct->min_selling_price = $data['min_selling_price'];
             $comboProduct->description = $data['product_description'];
+            $comboProduct->sku_lazada = $data['sku_lazada'];
             $comboProduct->image_source = isset($data['file']) ? $this->saveImage($data['file'], 94, 94) : null;
             if ($comboProduct->save()) {
                 foreach ($data['selected_product_id'] as $key => $product_id) {
@@ -250,6 +251,7 @@ class ProductRepository implements ProductRepositoryInterface
             $comboProduct->total_regular_price = $data['selling_price'];
             $comboProduct->min_selling_price = $data['min_selling_price'];
             $comboProduct->description = $data['product_description'];
+            $comboProduct->sku_lazada = $data['sku_lazada'];
             if (isset($data['file'])) {
                 if (File::exists($comboProduct->image_source)) {
                     File::delete($comboProduct->image_source);

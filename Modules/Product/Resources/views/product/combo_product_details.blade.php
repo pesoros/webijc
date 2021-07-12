@@ -17,6 +17,7 @@
 
                         <div class="col-xl-6">
                             <p>{{__('product.Product Name')}} : <span>{{ $product->name }}</span></p>
+                            <p>SKUL : <span>{{ $product->sku_lazada }}</span></p>
                             <p>{{__('product.Price')}} : <span>{{single_price($product->price)}}</span></p>
                             <p>{{__('product.Regular Price')}} : <span>{{ single_price($product->total_regular_price) }}</span></p>
                             <p>{{__('product.Total Purchase Product')}} : <span>{{ single_price($product->total_purchase_price) }}</span></p>

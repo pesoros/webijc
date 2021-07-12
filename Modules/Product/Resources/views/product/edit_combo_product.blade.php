@@ -43,7 +43,7 @@
                                         <span class="text-danger">{{$errors->first('barcode_type')}}</span>
                                     </div>
                                 </div>
-                                <div class="col-lg-12" id="select_product">
+                                <div class="col-lg-8" id="select_product">
                                    <div class="primary_input mb-15">
                                       <label class="primary_input_label" for="">{{__('product.Select Product')}}</label>
                                       <select class="primary_select mb-15" id="selected_product_id" name="selected_product_id[]" multiple disabled>
@@ -53,6 +53,13 @@
                                       </select>
                                       <span class="text-danger">{{$errors->first('model_id')}}</span>
                                    </div>
+                                </div>
+                                <div class="col-lg-4" id="select_product">
+                                    <div class="primary_input mb-15">
+                                        <label class="primary_input_label" for="selected_product_id">SKU Lazada</label>
+                                        <input type="text" name="sku_lazada" id="sku_lazada" value="{{$productCombo->sku_lazada}}" class="primary_input_field" >
+                                        <span id="selected_product_id_error_container" ></span>
+                                    </div>
                                 </div>
                                 <div class="col-lg-4">
                                     <div class="primary_input mb-15">
