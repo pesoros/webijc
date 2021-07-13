@@ -1,4 +1,4 @@
-        @if(permissionCheck('product'))
+        @if(permissionCheck('Product'))
         @php
 
             $product = false;
