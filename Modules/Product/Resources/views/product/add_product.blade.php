@@ -166,7 +166,7 @@
                                         </div>
                                     </div>
 
-                                    <div class="col-lg-4" id="select_product">
+                                    <div class="col-lg-4" id="sku_lazada_div">
                                         <div class="primary_input mb-15">
                                             <label class="primary_input_label" for="selected_product_id">SKU Lazada</label>
                                             <input type="text" name="sku_lazada" id="sku_lazada" value="" class="primary_input_field" >
@@ -714,6 +714,7 @@
             var i = 2;
 
             $("#select_product").hide();
+            $("#sku_lazada_div").hide();
             $("#combo_sell_Price_div").hide();
             $("#combo_selling_price").attr('disabled', true);
             $("#select_product").attr('disabled', true);
@@ -807,6 +808,7 @@
                     $("#product_sku_div").hide();
                     $("#product_origin_div").show();
                     $("#select_product").hide();
+                    $("#sku_lazada_div").hide();
                     $("#stock_quantity_div").hide();
                     $("#alert_quantity_div").hide();
                     $("#combo_sell_Price_div").hide();
@@ -830,6 +832,7 @@
                     $("#showroom_div").hide();
                     $("#tax_type_div").hide();
                     $("#select_product").show();
+                    $("#sku_lazada_div").show();
                     $("#product_sku_div").hide();
                     $("#product_origin_div").hide();
                     $("#product_sku").attr('disabled', true);
@@ -861,6 +864,7 @@
                     $("#showroom_div").hide();
                     $("#tax_type_div").hide();
                     $("#select_product").hide();
+                    $("#sku_lazada_div").hide();
                     $("#product_sku_div").hide();
                     $("#product_origin_div").hide();
                     $("#product_sku").attr('disabled', true);
@@ -886,6 +890,7 @@
                     $("#showroom_div").show();
                     $(".choose_variant").hide();
                     $("#select_product").hide();
+                    $("#sku_lazada_div").hide();
                     $("#tax_div").show();
                     $("#tax_type_div").show();
                     $("#unit_type_div").show();
