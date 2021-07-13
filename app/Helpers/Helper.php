@@ -117,7 +117,7 @@ if (!function_exists('permissionCheck')) {
     {
 
         if (auth()->check()) {
-            if (auth()->user()->role_id == "6") {
+            if (auth()->user()->role->type == "system_user") {
                 return TRUE;
             } else {
                 $roles = app('permission_list');
