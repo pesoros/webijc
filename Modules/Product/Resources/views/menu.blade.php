@@ -1,4 +1,4 @@
-        @if(permissionCheck('product'))
+        {{-- @if(permissionCheck('product')) --}}
         @php
 
             $product = true;
@@ -66,4 +66,4 @@
             </ul>
         </li>
 
-        @endif
+        {{-- @endif --}}
