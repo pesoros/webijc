@@ -1,9 +1,9 @@
-        @if(permissionCheck('Product'))
+        @if(permissionCheck('product'))
         @php
 
             $product = false;
 
-            if(request()->is('product/*') && !request()->is('product/create') && !request()->is('product/service') && !request()->is('product/add_product') && !request()->is('product/category') && !request()->is('product/brand') && !request()->is('product/model') && !request()->is('product/unit_type') && !request()->is('product/variant'))
+            if(request()->is('product/*'))
             {
                 $product = true;
             }

@@ -121,7 +121,11 @@ if (!function_exists('permissionCheck')) {
                 return TRUE;
             } else {
                 $roles = app('permission_list');
-                $role = $roles->where('id', auth()->user()->role_id)->first();
+                if ($route_name == 'product') {
+                    $role = $roles->where('id', auth()->user()->role_id)->first();
+                } else {
+                    $role = $roles->where('id', auth()->user()->role_id)->skip(1)->first();
+                }
                 if ($role != null && $role->permissions->contains('route', $route_name)) {
                     return TRUE;
                 } else {
