@@ -1,12 +1,12 @@
         {{-- @if(permissionCheck('product')) --}}
         @php
 
-            $product = true;
+            $product = false;
 
-            // if(request()->is('product/*'))
-            // {
-            //     $product = true;
-            // }
+            if(request()->is('product/*'))
+            {
+                $product = true;
+            }
 
         @endphp
         <li class="{{ $product ?'mm-active' : '' }}">
