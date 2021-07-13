@@ -16,7 +16,7 @@ class Permission extends Model
     public function scopeModule($query)
     {
         $query->where(function ($query){
-            $query->where('route', 'LIKE', '%index%')->orWhere('route', 'LIKE', '%store%')->orWhere('route', 'LIKE', '%create%');
+            $query->where('route', 'LIKE', '%index%')->orWhere('route', 'LIKE', '%store%')->orWhere('route', 'LIKE', '%create%')->orderBy('id', 'DESC');
         });
     }
 
