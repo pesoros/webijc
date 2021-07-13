@@ -1,9 +1,9 @@
-        {{-- @if(permissionCheck('product')) --}}
+        @if(permissionCheck('product'))
         @php
 
             $product = false;
 
-            if(request()->is('product/*'))
+            if(request()->is('product/*') && !request()->is('product/create') && !request()->is('product/service') && !request()->is('product/add_product') && !request()->is('product/category') && !request()->is('product/brand') && !request()->is('product/model') && !request()->is('product/unit_type') && !request()->is('product/variant'))
             {
                 $product = true;
             }
@@ -20,7 +20,7 @@
             </a>
             <ul>
 
-                {{-- @if(permissionCheck('add_product.create')) --}}
+                @if(permissionCheck('add_product.create'))
                 <li>
                     <a href="{{route('add_product.create')}}" class="{{request()->is('product/add_product/create') ? 'active' : ''}}"> {{__('common.Product List')}} </a>
                 </li>
@@ -28,42 +28,42 @@
                 <li>
                     <a href="{{route('add_product.service')}}" class="{{request()->is('product/add_product/service') ? 'active' : ''}}"> {{__('product.Service')}} </a>
                 </li>
-                {{-- @endif --}}
-                {{-- @if(permissionCheck('add_product.index')) --}}
+                @endif
+                @if(permissionCheck('add_product.index'))
                 <li>
                     <a href="{{route('add_product.index')}}" class="{{request()->is('product/add_product') ? 'active' : ''}}"> {{__('common.Add Product')}} </a>
                 </li>
-                {{-- @endif --}}
+                @endif
                
-                {{-- @if(permissionCheck('category.index')) --}}
+                @if(permissionCheck('category.index'))
                 <li>
                     <a href="{{route('category.index')}}" class="{{request()->is('product/category') ? 'active' : ''}}"> {{__('common.Category')}} </a>
                 </li>
-                {{-- @endif --}}
-                {{-- @if(permissionCheck('brand.index')) --}}
+                @endif
+                @if(permissionCheck('brand.index'))
                 <li>
                     <a href="{{route('brand.index')}}" class="{{request()->is('product/brand') ? 'active' : ''}}"> {{__('common.Brand')}} </a>
                 </li>
-                {{-- @endif --}}
+                @endif
 
-                {{-- @if(permissionCheck('model.index')) --}}
+                @if(permissionCheck('model.index'))
                 <li>
                     <a href="{{route('model.index')}}" class="{{request()->is('product/model') ? 'active' : ''}}"> {{__('common.Model')}} </a>
                 </li>
-                {{-- @endif --}}
+                @endif
 
-                {{-- @if(permissionCheck('unit_type.index')) --}}
+                @if(permissionCheck('unit_type.index'))
                 <li>
                     <a href="{{route('unit_type.index')}}" class="{{request()->is('product/unit_type') ? 'active' : ''}}"> {{__('common.Unit Type')}}</a>
                 </li>
-                {{-- @endif --}}
+                @endif
 
-                {{-- @if(permissionCheck('variant.index')) --}}
+                @if(permissionCheck('variant.index'))
                 <li>
                     <a href="{{route('variant.index')}}" class="{{request()->is('product/variant') ? 'active' : ''}}"> {{__('common.Variant')}}</a>
                 </li>
-                {{-- @endif --}}
+                @endif
             </ul>
         </li>
 
-        {{-- @endif --}}
+        @endif
