@@ -37,6 +37,7 @@ Route::group(['prefix'=>'product', 'middleware'=>['auth']], function (){
         Route::resource('/variant', 'VariantController');
     });
 
+    Route::get('/testlazada', 'LazopController@get_orders')->name('testlazada');
     Route::get('/{id}/serial-keys', 'ProductController@serial_key_index')->name('add_product.serial_key');
 
     Route::get('/{id}/selling-price-history', 'ProductController@selling_price_history')->name('add_product.selling_price_history');

@@ -14,6 +14,7 @@ Route::prefix('sale')->middleware('auth')->group(function() {
     });
 
     Route::post('/sale_order_details', 'SaleController@orderDetails')->name('get_sale_details');
+    Route::post('/sale_order_details_lazada', 'SaleController@orderDetailsLazada')->name('get_sale_details_lazada');
     Route::get('sale-return-create', 'SaleController@make_return_list')->name('sale.sale_return_list');
     Route::get('sale-return-details/{id}', 'SaleController@return_details')->name('sale.return_detail_show');
     Route::get('sale-print-view/{id}', 'SaleController@print_view')->name('sale.print_view');

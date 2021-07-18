@@ -7,7 +7,7 @@
     "Permission": true,
     "Contact": true,
     "Account": true,
-    "Quotation" : true,
+    "Quotation": true,
     "Setup": true,
     "Inventory": true,
     "Purchase": true,
@@ -15,10 +15,11 @@
     "Report": false,
     "Sale": true,
     "Utility": true,
-    "Leave" : true,
-    "Paypal" : true,
-    "Stripe" : true,
+    "Leave": true,
+    "Paypal": true,
+    "Stripe": true,
     "Attendance": true,
     "Payroll": true,
-    "Project" : true
+    "Project": true,
+    "Lazop": true
 }

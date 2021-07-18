@@ -24,16 +24,26 @@ use Modules\Setup\Repositories\IntroPrefixRepositoryInterface;
 use Modules\Setup\Repositories\TaxRepositoryInterface;
 use Modules\Product\Repositories\VariantRepositoryInterface;
 use Modules\Setting\Model\EmailTemplate;
+use App\Lazada_set;
 use Session;
 use PDF;
 use Mail;
 use App\Traits\SaleProductSelect;
+use GuzzleHttp\Client;
+use Lazada\LazopClient;
+use Lazada\LazopRequest;
+use Carbon\Carbon;
 
 class SaleController extends Controller
 {
     use PdfGenerate, Notification, SaleProductSelect;
 
-    protected $saleRepository, $productRepository, $contactRepositories, $wareHouseRepository, $settingRepository, $showRoomRepository, $taxRepository, $introPrefixRepository, $variationRepository;
+    private $accessToken;
+    private $apiGateway;
+    private $appKey;
+    private $appSecret;
+
+    protected $saleRepository, $productRepository, $contactRepositories, $wareHouseRepository, $settingRepository, $showRoomRepository, $taxRepository, $introPrefixRepository, $variationRepository, $lazadaSet;
 
     public function __construct(
         SaleRepositoryInterface $saleRepository,
@@ -44,7 +54,8 @@ class SaleController extends Controller
         ShowRoomRepositoryInterface $showRoomRepository,
         TaxRepositoryInterface $taxRepository,
         IntroPrefixRepositoryInterface $introPrefixRepository,
-        VariantRepositoryInterface $variationRepository
+        VariantRepositoryInterface $variationRepository,
+        Lazada_set $lazadaSet
     )
     {
         $this->middleware(['auth', 'verified']);
@@ -57,18 +68,96 @@ class SaleController extends Controller
         $this->taxRepository = $taxRepository;
         $this->introPrefixRepository = $introPrefixRepository;
         $this->variationRepository = $variationRepository;
+        $this->lazadaSet = $lazadaSet;
+        $datatoken = [
+            [
+                "akun" => "indodjainem.group@gmail.com",
+                "token" => "50000900532VMEcqMhzBqGsavqZCdhydlUhsOeBDjtfN1c095e14zxGmlE6KxZYC",
+            ],[
+                "akun" => "uptodate5758@gmail.com",
+                "token" => "50000801725iSHjqbTqHWGiQdrzxdnFuLVERs1a037177Hh2BpPhxvVsPKy09N4",
+            ],[
+                "akun" => "termurahabis@gmail.com",
+                "token" => "50000700a12NCV8iBozuqC9c158bdb0ffUlqwiyPcAFcu6lvVckhJIwDQbj4pbWr",
+            ],[
+                "akun" => "onegood08@gmail.com",
+                "token" => "50000701217pOEazhudlQe0ol7dCt190852ee6OSwiGHRG1EwTjFXlptdeYPA6F",
+            ],[
+                "akun" => "nomoruno1@gmail.com",
+                "token" => "50000800f21CMaoqbCYnUlpsg0RkBbFwh140160aepVygmmOLvHTUBibCFPcyXEs",
+            ],[
+                "akun" => "nobuanugrahmakmur@gmail.com",
+                "token" => "50000200a06NCV8iBN11ca934e3utedzmxEMpgROGecfp6OyVjJFQk2mvcjgFtK",
+            ],[
+                "akun" => "newuptodate01@gmail.com",
+                "token" => "50000001718iSHjqbTxG8GCv6lTTFm17681055mwjvFrulE19wPEQuxytpsvDiJJ",
+            ],[
+                "akun" => "mahadana8899@gmail.com",
+                "token" => "50000301335s8D0gvhhrCVsleFEydqr0GfiwlVlzujexixO1ef59202dvkd7vgdy",
+            ],[
+                "akun" => "lapakberkah999@gmail.com",
+                "token" => "50000100e12kiSxnrdY6I1DI18e176f9qEzsGdfeSCpWvCJdLn4gztBjyysylDWy",
+            ],[
+                "akun" => "jegeteofficial@gmail.com",
+                "token" => "50000800520VMEcqMHT9qDOxowd82h2c107d3c37KsZswh9CFv4sxVkjeuzwpkaC",
+            ],[
+                "akun" => "jayaningratmobile@gmail.com",
+                "token" => "50000000d069Gopwoy1fcc80c5BYdnWgotduocBchRBsUwHIDQK1DrvIGenOzU1r",
+            ],[
+                "akun" => "jayaningrat5758@gmail.com",
+                "token" => "50000500326bU7pacqPmykJFQzpubBdg0gIwgR15aff584TjYdAvBORwCR5BspLt",
+            ],[
+                "akun" => "indonesiasezt@gmail.com",
+                "token" => "50000301414c7dhueHqbRrlWDf1a65cfc7yeOwTemHNjalvWBhx8qvAtPydUzpd7",
+            ],[
+                "akun" => "gudanginternet7@gmail.com",
+                "token" => "5000090003428aawUqbhxKDxCMHpwmwiA2iXdlti0tc8ch14283b1dyCMQwDtX1j",
+            ],[
+                "akun" => "giladiskon@gmail.com",
+                "token" => "50000200e40kiSxnrAD3k1fJPEsoHaDcR9LxuHlEtpYiuzkEYrYp14b3e4b2pDWy",
+            ],[
+                "akun" => "ellasartika1@gmail.com",
+                "token" => "50000601835wBMratTebcdu8PzTgfgMj3gTujg0kQQDLvxy13034106MmReN4Vyd",
+            ],[
+                "akun" => "devisales118@gmail.com",
+                "token" => "50000601505bXKvdj1f93e62bRgUpcWcju6r00fkFwJYHuX9F2GrSdPQvVmxCpmr",
+            ],[
+                "akun" => "afnstore99@gmail.com",
+                "token" => "50000800606q8FrLfQ1552c042AqFPaRUifcoYcKUbRrd6hitCOT2iFGLA8f8mrf",
+            ],[
+                "akun" => "Jegeteindonesia@gmail.com",
+                "token" => "50000600217y7aUobatSlrlnBt4sQ1875a58dcA5k2cJviUthbEEw9Mst5EWbadg",
+            ],[
+                "akun" => "indovapor99@gmail.com",
+                "token" => "50000701240pOEazhTdnUEWtcXiBThKsxlggyI3Gv1BHZkRRgJp71a1d9f38CfUy",
+            ],
+        ];
+          
+        $this->accessToken = $datatoken;
+        $this->apiGateway = env('LZ_API_GATEWAY');
+        $this->apiKey = env('LZ_API_KEY');
+        $this->apiSecret = env('LZ_API_SECRET');
     }
 
     public function index()
     {
-        try {
-            $sales = $this->saleRepository->all()->where('type', 1);
-            return view('sale::sale.index', compact('sales'));
-        } catch (\Exception $e) {
-            \LogActivity::errorLog($e->getMessage());
-            Toastr::error(__('common.Something Went Wrong'));
-            return back();
-        }
+        $showroom_id = session()->get('showroom_id');
+        $isLazada = $this->lazadaSet->where('branch_id', $showroom_id)->first();
+        if (!$isLazada) {
+            try {
+                $sales = $this->saleRepository->all()->where('type', 1);
+                return view('sale::sale.index', compact('sales'));
+            } catch (\Exception $e) {
+                \LogActivity::errorLog($e->getMessage());
+                Toastr::error(__('common.Something Went Wrong'));
+                return back();
+            }
+        } else {
+            $lazadaOrders = $this->get_orders();
+            $dataOrders = $lazadaOrders['data'];
+
+            return view('sale::sale.index_lazada', ['dataOrders'=>$dataOrders]);
+        }        
     }
 
     public function make_return_list()
@@ -1111,4 +1200,83 @@ class SaleController extends Controller
     {
         return view('sale::sale.configurations');
     }
+
+    public function orderDetailsLazada(Request $request)
+    {
+        try {
+            $data = [
+                'sale' => $this->get_orderItem($request->ordernumber, $request->token),
+            ];
+            return view('sale::sale.get_details_lazada')->with($data);
+        } catch (\Exception $e) {
+            \LogActivity::errorLog($e->getMessage());
+            return response()->json(['error' => $e->getMessage()]);
+        }
+    }
+
+    public function get_orders()
+    {
+        $datestart = "2021-01-01T01:00:00+08:00";
+        $dateend = "2021-01-02T00:00:00+08:00";
+        
+        $tokenwehave = $this->accessToken;
+        $arr = [];
+        $method = 'GET';
+        $apiName = '/orders/get';
+        
+        foreach ($tokenwehave as $key => $value) {
+            $c = new LazopClient($this->apiGateway, $this->apiKey, $this->apiSecret);
+            $request = new LazopRequest($apiName,$method);
+            // $request->addApiParam('update_before','2018-02-10T16:00:00+08:00');
+            $request->addApiParam('sort_direction','DESC');
+            $request->addApiParam('offset','0');
+            $request->addApiParam('limit','10');
+            // $request->addApiParam('update_after','2017-02-10T09:00:00+08:00');
+            $request->addApiParam('sort_by','created_at');
+            $request->addApiParam('created_before', $dateend);
+            $request->addApiParam('created_after', $datestart);
+            // $request->addApiParam('status','shipped');
+            $executelazop = json_decode($c->execute($request, $value['token']), true);
+
+            if (isset($executelazop['data']['orders'])) {
+
+                $data = $executelazop['data']['orders'];
+            
+                for ($i=0; $i < count($data); $i++) { 
+                    $data[$i]['nama_akun'] = $value['akun'];
+                    $data[$i]['token'] = $value['token'];
+                    array_push($arr,$data[$i]);
+                }
+    
+                $res['date_start'] = $datestart;
+                $res['date_end'] = $dateend;
+                $res['jumlah_data'] = count($arr);
+                $res['data'] = $arr;
+            } else {
+                $res = $executelazop;
+                $res['akun'] = $value['akun'];
+            }
+        }
+
+        return $res;
+    }
+
+    public function get_orderItem($ordernumber, $token, $url=false)
+    {
+        $arr = [];
+        $method = 'GET';
+        $apiName = '/order/items/get';
+
+        $c = new LazopClient($this->apiGateway, $this->apiKey, $this->apiSecret);
+        $request = new LazopRequest($apiName,$method);
+        $request->addApiParam("order_id", $ordernumber);
+        $executelazop = json_decode($c->execute($request, $token), true);
+
+        if ($url == false) {
+            return $executelazop['data'];
+        } else {
+            return $executelazop;
+        }
+    }
+
 }
