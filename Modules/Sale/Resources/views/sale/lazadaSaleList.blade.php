@@ -13,7 +13,6 @@
                                 <th scope="col">Order Number</th>
                                 <th scope="col">Akun</th>
                                 <th scope="col">Price</th>
-                                <th scope="col" width="5%">Status</th>
                                 <th scope="col">{{__('common.Action')}}</th>
                             </tr>
                             </thead>
@@ -21,17 +20,18 @@
                             @foreach($dataOrders as $key => $item)
                                 <tr>
                                     <td>{{ $key+1 }}</td>
-                                    <td>{{ \Carbon\Carbon::parse($item['created_at'])->format('d/m/Y H:mm:s') }}</td>
-                                    <td>{{ $item['order_number'] }}</td>
-                                    <td>{{ $item['nama_akun'] }}</td>
-                                    <td>{{ $item['price'] }}</td>
+                                    <td>{{ \Carbon\Carbon::parse($item['created_at'])->format('d F Y H:mm:s') }}</td>
                                     <td>
+                                        {{ $item['order_number'] }}
+                                        <br>
                                         @if ($item['statuses'][0] == 'INFO_ST_DOMESTIC_RETURN_WITH_LAST_MILE_3PL')
                                             Returned                                        
                                         @else
                                             {{ $item['statuses'][0] }}
                                         @endif
                                     </td>
+                                    <td>{{ $item['nama_akun'] }}</td>
+                                    <td>{{ single_price($item['price']) }}</td>
                                     <td>
                                         <div class="dropdown CRM_dropdown">
                                             <button class="btn btn-secondary dropdown-toggle" type="button"
