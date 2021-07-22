@@ -1,13 +1,30 @@
 @extends('backEnd.master')
 @section('mainContent')
     <div class="row justify-content-center">
-        <div class="col-12">
+        <div class="col-10">
             <div class="box_header common_table_header"> 
                 <div class="main-title d-md-flex">
                     <h3 class="mb-0 mr-30 mb_xs_15px mb_sm_20px">Lazada {{__('sale.Sales')}}</h3>
                 </div>
             </div>
         </div>
+        <div class="col-2" style="margin-bottom: 15px;">
+            <div class="primary_datepicker_input">
+                <div class="no-gutters input-right-icon">
+                    <div class="col">
+                        <div class="">
+                            <input placeholder="Date"
+                                   class="primary_input_field primary-input date form-control"
+                                   id="saleDate" type="text" name="saleDate"
+                                   value="{{date('m/d/Y')}}" autocomplete="off">
+                        </div>
+                    </div>
+                    <button class="" type="button">
+                        <i class="ti-calendar" id="start-date-icon"></i>
+                    </button>
+                </div>
+            </div>
+        </div>  
     </div>
     <div class="row">
         <!-- Start Sms Details -->
@@ -199,11 +216,13 @@
         function getLazadaList(status) {
             $('.tab-content').empty();
             $('.tab-content').append('<img src="{{ asset('public/backEnd/img/spinner.gif') }}" style="margin-top: 90px;"/>');
+            let saleDate = $('#saleDate').val();
             $.ajax({
                 method: 'POST',
                 url: '{{route('sale.lazada_list')}}',
                 data: {
                     status: status,
+                    saleDate: saleDate,
                     _token: "{{csrf_token()}}",
                 },
                 success: function (result) {

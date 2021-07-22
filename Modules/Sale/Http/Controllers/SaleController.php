@@ -1214,12 +1214,20 @@ class SaleController extends Controller
         }
     }
 
-    public function get_orders($status = '')
+    public function get_orders($status = '', $saleDate = '')
     {
-        $datestart = Carbon::createFromFormat('Y-m-d', date('Y-m-d'));
-        $daysToAdd = 1;
-        $dateend = $datestart->addDays($daysToAdd)->format('Y-m-d').'T01:00:00+08:00';
-        $datestart = date('Y-m-d').'T00:00:00+08:00';
+        // if ($saleDate != '') {
+        //     $datestart = Carbon::createFromFormat('m/d/Y', $saleDate);
+        //     $daysToAdd = 1;
+        //     $dateend = $datestart->addDays($daysToAdd)->format('Y-m-d').'T01:00:00+08:00';
+        //     $datestart = $datestart->format('Y-m-d').'T00:00:00+08:00';
+        // } else {
+            $datestart = Carbon::createFromFormat('Y-m-d', date('Y-m-d'));
+            $daysToAdd = 1;
+            $dateend = $datestart->addDays($daysToAdd)->format('Y-m-d').'T01:00:00+08:00';
+            $datestart = date('Y-m-d').'T00:00:00+08:00';
+        // }
+        
         
         $tokenwehave = $this->accessToken;
         $arr = [];
@@ -1286,7 +1294,8 @@ class SaleController extends Controller
     public function lazadaList(Request $request)
     {
         $status = $request->status;
-        $lazadaOrders = $this->get_orders($status);
+        $saleDate = $request->saleDate;
+        $lazadaOrders = $this->get_orders($status,$saleDate);
         $dataOrders = $lazadaOrders['data'];
 
         $htmlBody = view('sale::sale.lazadaSaleList', ['dataOrders'=>$dataOrders])->render();

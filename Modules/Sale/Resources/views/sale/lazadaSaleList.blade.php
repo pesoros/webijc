@@ -1,5 +1,4 @@
-@extends('backEnd.master_list')
-@section('mainContent')
+
 <div role="tabpanel" class="tab-pane fade show active" id="saleList">
     <div class="white-box mt-2">
         <div class="row">
@@ -56,4 +55,124 @@
         </div>
     </div>
 </div>
-@endsection
+
+<script>
+    $(document).ready(function () {
+        // CRM TABLE 3
+        if ($('.Crm_table_active3').length) {
+            pdfMake.fonts = {
+                DejaVuSans: {
+                    normal: 'DejaVuSans.ttf',
+                    bold: 'DejaVuSans-Bold.ttf',
+                    italics: 'DejaVuSans-Oblique.ttf',
+                    bolditalics: 'DejaVuSans-BoldOblique.ttf'
+                }
+            };
+            $('.Crm_table_active3').DataTable({
+                bLengthChange: true,
+                "bDestroy": true,
+                language: {
+                    search: "<i class='ti-search'></i>",
+                    searchPlaceholder: 'Quick Search',
+                    paginate: {
+                        next: "<i class='ti-arrow-right'></i>",
+                        previous: "<i class='ti-arrow-left'></i>"
+                    }
+                },
+                dom: 'Blfrtip',
+                buttons: [
+                    {
+                        extend: 'copyHtml5',
+                        text: '<i class="fa fa-files-o"></i>',
+                        title: $("#logo_title").val(),
+                        titleAttr: 'Copy',
+                        exportOptions: {
+                            columns: ':visible',
+                            columns: ':not(:last-child)',
+                        }
+                    },
+                    {
+                        extend: 'excelHtml5',
+                        text: '<i class="fa fa-file-excel-o"></i>',
+                        titleAttr: 'Excel',
+                        title: $("#logo_title").val(),
+                        margin: [10, 10, 10, 0],
+                        exportOptions: {
+                            columns: ':visible',
+                            columns: ':not(:last-child)',
+                        },
+
+                    },
+                    {
+                        extend: 'csvHtml5',
+                        text: '<i class="fa fa-file-text"></i>',
+                        titleAttr: 'CSV',
+                        exportOptions: {
+                            columns: ':visible',
+                            columns: ':not(:last-child)',
+                        }
+                    },
+                    {
+                        extend: 'pdfHtml5',
+                        text: '<i class="fa fa-file-pdf-o"></i>',
+                        title: $("#logo_title").val(),
+                        titleAttr: 'PDF',
+                        charSet: 'utf-8',
+
+                        exportOptions: {
+                            columns: ':visible',
+                            columns: ':not(:last-child)',
+                        },
+                        orientation: 'landscape',
+                        pageSize: 'A4',
+                        margin: [0, 0, 0, 0],
+                        alignment: 'center',
+                        header: true,
+                        customize: function (doc) {
+
+                            doc.content[1].table.widths =
+                                Array(doc.content[1].table.body[0].length + 1).join('*').split('');
+                            doc.content.splice(1, 0, {
+                                margin: [0, 0, 0, 0],
+                                alignment: 'center',
+                                image: 'data:image/png;base64,' + $("#logo_img").val(),
+                            });
+                            doc.defaultStyle = {
+                                font: 'DejaVuSans'
+                            }
+                        }
+
+                    },
+                    {
+                        extend: 'print',
+                        text: '<i class="fa fa-print"></i>',
+                        titleAttr: 'Print',
+                        alignment: 'center',
+                        title: $("#logo_title").val(),
+                        exportOptions: {
+                            columns: ':not(:last-child)',
+                        }
+                    },
+                    {
+                        extend: 'colvis',
+                        text: '<i class="fa fa-columns"></i>',
+                        postfixButtons: ['colvisRestore']
+                    }
+                ],
+                columnDefs: [{
+                    visible: false
+                }],
+                responsive: true,
+            });
+        }
+
+        $('label select').niceSelect();
+        $(function () {
+            $('label .nice-select').addClass('dataTable_select');
+        });
+        $('label .nice-select').on('click', function () {
+            $(this).toggleClass('open_selectlist');
+        })
+
+    });
+</script>
