@@ -16,7 +16,8 @@
                             <input placeholder="Date"
                                    class="primary_input_field primary-input date form-control"
                                    id="saleDate" type="text" name="saleDate"
-                                   value="{{date('m/d/Y')}}" autocomplete="off">
+                                   value="{{date('m/d/Y')}}" autocomplete="off"
+                                   onchange="getLazadaList()">
                         </div>
                     </div>
                     <button class="" type="button">
@@ -163,7 +164,7 @@
 @endsection
 @push("scripts")
     <script type="text/javascript">
-
+        let statusState = ''
         function printDiv(divName) {
             var printContents = document.getElementById(divName).innerHTML;
             var originalContents = document.body.innerHTML;
@@ -213,10 +214,16 @@
             });
         }
 
-        function getLazadaList(status) {
+        function getLazadaList(status = null) {
+            if (status) {
+                statusState = status;
+            }
             $('.tab-content').empty();
             $('.tab-content').append('<img src="{{ asset('public/backEnd/img/spinner.gif') }}" style="margin-top: 90px;"/>');
-            let saleDate = $('#saleDate').val();
+            let theDate = $('#saleDate').val();
+            var pieces = theDate.split('/');
+            var saleDate = pieces[2] + '-' + pieces[0] + '-' + pieces[1];
+
             $.ajax({
                 method: 'POST',
                 url: '{{route('sale.lazada_list')}}',

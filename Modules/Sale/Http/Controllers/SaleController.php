@@ -1216,18 +1216,17 @@ class SaleController extends Controller
 
     public function get_orders($status = '', $saleDate = '')
     {
-        // if ($saleDate != '') {
-        //     $datestart = Carbon::createFromFormat('m/d/Y', $saleDate);
-        //     $daysToAdd = 1;
-        //     $dateend = $datestart->addDays($daysToAdd)->format('Y-m-d').'T01:00:00+08:00';
-        //     $datestart = $datestart->format('Y-m-d').'T00:00:00+08:00';
-        // } else {
-            $datestart = Carbon::createFromFormat('Y-m-d', date('Y-m-d'));
+        if ($saleDate != '') {
+            $theDate = Carbon::createFromFormat('Y-m-d', $saleDate);
             $daysToAdd = 1;
-            $dateend = $datestart->addDays($daysToAdd)->format('Y-m-d').'T01:00:00+08:00';
-            $datestart = date('Y-m-d').'T00:00:00+08:00';
-        // }
-        
+            $datestart = $theDate->format('Y-m-d').'T00:00:00+08:00';
+            $dateend = $theDate->addDays($daysToAdd)->format('Y-m-d').'T01:00:00+08:00';
+        } else {
+            $theDate = Carbon::createFromFormat('Y-m-d', date('Y-m-d'));
+            $daysToAdd = 1;
+            $datestart = $theDate->format('Y-m-d').'T00:00:00+08:00';
+            $dateend = $theDate->addDays($daysToAdd)->format('Y-m-d').'T01:00:00+08:00';
+        }        
         
         $tokenwehave = $this->accessToken;
         $arr = [];
