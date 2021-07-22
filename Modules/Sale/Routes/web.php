@@ -48,6 +48,7 @@ Route::prefix('sale')->middleware('auth')->group(function() {
     Route::post('/sale-shipping_info', 'SaleController@shippingInfo')->name('sale.shipping_info');
     Route::post('/sale-item_delete', 'SaleController@itemDestroy')->name('item.delete');
     Route::get('/due/invoice-list', 'SaleController@invoiceList')->name('due.invoice.list');
+    Route::post('/lazada-sale-list', 'SaleController@lazadaList')->name('sale.lazada_list');
 
     Route::post('/product-modal-for-select', 'SaleController@product_modal_for_select')->name('sale.product_modal_for_select');
 });

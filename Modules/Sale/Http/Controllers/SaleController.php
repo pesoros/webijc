@@ -153,7 +153,7 @@ class SaleController extends Controller
                 return back();
             }
         } else {
-            $lazadaOrders = $this->get_orders();
+            $lazadaOrders = $this->get_orders('unpaid');
             $dataOrders = $lazadaOrders['data'];
 
             return view('sale::sale.index_lazada', ['dataOrders'=>$dataOrders]);
@@ -1214,10 +1214,12 @@ class SaleController extends Controller
         }
     }
 
-    public function get_orders()
+    public function get_orders($status = '')
     {
-        $datestart = "2021-01-01T01:00:00+08:00";
-        $dateend = "2021-01-02T00:00:00+08:00";
+        $datestart = Carbon::createFromFormat('Y-m-d', date('Y-m-d'));
+        $daysToAdd = 1;
+        $dateend = $datestart->addDays($daysToAdd)->format('Y-m-d').'T01:00:00+08:00';
+        $datestart = date('Y-m-d').'T00:00:00+08:00';
         
         $tokenwehave = $this->accessToken;
         $arr = [];
@@ -1235,7 +1237,9 @@ class SaleController extends Controller
             $request->addApiParam('sort_by','created_at');
             $request->addApiParam('created_before', $dateend);
             $request->addApiParam('created_after', $datestart);
-            // $request->addApiParam('status','shipped');
+            if ($status != '') {
+                $request->addApiParam('status', $status);
+            }
             $executelazop = json_decode($c->execute($request, $value['token']), true);
 
             if (isset($executelazop['data']['orders'])) {
@@ -1277,6 +1281,17 @@ class SaleController extends Controller
         } else {
             return $executelazop;
         }
+    }
+
+    public function lazadaList(Request $request)
+    {
+        $status = $request->status;
+        $lazadaOrders = $this->get_orders($status);
+        $dataOrders = $lazadaOrders['data'];
+
+        $htmlBody = view('sale::sale.lazadaSaleList', ['dataOrders'=>$dataOrders])->render();
+
+        return $htmlBody;
     }
 
 }
