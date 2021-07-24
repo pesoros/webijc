@@ -709,13 +709,22 @@ class SaleController extends Controller
 
     public function returnList()
     {
-        try {
-            $items = $this->saleRepository->itemList();
-            return view('sale::sale.return_item_list', compact('items'));
-        } catch (\Exception $e) {
-            \LogActivity::errorLog($e->getMessage());
-            Toastr::error(__('common.Something Went Wrong'));
-            return back();
+        $showroom_id = session()->get('showroom_id');
+        $isLazada = $this->lazadaSet->where('branch_id', $showroom_id)->first();
+        if (!$isLazada) {
+            try {
+                $items = $this->saleRepository->itemList();
+                return view('sale::sale.return_item_list', compact('items'));
+            } catch (\Exception $e) {
+                \LogActivity::errorLog($e->getMessage());
+                Toastr::error(__('common.Something Went Wrong'));
+                return back();
+            }
+        } else {
+            $lazadaOrders = $this->get_orders('canceled');
+            $dataOrders = $lazadaOrders['data'];
+
+            return view('sale::sale.index_lazada_return', ['dataOrders'=>$dataOrders]);
         }
     }
 

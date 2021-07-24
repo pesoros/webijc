@@ -4,7 +4,7 @@
         <div class="col-10">
             <div class="box_header common_table_header"> 
                 <div class="main-title d-md-flex">
-                    <h3 class="mb-0 mr-30 mb_xs_15px mb_sm_20px">Lazada {{__('sale.Sales')}}</h3>
+                    <h3 class="mb-0 mr-30 mb_xs_15px mb_sm_20px">Lazada {{__('sale.Sales')}} Return</h3>
                 </div>
             </div>
         </div>
@@ -32,28 +32,20 @@
         <div class="col-lg-12 student-details">
             <ul class="nav nav-tabs tab_column border-0" role="tablist">
                 <li class="nav-item">
-                    <a class="nav-link active" href="javascript:void(0)" onclick="getLazadaList('unpaid')" role="tab" 
-                        data-toggle="tab">Belum Dibayar</a>
+                    <a class="nav-link active" href="javascript:void(0)" onclick="getLazadaList('canceled')" role="tab"
+                       data-toggle="tab">Dibatalkan</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="javascript:void(0)" onclick="getLazadaList('pending')" role="tab"
-                       data-toggle="tab">Untuk Dikemas</a>
+                    <a class="nav-link" href="javascript:void(0)" onclick="getLazadaList('returned')" role="tab"
+                       data-toggle="tab">Pengembalian Barang / Dana</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="javascript:void(0)" onclick="getLazadaList('packed')" role="tab"
-                       data-toggle="tab">Atur Pengiriman</a>
+                    <a class="nav-link" href="javascript:void(0)" onclick="getLazadaList('failed')" role="tab"
+                       data-toggle="tab">Pengiriman Gagal</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="javascript:void(0)" onclick="getLazadaList('ready_to_ship')" role="tab"
-                       data-toggle="tab">Menunggu Pengiriman</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="javascript:void(0)" onclick="getLazadaList('shipped')" role="tab"
-                       data-toggle="tab">Dalam Pengiriman</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="javascript:void(0)" onclick="getLazadaList('delivered')" role="tab"
-                       data-toggle="tab">Diterima</a>
+                    <a class="nav-link" href="javascript:void(0)" onclick="getLazadaList('lost_by_3pl')" role="tab"
+                       data-toggle="tab">Hilang & Rusak</a>
                 </li>
             </ul>
             <div class="tab-content" style="text-align: center !important;">  
