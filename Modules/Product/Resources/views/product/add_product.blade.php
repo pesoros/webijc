@@ -168,7 +168,7 @@
 
                                     <div class="col-lg-4" id="sku_lazada_div">
                                         <div class="primary_input mb-15">
-                                            <label class="primary_input_label" for="selected_product_id">SKU Lazada</label>
+                                            <label class="primary_input_label" for="sku_lazada">SKU Lazada</label>
                                             <input type="text" name="sku_lazada" id="sku_lazada" value="" class="primary_input_field" >
                                             <span id="selected_product_id_error_container" ></span>
                                         </div>

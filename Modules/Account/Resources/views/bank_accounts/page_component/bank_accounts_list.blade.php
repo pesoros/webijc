@@ -20,7 +20,7 @@
                 <td>{{ $bank_account->branch_name }}</td>
                 <td>{{ $bank_account->account_name }}</td>
                 <td>{{ $bank_account->account_no }}</td>
-                <td>{{ single_price($bank_account->BalanceAmount) }}</td>
+                <td>{{ single_price($bank_account->BalanceNow) }}</td>
                 <td>
                    
                     @if($bank_account->chartAccount->status == 1)

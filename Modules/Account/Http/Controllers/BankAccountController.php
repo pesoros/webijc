@@ -24,6 +24,20 @@ class BankAccountController extends Controller
     public function index()
     {
         $bank_accounts = $this->accountRepository->all();
+        
+        foreach ($bank_accounts as $key => $value) {
+            $chartAccount = $value->chartAccount;
+            $opening_balance = OpeningBalanceHistory::where('account_id', $value->chart_account_id)->where('is_default', 0)->sum('amount');
+
+            $currentBalance = 0 + $opening_balance;
+
+            foreach ($chartAccount->transactions as $key => $payment) {
+                ($payment->type == "Dr") ? ($currentBalance += $payment->amount) : ( $currentBalance -= $payment->amount);
+            }
+
+            $bank_accounts[$key]['BalanceNow'] = $currentBalance;
+            
+        }
         return view('account::bank_accounts.bank_accounts',compact('bank_accounts'));
     }
 
