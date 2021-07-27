@@ -71,65 +71,8 @@ class SaleController extends Controller
         $this->lazadaSet = $lazadaSet;
         $datatoken = [
             [
-                "akun" => "indodjainem.group@gmail.com",
-                "token" => "50000900532VMEcqMhzBqGsavqZCdhydlUhsOeBDjtfN1c095e14zxGmlE6KxZYC",
-            ],[
-                "akun" => "uptodate5758@gmail.com",
-                "token" => "50000801725iSHjqbTqHWGiQdrzxdnFuLVERs1a037177Hh2BpPhxvVsPKy09N4",
-            ],[
-                "akun" => "termurahabis@gmail.com",
-                "token" => "50000700a12NCV8iBozuqC9c158bdb0ffUlqwiyPcAFcu6lvVckhJIwDQbj4pbWr",
-            ],[
-                "akun" => "onegood08@gmail.com",
-                "token" => "50000701217pOEazhudlQe0ol7dCt190852ee6OSwiGHRG1EwTjFXlptdeYPA6F",
-            ],[
-                "akun" => "nomoruno1@gmail.com",
-                "token" => "50000800f21CMaoqbCYnUlpsg0RkBbFwh140160aepVygmmOLvHTUBibCFPcyXEs",
-            ],[
-                "akun" => "nobuanugrahmakmur@gmail.com",
-                "token" => "50000200a06NCV8iBN11ca934e3utedzmxEMpgROGecfp6OyVjJFQk2mvcjgFtK",
-            ],[
-                "akun" => "newuptodate01@gmail.com",
-                "token" => "50000001718iSHjqbTxG8GCv6lTTFm17681055mwjvFrulE19wPEQuxytpsvDiJJ",
-            ],[
-                "akun" => "mahadana8899@gmail.com",
-                "token" => "50000301335s8D0gvhhrCVsleFEydqr0GfiwlVlzujexixO1ef59202dvkd7vgdy",
-            ],[
-                "akun" => "lapakberkah999@gmail.com",
-                "token" => "50000100e12kiSxnrdY6I1DI18e176f9qEzsGdfeSCpWvCJdLn4gztBjyysylDWy",
-            ],[
-                "akun" => "jegeteofficial@gmail.com",
-                "token" => "50000800520VMEcqMHT9qDOxowd82h2c107d3c37KsZswh9CFv4sxVkjeuzwpkaC",
-            ],[
-                "akun" => "jayaningratmobile@gmail.com",
-                "token" => "50000000d069Gopwoy1fcc80c5BYdnWgotduocBchRBsUwHIDQK1DrvIGenOzU1r",
-            ],[
-                "akun" => "jayaningrat5758@gmail.com",
-                "token" => "50000500326bU7pacqPmykJFQzpubBdg0gIwgR15aff584TjYdAvBORwCR5BspLt",
-            ],[
-                "akun" => "indonesiasezt@gmail.com",
-                "token" => "50000301414c7dhueHqbRrlWDf1a65cfc7yeOwTemHNjalvWBhx8qvAtPydUzpd7",
-            ],[
-                "akun" => "gudanginternet7@gmail.com",
-                "token" => "5000090003428aawUqbhxKDxCMHpwmwiA2iXdlti0tc8ch14283b1dyCMQwDtX1j",
-            ],[
-                "akun" => "giladiskon@gmail.com",
-                "token" => "50000200e40kiSxnrAD3k1fJPEsoHaDcR9LxuHlEtpYiuzkEYrYp14b3e4b2pDWy",
-            ],[
-                "akun" => "ellasartika1@gmail.com",
-                "token" => "50000601835wBMratTebcdu8PzTgfgMj3gTujg0kQQDLvxy13034106MmReN4Vyd",
-            ],[
-                "akun" => "devisales118@gmail.com",
-                "token" => "50000601505bXKvdj1f93e62bRgUpcWcju6r00fkFwJYHuX9F2GrSdPQvVmxCpmr",
-            ],[
-                "akun" => "afnstore99@gmail.com",
-                "token" => "50000800606q8FrLfQ1552c042AqFPaRUifcoYcKUbRrd6hitCOT2iFGLA8f8mrf",
-            ],[
-                "akun" => "Jegeteindonesia@gmail.com",
-                "token" => "50000600217y7aUobatSlrlnBt4sQ1875a58dcA5k2cJviUthbEEw9Mst5EWbadg",
-            ],[
-                "akun" => "indovapor99@gmail.com",
-                "token" => "50000701240pOEazhTdnUEWtcXiBThKsxlggyI3Gv1BHZkRRgJp71a1d9f38CfUy",
+                "akun" => "juraganq89@gmail.com",
+                "token" => "50000200d119prpwoUBgZfX1b34985bflvfvui8Ear3ksuFgiNGwjryGEvjxAO3r",
             ],
         ];
           

@@ -37,23 +37,15 @@
                 </li>
                 <li class="nav-item">
                     <a class="nav-link" href="javascript:void(0)" onclick="getLazadaList('pending')" role="tab"
-                       data-toggle="tab">Untuk Dikemas</a>
+                       data-toggle="tab">Order Masuk</a>
                 </li>
                 <li class="nav-item">
                     <a class="nav-link" href="javascript:void(0)" onclick="getLazadaList('packed')" role="tab"
-                       data-toggle="tab">Atur Pengiriman</a>
+                       data-toggle="tab">Siap Packing</a>
                 </li>
                 <li class="nav-item">
                     <a class="nav-link" href="javascript:void(0)" onclick="getLazadaList('ready_to_ship')" role="tab"
-                       data-toggle="tab">Menunggu Pengiriman</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="javascript:void(0)" onclick="getLazadaList('shipped')" role="tab"
-                       data-toggle="tab">Dalam Pengiriman</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="javascript:void(0)" onclick="getLazadaList('delivered')" role="tab"
-                       data-toggle="tab">Diterima</a>
+                       data-toggle="tab">Siap Diambil</a>
                 </li>
             </ul>
             <div class="tab-content" style="text-align: center !important;">  
