@@ -358,4 +358,26 @@ class LazopController extends Controller
             return $executelazop;
         }
     }
+
+    public function tokenCreate(Request $request)
+    {
+        $method = 'POST';
+        $apiName = '/auth/token/create';
+        $querystring = $request->all();
+
+        if (isset($querystring['authtoken'])) {
+            $authtoken = $querystring['authtoken'];
+        } else {
+            echo 'failed auth token';
+            return;
+        }
+        
+        
+        $c = new LazopClient($this->apiGateway, $this->apiKey, $this->apiSecret);
+        $request = new LazopRequest($apiName,$method);
+        $request->addApiParam('code',$authtoken);
+        // $request->addApiParam('uuid','38284839234');
+        $executelazop = json_decode($c->execute($request), true);
+        return $executelazop;
+    }
 }

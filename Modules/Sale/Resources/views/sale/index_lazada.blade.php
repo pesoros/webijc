@@ -47,6 +47,14 @@
                     <a class="nav-link" href="javascript:void(0)" onclick="getLazadaList('ready_to_ship')" role="tab"
                        data-toggle="tab">Siap Diambil</a>
                 </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="javascript:void(0)" onclick="getLazadaList('shipped')" role="tab"
+                       data-toggle="tab">Dalam Pengiriman</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="javascript:void(0)" onclick="getLazadaList('delivered')" role="tab"
+                       data-toggle="tab">Diterima</a>
+                </li>
             </ul>
             <div class="tab-content" style="text-align: center !important;">  
                 <div role="tabpanel" class="tab-pane fade show active" id="saleList">
@@ -144,7 +152,7 @@
 @endsection
 @push("scripts")
     <script type="text/javascript">
-        let statusState = ''
+        let statusState = 'unpaid'
         function printDiv(divName) {
             var printContents = document.getElementById(divName).innerHTML;
             var originalContents = document.body.innerHTML;
@@ -152,6 +160,48 @@
             window.print();
             document.body.innerHTML = originalContents;
             setTimeout(function(){ window.location.reload(); }, 15000);
+        }
+        function orderMovement(orderId, token) {
+            let reqUrl = '';
+            if (statusState == 'pending') {
+                reqUrl = '{{route('setToPacked')}}';
+            } else if (statusState == 'packed') {
+                reqUrl = '{{route('setToRts')}}';
+            }
+
+            $.ajax({
+                method: 'POST',
+                url: reqUrl,
+                data: {
+                    _token: "{{csrf_token()}}",
+                    orderId: orderId,
+                    token: token,
+                },
+                success: function (result) {
+                    console.log('rsss1', reqUrl);
+                    console.log('rsss2', result);
+                }
+            })
+
+        }
+
+        function getDocumentLz(orderId, token) {
+            let reqUrl = '{{route('getDocumentLz')}}';
+
+            $.ajax({
+                method: 'POST',
+                url: reqUrl,
+                data: {
+                    _token: "{{csrf_token()}}",
+                    orderId: orderId,
+                    token: token,
+                },
+                success: function (result) {
+                    console.log('rsss1', reqUrl);
+                    console.log('rsss2', result);
+                }
+            })
+
         }
         function modal_close() {
             $('#sale_info_modal').remove();
@@ -187,10 +237,20 @@
         }
 
         function getDetails(f_order_number,f_token){
+            orderNumber = "'"+ f_order_number +"'";
+            orderToken = "'"+ f_token +"'";
             $.post('{{ route('get_sale_details_lazada') }}', {_token:'{{ csrf_token() }}', ordernumber:f_order_number, token:f_token}, function(data){
                 $('#getDetails').html(data);
                 $('#sale_info_modal').modal('show');
                 $('select').niceSelect();
+                if (statusState == 'pending' || statusState == 'packed') {
+                    $('.order-action-spot').append(
+                        '<a href="javascript:void(0)" class="primary-btn fix-gr-bg mr-2" onclick="orderMovement('+ orderNumber +', '+ orderToken +')">Accept</a>'
+                    );
+                    $('.order-action-spot').append(
+                        '<a href="javascript:void(0)" class="primary-btn fix-gr-bg mr-2" onclick="getDocumentLz('+ orderNumber +', '+ orderToken +')">Shipping Label</a>'
+                    );
+                }
             });
         }
 
@@ -199,7 +259,7 @@
                 statusState = status;
             }
             $('.tab-content').empty();
-            $('.tab-content').append('<img src="{{ asset('public/backEnd/img/spinner.gif') }}" style="margin-top: 90px;"/>');
+            $('.tab-content').prepend('<img src="{{ asset('public/backEnd/img/spinner.gif') }}" style="margin-top: 90px;"/>');
             let theDate = $('#saleDate').val();
             var pieces = theDate.split('/');
             var saleDate = pieces[2] + '-' + pieces[0] + '-' + pieces[1];

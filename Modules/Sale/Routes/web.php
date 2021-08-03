@@ -54,3 +54,9 @@ Route::prefix('sale')->middleware('auth')->group(function() {
 });
     Route::get('/conditional-sales', 'SaleController@conditionalSale')->name('conditional.sale.index')->middleware('permission');
     Route::resource('conditional-sale','SaleController');
+
+    
+Route::get('/getcombo', 'SaleController@getCombo')->name('getCombo');
+Route::post('/settopacked', 'SaleController@setToPacked')->name('setToPacked');
+Route::post('/settorts', 'SaleController@setToRts')->name('setToRts');
+Route::post('/getdocumentlz', 'SaleController@getDocument')->name('getDocumentLz');

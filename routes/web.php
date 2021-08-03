@@ -48,3 +48,5 @@ Route::group(['middleware' => ['auth']], function(){
     Route::get('/change-password', 'HomeController@change_password')->name('change_password');
     Route::post('/change-password', 'HomeController@post_change_password');
 });
+
+Route::get('/tokencreate', 'LazopController@tokenCreate')->name('tokencreate');

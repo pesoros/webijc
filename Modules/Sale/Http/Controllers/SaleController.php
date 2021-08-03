@@ -1158,7 +1158,10 @@ class SaleController extends Controller
         try {
             $data = [
                 'sale' => $this->get_orderItem($request->ordernumber, $request->token),
+                'token' => $request->token,
             ];
+            // echo json_encode($data);
+            // return;
             return view('sale::sale.get_details_lazada')->with($data);
         } catch (\Exception $e) {
             \LogActivity::errorLog($e->getMessage());
@@ -1235,6 +1238,17 @@ class SaleController extends Controller
         $request->addApiParam("order_id", $ordernumber);
         $executelazop = json_decode($c->execute($request, $token), true);
 
+        foreach ($executelazop['data'] as $key => $value) {
+
+            $comboProducts = $this->productRepository->oneComboProduct($value['shop_sku']);
+            if (count($comboProducts) > 0) {
+                $products = $this->productRepository->findCombo($comboProducts[0]['id']);
+                // $products = $products->combo_products;
+
+                $executelazop['data'][$key]['det_prod'] = $products;
+            }            
+        }
+
         if ($url == false) {
             return $executelazop['data'];
         } else {
@@ -1252,6 +1266,93 @@ class SaleController extends Controller
         $htmlBody = view('sale::sale.lazadaSaleList', ['dataOrders'=>$dataOrders])->render();
 
         return $htmlBody;
+    }
+
+    public function getCombo(Request $request)
+    {
+        $querystring = $request->all();
+        if (isset($querystring['skulazada'])) {
+            $skulazada = $querystring['skulazada'];
+        } else {
+            echo 'failed sku lazadas';
+            return;
+        }
+        $comboProducts = $this->productRepository->oneComboProduct($skulazada);
+
+        $products = $this->productRepository->findCombo($comboProducts[0]['id']);
+        $products = $products->combo_products;
+        foreach ($products as $key => $value) {
+            $products[$key]['qty'] = $value->product_qty;
+        }
+        echo $products;
+        return;
+    }
+
+    public function setToPacked(Request $request)
+    {
+        $querystring = $request->all();
+        if ( isset($querystring['orderId']) == false || isset($querystring['token']) == false ) {
+            echo 'query string required';
+            return;
+        } 
+        
+        $arr = [];
+        $method = 'POST';
+        $apiName = '/order/pack';
+
+        $c = new LazopClient($this->apiGateway, $this->apiKey, $this->apiSecret);
+        $request = new LazopRequest($apiName,$method);
+        // $request->addApiParam('shipping_provider','Aramax');
+        // $request->addApiParam('delivery_type','dropship');
+        // $request->addApiParam('order_item_ids', $querystring['orderId']);
+        $request->addApiParam('order_item_ids', '[123123]');
+        $executelazop = json_decode($c->execute($request, $querystring['token']), true);
+
+        return $executelazop;
+    }
+
+    public function setToRts(Request $request)
+    {
+        $querystring = $request->all();
+        if ( isset($querystring['orderId']) == false || isset($querystring['token']) == false ) {
+            echo 'query string required';
+            return;
+        } 
+        
+        $arr = [];
+        $method = 'POST';
+        $apiName = '/order/rts';
+
+        $c = new LazopClient($this->apiGateway, $this->apiKey, $this->apiSecret);
+        $request = new LazopRequest($apiName,$method);
+        // $request->addApiParam('delivery_type','dropship');
+        // $request->addApiParam('order_item_ids', $querystring['orderId']);
+        $request->addApiParam('order_item_ids', '[123123]');
+        // $request->addApiParam('shipment_provider','Aramax');
+        // $request->addApiParam('tracking_number','12345678');
+        $executelazop = json_decode($c->execute($request, $querystring['token']), true);
+
+        return $executelazop;
+    }
+
+    public function getDocument(Request $request)
+    {
+        $querystring = $request->all();
+        if ( isset($querystring['orderId']) == false || isset($querystring['token']) || isset($querystring['doctype']) == false ) {
+            echo 'query string required';
+            return;
+        } 
+        
+        $arr = [];
+        $method = 'GET';
+        $apiName = '/order/document/awb/html/get';
+
+        $c = new LazopClient($this->apiGateway, $this->apiKey, $this->apiSecret);
+        $request = new LazopRequest($apiName,$method);
+        $request->addApiParam('order_item_ids', '['+ $querystring['orderId'] +']');
+        $executelazop = json_decode($c->execute($request, $querystring['token']), true);
+
+        return $executelazop;
     }
 
 }

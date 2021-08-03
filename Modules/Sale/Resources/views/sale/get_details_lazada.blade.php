@@ -24,16 +24,30 @@
                                                 <th scope="col">No</th>
                                                 <th scope="col">Lazada SKU</th>
                                                 <th scope="col"  width="39%">{{__('product.Name')}}</th>
-                                                <th scope="col">{{__('sale.Price')}}</th>
+                                                {{-- <th scope="col">{{__('sale.Price')}}</th> --}}
                                                 <th scope="col">Url</th>
                                             </tr>
                                             @foreach($sale as $key=> $item)
                                                     <tr>
-                                                        <td>{{$key++}}</td>
+                                                        <td>{{$key + 1}}</td>
                                                         <td>{{$item['shop_sku']}}</td>
                                                         <td>{{$item['name']}}</td>
-                                                        <td class="text-right">{{single_price($item['item_price'])}}</td>
+                                                        {{-- <td class="text-right">{{single_price($item['item_price'])}}</td> --}}
                                                         <td><a href="{{$item['product_detail_url']}}" target="_blank">Page</a></td>
+                                                        <td>
+                                                            @if (isset($item['det_prod']))
+                                                                @foreach($item['det_prod']->combo_products as $key => $comboProduct)
+                                                                    <tr class="">
+                                                                        <td>
+                                                                        <input type="text" value="{{ @$comboProduct->productSku->product->product_name }}" readonly class="primary_input_field">
+                                                                        </td>
+                                                                        <td>
+                                                                        <input type="text" value="{{ $comboProduct->product_qty }}" readonly class="primary_input_field">
+                                                                        </td>
+                                                                    </tr>
+                                                                @endforeach
+                                                            @endif
+                                                        </td>
                                                     </tr>
                                             @endforeach
                                             </tfoot>
@@ -44,14 +58,11 @@
                         </div>
                     </div>
                 </div>
-                {{-- <div class="row text-center mt-20">
-                    <div class="col-md-12 col-12">
-                        <a href="javascript:void(0)" class="primary-btn fix-gr-bg mr-2"
-                           onclick="printDiv('printableArea')">{{__('pos.Print')}}</a>
-                        <a href="javascript:void(0)" onclick="modal_close()"
-                           class="primary-btn fix-gr-bg mr-2"  data-dismiss="modal">{{__('common.Close')}}</a>
+                <div class="row text-center mt-20">
+                    <div class="col-md-12 col-12 order-action-spot">
+                        
                     </div>
-                </div> --}}
+                </div>
             </div>
         </div>
     </div>

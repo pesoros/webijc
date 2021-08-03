@@ -22,17 +22,18 @@ use Modules\Product\Repositories\UnitTypeRepositoryInterface;
 use Modules\Product\Repositories\VariantRepositoryInterface;
 use Modules\Product\Entities\PartNumber;
 use Modules\Product\Entities\ProductSellingPriceHistory;
+use App\Lazada_set;
 use PDF;
 class ProductController extends Controller
 {
     use PdfGenerate,Notification;
 
     protected $modelRepository, $unitTypeRepository, $brandRepository, $categoryRepository, $variationRepository, $productRepository,$wareHouseRepository,
-        $showRoomRepository,$stockTransferRepository;
+        $showRoomRepository,$stockTransferRepository,$lazadaSet;
 
     public function __construct(ModelTypeRepositoryInterface $modelRepository, UnitTypeRepositoryInterface $unitTypeRepository, BrandRepositoryInterface $brandRepository,
                                 CategoryRepositoryInterface $categoryRepository, VariantRepositoryInterface $variationRepository, ProductRepositoryInterface $productRepository,
-                                    WareHouseRepositoryInterface $wareHouseRepository, ShowRoomRepositoryInterface $showRoomRepository,StockTransferRepositoryInterface $stockTransferRepository)
+                                    WareHouseRepositoryInterface $wareHouseRepository, ShowRoomRepositoryInterface $showRoomRepository,StockTransferRepositoryInterface $stockTransferRepository,Lazada_set $lazadaSet)
     {
         $this->middleware(['auth', 'verified']);
         $this->modelRepository = $modelRepository;
@@ -44,10 +45,13 @@ class ProductController extends Controller
         $this->wareHouseRepository = $wareHouseRepository;
         $this->showRoomRepository = $showRoomRepository;
         $this->stockTransferRepository = $stockTransferRepository;
+        $this->lazadaSet = $lazadaSet;
     }
 
     public function index()
     {
+        $showroom_id = session()->get('showroom_id');
+        $isLazada = $this->lazadaSet->where('branch_id', $showroom_id)->first();
         try{
             $models = $this->modelRepository->all();
             $units = $this->unitTypeRepository->all();
@@ -69,7 +73,8 @@ class ProductController extends Controller
                 "variants" => $variants,
                 "wareHouses" => $wareHouses,
                 "showrooms" => $showrooms,
-                "services" => $services
+                "services" => $services,
+                "lazada" => $isLazada
             ]);
         }catch(\Exception $e){
             \LogActivity::errorLog($e->getMessage());

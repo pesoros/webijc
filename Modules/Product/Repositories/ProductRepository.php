@@ -84,6 +84,13 @@ class ProductRepository implements ProductRepositoryInterface
         })->latest()->get();
     }
 
+    public function oneComboProduct($skuLazada)
+    {
+        return ComboProduct::where('sku_lazada', $skuLazada)->whereHas('combo_products.productSku', function ($query) {
+            $query;
+        })->latest()->get();
+    }
+
     public function searchCombo($search_keyword)
     {
         return ComboProduct::whereLike(['name', 'barcode_type'], $search_keyword)->get();
