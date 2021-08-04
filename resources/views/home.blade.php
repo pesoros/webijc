@@ -467,7 +467,7 @@
                             </div>
                         </div>
                         <div class="col-md-6 col-lg-6 col-sm-6 text-right">
-                            <a href="#" data-toggle="modal" class="primary-btn small fix-gr-bg"
+                            <a href="#" data-toggle="modal" class="primary-btn small "
                                data-target="#add_to_do"
                                title="Add To Do" data-modal-size="modal-md">
                                 <span class="ti-plus pr-2"></span>
@@ -610,7 +610,7 @@
                                             <div class="mt-40 d-flex justify-content-between">
                                                 <button type="button" class="primary-btn tr-bg"
                                                         data-dismiss="modal">{{__('common.Cancel')}}</button>
-                                                <input class="primary-btn fix-gr-bg" type="submit" value="save">
+                                                <input class="primary-btn tr-bg" type="submit" value="save">
                                             </div>
                                         </div>
                                     </div>

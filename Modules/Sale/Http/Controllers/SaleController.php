@@ -1338,19 +1338,22 @@ class SaleController extends Controller
     public function getDocument(Request $request)
     {
         $querystring = $request->all();
-        if ( isset($querystring['orderId']) == false || isset($querystring['token']) || isset($querystring['doctype']) == false ) {
-            echo 'query string required';
+        if ( isset($querystring['orderId']) == false || isset($querystring['token']) == false || isset($querystring['doctype']) == false) {
+            echo 'query string required!';
             return;
         } 
         
         $arr = [];
         $method = 'GET';
-        $apiName = '/order/document/awb/html/get';
+        $apiName = '/order/document/get';
 
         $c = new LazopClient($this->apiGateway, $this->apiKey, $this->apiSecret);
         $request = new LazopRequest($apiName,$method);
-        $request->addApiParam('order_item_ids', '['+ $querystring['orderId'] +']');
+        $request->addApiParam('order_item_ids', '['.$querystring['orderId'].']');
+        $request->addApiParam('doc_type', $querystring['doctype']);
         $executelazop = json_decode($c->execute($request, $querystring['token']), true);
+
+        $fileBase = base64_decode($executelazop['data']['document']['file']);
 
         return $executelazop;
     }

@@ -60,7 +60,8 @@
                 </div>
                 <div class="row text-center mt-20">
                     <div class="col-md-12 col-12 order-action-spot">
-                        
+                        <a href="javascript:void(0)" class="primary-btn fix-gr-bg mr-2" onclick="orderMovement('{{ $sale[0]['order_item_id'] }}', '{{ $token }}')">Accept</a>
+                        <a href="javascript:void(0)" class="primary-btn fix-gr-bg mr-2" onclick="getDocumentLz('{{ $sale[0]['order_item_id'] }}', '{{ $token }}')">Shipping Label</a>
                     </div>
                 </div>
             </div>

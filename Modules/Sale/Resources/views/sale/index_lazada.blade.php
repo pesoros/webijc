@@ -194,6 +194,7 @@
                 data: {
                     _token: "{{csrf_token()}}",
                     orderId: orderId,
+                    doctype: 'shippingLabel',
                     token: token,
                 },
                 success: function (result) {
@@ -243,13 +244,10 @@
                 $('#getDetails').html(data);
                 $('#sale_info_modal').modal('show');
                 $('select').niceSelect();
-                if (statusState == 'pending' || statusState == 'packed') {
-                    $('.order-action-spot').append(
-                        '<a href="javascript:void(0)" class="primary-btn fix-gr-bg mr-2" onclick="orderMovement('+ orderNumber +', '+ orderToken +')">Accept</a>'
-                    );
-                    $('.order-action-spot').append(
-                        '<a href="javascript:void(0)" class="primary-btn fix-gr-bg mr-2" onclick="getDocumentLz('+ orderNumber +', '+ orderToken +')">Shipping Label</a>'
-                    );
+                if (statusState == 'packed' || statusState == 'ready_to_ship' || statusState == 'shipped' || statusState == 'delivered') {
+                    $( ".order-action-spot" ).show();
+                } else {
+                    $( ".order-action-spot" ).hide();
                 }
             });
         }
