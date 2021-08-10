@@ -51,6 +51,7 @@ Route::prefix('sale')->middleware('auth')->group(function() {
     Route::post('/lazada-sale-list', 'SaleController@lazadaList')->name('sale.lazada_list');
 
     Route::post('/product-modal-for-select', 'SaleController@product_modal_for_select')->name('sale.product_modal_for_select');
+    Route::post('/product-modal-for-select-pos', 'SaleController@product_modal_for_select_pos')->name('sale.product_modal_for_select_pos');
 });
     Route::get('/conditional-sales', 'SaleController@conditionalSale')->name('conditional.sale.index')->middleware('permission');
     Route::resource('conditional-sale','SaleController');
@@ -60,3 +61,4 @@ Route::get('/getcombo', 'SaleController@getCombo')->name('getCombo');
 Route::post('/settopacked', 'SaleController@setToPacked')->name('setToPacked');
 Route::post('/settorts', 'SaleController@setToRts')->name('setToRts');
 Route::post('/getdocumentlz', 'SaleController@getDocument')->name('getDocumentLz');
+Route::get('/orderitem/{ordernumber}/{token}/{url}', 'SaleController@get_orderItem')->name('get_orderItem');

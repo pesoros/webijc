@@ -161,7 +161,7 @@
             document.body.innerHTML = originalContents;
             setTimeout(function(){ window.location.reload(); }, 15000);
         }
-        function orderMovement(orderId, token) {
+        function orderMovement(orderId, shippingType, token) {
             let reqUrl = '';
             if (statusState == 'pending') {
                 reqUrl = '{{route('setToPacked')}}';
@@ -174,6 +174,7 @@
                 url: reqUrl,
                 data: {
                     _token: "{{csrf_token()}}",
+                    shippingType: shippingType,
                     orderId: orderId,
                     token: token,
                 },
@@ -244,10 +245,10 @@
                 $('#getDetails').html(data);
                 $('#sale_info_modal').modal('show');
                 $('select').niceSelect();
-                if (statusState == 'packed' || statusState == 'ready_to_ship' || statusState == 'shipped' || statusState == 'delivered') {
-                    $( ".order-action-spot" ).show();
-                } else {
+                if ( statusState == 'ready_to_ship' || statusState == 'shipped' || statusState == 'delivered') {
                     $( ".order-action-spot" ).hide();
+                } else {
+                    $( ".order-action-spot" ).show();
                 }
             });
         }

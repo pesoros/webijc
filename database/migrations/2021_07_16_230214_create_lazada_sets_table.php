@@ -17,6 +17,7 @@ class CreateLazadaSetsTable extends Migration
             $table->id();
             $table->integer('branch_id')->nullable();
             $table->string('branch_name', 255)->nullable();
+            $table->string('variant', 255)->nullable();
             $table->integer('status')->default(0);
             $table->timestamps();
         });

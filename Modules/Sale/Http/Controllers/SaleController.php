@@ -85,7 +85,7 @@ class SaleController extends Controller
     public function index()
     {
         $showroom_id = session()->get('showroom_id');
-        $isLazada = $this->lazadaSet->where('branch_id', $showroom_id)->first();
+        $isLazada = $this->lazadaSet->where('branch_id', $showroom_id)->where('variant', 'lazada')->first();
         if (!$isLazada) {
             try {
                 $sales = $this->saleRepository->all()->where('type', 1);
@@ -130,6 +130,9 @@ class SaleController extends Controller
     public function create()
     {
         session()->forget('sku');
+        $showroom_id = session()->get('showroom_id');
+        $isPos = $this->lazadaSet->where('branch_id', $showroom_id)->where('variant', 'pos')->first();
+
         try {
             $productList = $this->productRepository->productList(session()->get('showroom_id'), ShowRoom::class);
             $serviceList = $this->productRepository->serviceList(session()->get('showroom_id'), ShowRoom::class);
@@ -143,8 +146,11 @@ class SaleController extends Controller
                 'taxes' => $this->taxRepository->activeTax(),
                 'invoice' => $this->introPrefixRepository->find(3),
             ];
-
-            return view('sale::sale.create')->with($data);
+            if (!$isPos) {
+                return view('sale::sale.create')->with($data);
+            } else {
+                return view('sale::sale.create_pos')->with($data);
+            }
 
         } catch (\Exception $e) {
             \LogActivity::errorLog($e->getMessage());
@@ -841,6 +847,35 @@ class SaleController extends Controller
         }
     }
 
+    public function product_modal_for_select_pos(Request $request)
+    {
+        try {
+            $type = explode('-', $request->id);
+            if ($type[1] == "Single" or $type[1] == "Service") {
+
+                $data['product_id'] = $this->storeSkuSalePos($type[0]);
+                $data['product_type'] = $type[1];
+                return $data;
+
+            } elseif ($type[1] == "Combo") {
+                $data['product_id'] = $this->storeComboPos($type[0]);
+                $data['product_type'] = $type[1];
+            } else {
+                $data['product_id'] = $type[0];
+                $data['product_type'] = $type[1];
+
+                $data['html'] = (string)view('sale::sale.product_details', [
+                    "product" => $this->productRepository->find($type[0])
+                ]);
+            }
+
+            return response()->json($data);
+        } catch (\Exception $e) {
+            \LogActivity::errorLog($e->getMessage());
+            return response()->json(['error' => __('common.Something Went Wrong')]);
+        }
+    }
+
     //Ajax Request for getting Customer Last Invoice No
     public function customerDetails(Request $request)
     {
@@ -1291,11 +1326,12 @@ class SaleController extends Controller
     public function setToPacked(Request $request)
     {
         $querystring = $request->all();
-        if ( isset($querystring['orderId']) == false || isset($querystring['token']) == false ) {
+        if ( isset($querystring['orderId']) == false || isset($querystring['token']) == false || isset($querystring['shippingType']) == false ) {
             echo 'query string required';
             return;
         } 
-        
+
+        $shippingType = strtolower($querystring['shippingType']);
         $arr = [];
         $method = 'POST';
         $apiName = '/order/pack';
@@ -1303,9 +1339,9 @@ class SaleController extends Controller
         $c = new LazopClient($this->apiGateway, $this->apiKey, $this->apiSecret);
         $request = new LazopRequest($apiName,$method);
         // $request->addApiParam('shipping_provider','Aramax');
-        // $request->addApiParam('delivery_type','dropship');
-        // $request->addApiParam('order_item_ids', $querystring['orderId']);
-        $request->addApiParam('order_item_ids', '[123123]');
+        $request->addApiParam('delivery_type', 'dropship');
+        $request->addApiParam('order_item_ids', '['.$querystring['orderId'].']');
+        // $request->addApiParam('order_item_ids', '[123123]');
         $executelazop = json_decode($c->execute($request, $querystring['token']), true);
 
         return $executelazop;
@@ -1325,9 +1361,8 @@ class SaleController extends Controller
 
         $c = new LazopClient($this->apiGateway, $this->apiKey, $this->apiSecret);
         $request = new LazopRequest($apiName,$method);
-        // $request->addApiParam('delivery_type','dropship');
-        // $request->addApiParam('order_item_ids', $querystring['orderId']);
-        $request->addApiParam('order_item_ids', '[123123]');
+        $request->addApiParam('delivery_type', 'dropship');
+        $request->addApiParam('order_item_ids', '['.$querystring['orderId'].']');
         // $request->addApiParam('shipment_provider','Aramax');
         // $request->addApiParam('tracking_number','12345678');
         $executelazop = json_decode($c->execute($request, $querystring['token']), true);
