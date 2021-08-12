@@ -410,12 +410,12 @@
                                                 @endforeach
                                             </select>
                                         </div>
-                                        <div class="primary_input grid_input total_discount_tr" style="display: none;">
+                                        <div class="primary_input grid_input total_discount_tr">
                                             <label class="font_13 theme_text f_w_500 mb-0"
                                                    for="">{{__('sale.Discount')}}</label>
                                                 <input style="width: 100px !important" name="total_discount_amount"
                                                        type="number" value="0"
-                                                       class="primary_input_field total_discount_amount total_discount"
+                                                       class="primary_input_field total_discount_amount total_discount_amount"
                                                        readonly>
 
                                         </div>
@@ -433,14 +433,6 @@
                                                 <input onkeyup="billingInfo()" name="other_charge" type="number"
                                                        step="0.01" value="0"
                                                        class="primary_input_field other_charge">
-
-                                        </div>
-                                        <div class="primary_input grid_input" style="display: none;">
-                                            <label class="font_13 theme_text f_w_500 mb-0"
-                                                   for="">{{__('sale.Payable Amount')}}</label>
-                                                <input type="text" value="0"
-                                                       class="primary_input_field total_amount"
-                                                       name="total_amount" readonly>
 
                                         </div>
                                         <div class="primary_input grid_input" style="display: none;">
@@ -512,25 +504,6 @@
                                                        placeholder="{{__('sale.Shipping Name')}}" name="shipping_name"
                                                        value="{{ old('shipping_name') }}">
                                             </div>
-        
-                                            <div class="primary_input mb-15" style="display: none;">
-                                                <label class="primary_input_label" for="">{{__('sale.Discount')}} </label>
-                                                <input onkeyup="billingInfo()" name="total_discount"
-                                                       type="number" step="0.01"
-                                                       value="0"
-                                                       class="primary_input_field billing_inputs total_discount">
-                                                <span class="text-danger">{{$errors->first('discount_type')}}</span>
-                                            </div>
-                                            <div class="primary_input mb-15" style="display: none;">
-                                                <label class="primary_input_label"
-                                                       for="">{{__('quotation.Discount Type')}}</label>
-                                                <select class="primary_select mb-15 discount_type" onchange="billingInfo()"
-                                                        id="discount_type" name="discount_type">
-                                                    <option value="1">{{ __('quotation.Amount') }}</option>
-                                                    <option value="2">{{ __('quotation.Percentage') }}</option>
-                                                </select>
-                                                <span class="text-danger">{{$errors->first('discount_type')}}</span>
-                                            </div>
                                         <input type="hidden" name="sale_url" value="{{urlShortener()}}">
                                         @if(request()->is('conditional-sale/create'))
                                             <input type="hidden" name="payment_method[]" value="due-00">
@@ -549,6 +522,29 @@
                                                         @endforeach
                                                     </select>
                                                     <span class="text-danger">{{$errors->first('payment_method')}}</span>
+                                                </div>
+                                                <div class="primary_input grid_input">
+                                                    <label class="font_13 theme_text f_w_500 mb-0" for="">{{__('sale.Discount')}}</label>
+                                                    <input onkeyup="billingInfo()" name="total_discount"
+                                                        type="number" step="0.01"
+                                                        value="0"
+                                                        class="primary_input_field billing_inputs total_discount">
+                                                </div>
+                                                <div class="primary_input grid_input">
+                                                    <label class="font_13 theme_text f_w_500 mb-0" for="">{{__('quotation.Discount Type')}}</label>
+                                                    <select class="primary_select mb-15 discount_type" onchange="billingInfo()"
+                                                            id="discount_type" name="discount_type">
+                                                        <option value="1">{{ __('quotation.Amount') }}</option>
+                                                        <option value="2">{{ __('quotation.Percentage') }}</option>
+                                                    </select>
+                                                </div>
+                                                <div class="primary_input grid_input">
+                                                    <label class="font_13 theme_text f_w_500 mb-0"
+                                                           for="">{{__('sale.Payable Amount')}}</label>
+                                                        <input type="text" value="0"
+                                                               class="primary_input_field total_amount"
+                                                               name="total_amount" readonly>
+        
                                                 </div>
                                                 <div class="primary_input grid_input">
                                                     <label class="font_13 theme_text f_w_500 mb-0" for="">{{__('sale.Amount')}}</label>
@@ -851,7 +847,6 @@
             $('.total_discount_amount').val(calculated_total_discount);
 
             let final_amount = parseFloat(((total_amount + calculated_total_tax + shipping_charge + other_charge)) - calculated_total_discount).toFixed(2);
-
             $('.total_amount').val(final_amount);
         }
 
