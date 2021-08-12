@@ -117,6 +117,7 @@
             font-size:20px;
             font-weight:300;
             color:#219ae2;
+            background: #e8e8e8 !important;
         }
         input.txt-search-input-tm::-webkit-input-placeholder {
             color: #aaaaaa;
