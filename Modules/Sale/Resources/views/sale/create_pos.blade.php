@@ -243,8 +243,14 @@
                                     @foreach ($allProducts as $product)
                                         <li>
                                             <div class="img-overlay" onclick="clickCart('{{$product->product_id}}-{{ $product->product_type }}')">
+                                                @if ($product->image_source)
                                                 <img src="{{ asset($product->image_source) }}"
-                                                    class="pos-img img-overlay-image" alt="2013 Toyota Tacoma" id="itemImg">
+                                                    class="pos-img img-overlay-image" alt="{{$product->product_name}}" id="itemImg">
+                                                @else
+                                                <img src="{{ asset('/public/backEnd/img/no_image.png') }}"
+                                                    class="pos-img img-overlay-image" alt="{{$product->product_name}}" id="itemImg">
+                                                @endif
+                                                
                                                     <div class="overlay">
                                                         <div class="text"><i class="fas fa-shopping-cart"></i> Add</i></div>
                                                         </div>
