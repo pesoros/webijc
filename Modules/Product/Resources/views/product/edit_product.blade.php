@@ -231,7 +231,7 @@
                                 </div>
 
                                 <div class="col-xl-12">
-                                   <div class="primary_input mb-40">
+                                   <div class="primary_input mb-40" style="display: none">
                                       <label class="primary_input_label" for=""> {{__("common.Description")}} </label>
                                       <textarea class="summernote" name="product_description">{{ $product->description }}</textarea>
                                    </div>

@@ -1,4 +1,11 @@
 @extends('backEnd.master')
+@push('styles')
+    <style>
+        .prodlist thead th {
+            padding-left: 27px !important;
+        }
+    </style>
+@endpush
 @section('mainContent')
     <div id="add_product">
         <section class="admin-visitor-area up_st_admin_visitor">
@@ -68,7 +75,7 @@
                                             <span class="text-danger">{{$errors->first('unit_type_id')}}</span>
                                         </div>
                                     </div>
-                                    <div class="col-lg-4" id="barcode_type_div">
+                                    <div class="col-lg-4" id="barcode_type_div" style="display: none">
                                         <div class="primary_input mb-15">
                                             <label class="primary_input_label" for="">{{__('product.Barcode Type')}}</label>
                                             <select name="barcode_type" id="unit_type_id" class="primary_select mb-15">
@@ -250,7 +257,7 @@
                                             </div>
                                         </div>
                                     </div>
-                                    <div class="col-lg-4" id="other_currency_price">
+                                    <div class="col-lg-4" id="other_currency_price" style="display: none">
                                         <div class="primary_input mb-15">
                                             <label class="primary_input_label" for="">{{__("common.Price of Other Currency")}}  </label>
                                             <div class="">
@@ -277,14 +284,27 @@
                                     </div>
 
                                     <div class="col-xl-12">
-                                        <div class="primary_input mb-40">
+                                        <div class="primary_input mb-40" style="display: none">
                                             <label class="primary_input_label" for=""> {{__("common.Description")}} </label>
                                             <textarea class="summernote" name="product_description"></textarea>
                                         </div>
                                     </div>
                                 </div>
                                 <div class="row form">
-
+                                    <table class="table prodlist">
+                                        <thead>
+                                        <tr>
+                                            <th style="width: 210px;" scope="col">{{__('sale.SKU')}}</th>
+                                            <th style="width: 210px;" scope="col">{{__('sale.QTY')}}</th>
+                                            <th style="width: 145px;" scope="col">{{__('sale.Price')}}</th>
+                                            <th style="width: 40px;" scope="col">{{__('sale.Tax')}} (%)</th>
+                                        </tr>
+                                        </thead>
+                                        <tbody id="product_details">
+        
+        
+                                        </tbody>
+                                    </table>
                                 </div>
                                 <div class="row">
                                     <div class="col-lg-4 choose_variant" style="display: none;">
@@ -807,7 +827,7 @@
             $(".product_type").unbind().change(function () {
                 let type = $(this).val();
                 $("#product_image_div").show();
-                $("#barcode_type_div").show();
+                $("#barcode_type_div").hide();
                 $('#hourly_rate_div').hide();
                 $('#hourly_rate').attr('required', false);
                 $('#selling_price').attr('required', true);
@@ -839,7 +859,7 @@
                     $('#purchase_price_div').hide();
                     $('#selling_price_div').hide();
                     $('#min_selling_price_div').hide();
-                    $("#other_currency_price").show();
+                    $("#other_currency_price").hide();
                 }
                 else if (type === "Combo") {
                     $(".choose_variant").hide();
@@ -928,7 +948,7 @@
                     $('#selling_price').removeAttr('readonly');
                     $("#combo_sell_Price_div").hide();
                     $("#combo_sell_Price_div").attr('disabled', true);
-                    $("#other_currency_price").show();
+                    $("#other_currency_price").hide();
                 }
             });
 

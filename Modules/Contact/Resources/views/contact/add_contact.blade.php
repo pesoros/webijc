@@ -219,7 +219,7 @@
                                         </div>
                                     </div>
 
-                                    <div class="col-xl-12">
+                                    <div class="col-xl-12" style="display: none">
                                         <div class="primary_input mb-40">
                                             <label class="primary_input_label" for=""> {{__('common.Note')}} </label>
                                             <textarea class="summernote" name="note"></textarea>
