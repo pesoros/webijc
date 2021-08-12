@@ -31,7 +31,7 @@
                                                 <option value="Single">{{__('product.Single')}}</option>
                                                 <option value="Variable">{{__('product.Variant')}}</option>
                                                 <option value="Combo">{{__('product.Combo')}}</option>
-                                                <option value="Service">{{__('product.Service')}}</option>
+                                                {{-- <option value="Service">{{__('product.Service')}}</option> --}}
                                             </select>
                                             <span id="product_type_error_container" ></span>
                                         </div>
@@ -162,7 +162,7 @@
                                     </div>
 
                                     @if ($lazada)
-                                        <div class="col-lg-8" id="select_product">
+                                        <div class="col-lg-4" id="select_product">
                                             <div class="primary_input mb-15">
                                                 <label class="primary_input_label" for="selected_product_id">{{__('product.Select Product')}}</label>
                                                 <select class="primary_select mb-15" id="selected_product_id" name="selected_product_id[]" multiple data-parsley-errors-container="#selected_product_id_error_container">
@@ -182,7 +182,7 @@
                                             </div>
                                         </div>
                                     @else
-                                        <div class="col-lg-12" id="select_product">
+                                        <div class="col-lg-4" id="select_product">
                                             <div class="primary_input mb-15">
                                                 <label class="primary_input_label" for="selected_product_id">{{__('product.Select Product')}}</label>
                                                 <select class="primary_select mb-15" id="selected_product_id" name="selected_product_id[]" multiple data-parsley-errors-container="#selected_product_id_error_container">
@@ -193,7 +193,7 @@
                                                 <span id="selected_product_id_error_container" ></span>
                                             </div>
                                         </div>
-                                        <input type="text" name="sku_lazada" id="sku_lazada" value="-" class="primary_input_field" style="visibility: hidden">
+                                        <input type="text" name="sku_lazada" id="sku_lazada" value="-" class="primary_input_field" style="display: none">
                                     @endif                                    
 
                                     <div class="col-lg-4" id="alert_quantity_div">
@@ -283,7 +283,7 @@
                                         </div>
                                     </div>
 
-                                    <div class="col-xl-12">
+                                    <div class="col-xl-12" style="display: none">
                                         <div class="primary_input mb-40" style="display: none">
                                             <label class="primary_input_label" for=""> {{__("common.Description")}} </label>
                                             <textarea class="summernote" name="product_description"></textarea>
@@ -751,6 +751,7 @@
             $("#select_product").hide();
             $("#sku_lazada_div").hide();
             $("#combo_sell_Price_div").hide();
+            $(".prodlist").hide();
             $("#combo_selling_price").attr('disabled', true);
             $("#select_product").attr('disabled', true);
             $('.summernote').summernote({
@@ -860,6 +861,7 @@
                     $('#selling_price_div').hide();
                     $('#min_selling_price_div').hide();
                     $("#other_currency_price").hide();
+                    $(".prodlist").hide();
                 }
                 else if (type === "Combo") {
                     $(".choose_variant").hide();
@@ -892,6 +894,7 @@
                     $("#stock_quantity").attr('disabled', true);
                     $("#combo_selling_price").removeAttr("disabled");
                     $("#alert_quantity").attr('disabled', true);
+                    $(".prodlist").show();
                 } else if(type === "Service"){
                     $(".choose_variant").hide();
                     $('#hourly_rate').attr('required', true);
@@ -921,6 +924,7 @@
                     $("#product_image_div").hide();
                     $("#barcode_type_div").hide();
                     $("#barcode_type_div").hide();
+                    $(".prodlist").hide();
                 } else {
                     $("#showroom_div").show();
                     $(".choose_variant").hide();
@@ -949,6 +953,7 @@
                     $("#combo_sell_Price_div").hide();
                     $("#combo_sell_Price_div").attr('disabled', true);
                     $("#other_currency_price").hide();
+                    $(".prodlist").hide();
                 }
             });
 

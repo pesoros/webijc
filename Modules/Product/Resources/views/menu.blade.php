@@ -25,9 +25,9 @@
                     <a href="{{route('add_product.create')}}" class="{{request()->is('product/add_product/create') ? 'active' : ''}}"> {{__('common.Product List')}} </a>
                 </li>
 
-                <li>
+                {{-- <li>
                     <a href="{{route('add_product.service')}}" class="{{request()->is('product/add_product/service') ? 'active' : ''}}"> {{__('product.Service')}} </a>
-                </li>
+                </li> --}}
                 @endif
                 @if(permissionCheck('add_product.index'))
                 <li>

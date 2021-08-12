@@ -139,7 +139,7 @@
                                     </div>
                                 </div>
 
-                                <div class="col-lg-4 col-md-4 col-sm-12">
+                                <div class="col-lg-4 col-md-4 col-sm-12" style="display: none;">
                                     <div class="primary_input mb-15">
                                         <label class="primary_input_label" for="">{{__('sale.Select Service')}}
                                             </label>
@@ -366,7 +366,7 @@
                                 </div>
                             </div>
                             <input type="hidden" value="0" class="preview_status" name="preview_status">
-                            <div class="row">
+                            <div class="row" style="display: none">
                                 <div class="col-xl-12">
                                     <div class="primary_input">
                                         <label class="primary_input_label" for="">{{__("sale.Order Note")}} </label>

@@ -262,7 +262,7 @@
                                     </div>
                             </div>
                                 <input type="hidden" id="preview_status" name="preview_status" value="0">
-                                <div class="row">
+                                <div class="row" style="display: none">
                                     <div class="col-xl-12">
                                         <div class="primary_input">
                                             <label class="primary_input_label"

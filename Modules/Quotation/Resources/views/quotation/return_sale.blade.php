@@ -135,7 +135,7 @@
                                             @endforeach
                                         </table>
 
-                                    <div class="row pb-30">
+                                    <div class="row pb-30" style="display: none">
                                         <div class="col-xl-6">
                                             <div class="primary_input">
                                                 <label class="primary_input_label"

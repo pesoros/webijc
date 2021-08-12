@@ -425,7 +425,7 @@
                                 </div>
                             </div>
                             <div class="row">
-                                <div class="col-xl-12">
+                                <div class="col-xl-12" style="display: none">
                                     <div class="primary_input">
                                         <label class="primary_input_label" for="">{{__("sale.Order Note")}} </label>
                                         <textarea class="summernote3" name="notes">{{$sale->notes}}</textarea>
