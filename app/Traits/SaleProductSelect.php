@@ -210,8 +210,11 @@ trait SaleProductSelect
             }
             $output = '';
             $output .= '<tr> <td>'.$productSku->product->product_name.'</td> ';
-            $output .= '<td class="ntr"><input class="primary_input_field quantity qty_ntr_'. $productSku->id .'" id="'. $productSku->id .'" type="number" value="1" /></td> ';
-            $output .= '<td class="ntr"><input class="primary_input_field product_subtotal price_ntr_'. $productSku->id .'" id="'. $productSku->id .'" type="number" value="' . $productSku->selling_price . '" /></td> ';
+            $output .= '<td class="ntr"><input name="product_quantity[]" class="primary_input_field quantity qty_ntr_'. $productSku->id .'" id="qty-'. $productSku->id .'" type="number" value="1" /></td> ';
+            $output .= '<td class="ntr"><input name="product_price[]" class="primary_input_field product_subtotal price_ntr_'. $productSku->id .'" id="price-'. $productSku->id .'" type="number" value="' . $productSku->selling_price . '" /></td> ';
+            $output .= '<td><input type="hidden" name="product_id[]" value="' . $productSku->id . '" class="primary_input_field sku_id' . $productSku->id . '"></td>';
+            $output .= '<td><input type="hidden" name="product_tax[]"  value="0" class="primary_input_field tax tax_sku' . $productSku->id . '"></td>';
+            $output .= '<td><input type="hidden" name="product_discount[]" value="0" class="primary_input_field discount discount_sku' . $productSku->id . '"></td>';
             $output .= '</tr>';
             // $output .= '<tr>
             //             <input class="product_min_price_sku'.$productSku->id.'" type="hidden" value="' . $productSku->min_selling_price . '" >
