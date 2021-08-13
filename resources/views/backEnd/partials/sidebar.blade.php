@@ -28,7 +28,7 @@
             </li>
         @endif
 
-        @include('project::menu')
+        {{-- @include('project::menu') --}}
         @include('sale::menu')
         @include('contact::menu')
         @include('product::menu')
