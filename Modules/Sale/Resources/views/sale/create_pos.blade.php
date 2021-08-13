@@ -260,7 +260,7 @@
                                             </div>
                                             <div class="nametag">
                                                 <p>{{$product->product_name}}</p>
-                                                <p>{{explode('-', $product->product_sku)[0]}}</p>
+                                                <p>{{$product->product_sku}}</p>
                                             </div>
                                             <div style="float: none; clear: both;"></div>
                                         </li>
