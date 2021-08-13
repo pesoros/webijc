@@ -48,7 +48,10 @@
         }
 
         .nametag p {
-            color: black
+            color: black;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
         }
         .img-overlay {
             position: relative;
