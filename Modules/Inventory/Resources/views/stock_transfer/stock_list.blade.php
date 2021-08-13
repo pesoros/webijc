@@ -58,12 +58,12 @@
                             </div>
                         </div>
                         <div class="col-lg-3">
-                            <label class="primary_input_label" for="">{{ __('purchase.Product') }}</label>
+                            <label class="primary_input_label" for="">{{ __('purchase.Product') }} SKU</label>
                             <div class="primary_input mb-15">
                                 <select class="primary_select product_sku_id" name="product_sku_id">
                                     <option value="">{{__('purchase.Select Product')}}</option>
                                     @foreach($products as $key => $productSku)
-                                        <option value="{{ $productSku->id }}" {{isset($product_sku_id) && $product_sku_id == $productSku->id ? 'selected' : '' }}>{{ @$productSku->product->product_name }} @if (variantNameFromSku($productSku)) - ({{ variantNameFromSku($productSku) }}) @endif</option>
+                                        <option value="{{ $productSku->id }}" {{isset($product_sku_id) && $product_sku_id == $productSku->id ? 'selected' : '' }}>{{ @$productSku->sku  }} @if (variantNameFromSku($productSku)) - ({{ variantNameFromSku($productSku) }}) @endif</option>
                                     @endforeach
                                 </select>
                             </div>
