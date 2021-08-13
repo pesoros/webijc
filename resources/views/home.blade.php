@@ -445,7 +445,7 @@
                 </div>
             @endif
 
-            <div class="col-lg-{{ permissionCheck('to_do_list') ? 7 : 12 }}">
+            {{-- <div class="col-lg-{{ permissionCheck('to_do_list') ? 7 : 12 }}">
                 <div class="row">
                     <div class="col-md-12 col-lg-12 col-sm-12">
                         <div class="main-title">
@@ -553,7 +553,7 @@
                     </div>
 
                 </div>
-            @endif
+            @endif --}}
 
             <div class="modal fade admin-query" id="add_to_do">
                 <div class="modal-dialog modal-dialog-centered">
