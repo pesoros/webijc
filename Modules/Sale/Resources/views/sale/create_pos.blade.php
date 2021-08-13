@@ -25,7 +25,7 @@
            text-transform: capitalize;
            font-weight: 600;
            border-radius: 8%;
-           height: 205px;
+           height: 225px;
        }
 
        .main-container {
@@ -260,6 +260,7 @@
                                             </div>
                                             <div class="nametag">
                                                 <p>{{$product->product_name}}</p>
+                                                <p>{{explode('-', $product->product_sku)[0]}}</p>
                                             </div>
                                             <div style="float: none; clear: both;"></div>
                                         </li>
