@@ -42,6 +42,12 @@ class SaleRepository implements SaleRepositoryInterface
         }
     }
 
+    public function findRef($ref)
+    {
+        $order = Sale::where('ref_no', $ref)->first();
+        return $order;
+    }
+
     public function approvedSales()
     {
         if ((session()->get('showroom_id') == 1)) {
@@ -66,13 +72,13 @@ class SaleRepository implements SaleRepositoryInterface
         } else {
             $w = ShowRoom::find($type[1]);
         }
-        if (!empty($data['serial_no'])) {
-            foreach ($data['serial_no'] as $key => $serial) {
-                $part_number = PartNumber::find($data['serial_no'][$key]);
-                $part_number->is_sold = 1;
-                $part_number->save();
-            }
-        }
+        // if (!empty($data['serial_no'])) {
+        //     foreach ($data['serial_no'] as $key => $serial) {
+        //         $part_number = PartNumber::find($data['serial_no'][$key]);
+        //         $part_number->is_sold = 1;
+        //         $part_number->save();
+        //     }
+        // }
 
         $user_type = explode('-', $data['customer_id']);
 
@@ -762,21 +768,21 @@ class SaleRepository implements SaleRepositoryInterface
                 }
                 $products->save();
             }
-            if ($products->product_type != 'Service') {
+            // if ($products->product_type != 'Service') {
                 $productHistory = new ProductHistory([
                     'type' => 'sales_return',
                     'date' => Carbon::now()->toDateString(),
                     'in_out' => $product['quantity'],
-                    'product_sku_id' => $products->product_sku_id,
+                    'product_sku_id' => $product['item_id'],
                     'itemable_id' => $w->id,
                     'itemable_type' => get_class($w),
                 ]);
                 $sale->houses()->save($productHistory);
-            }
+            // }
 
         }
         if (app('business_settings')->where('type', 'sale_return_approval')->first()->status == 1) {
-            $this->returnApprove($sale->id);
+            return $this->returnApprove($sale->id);
         }
     }
 
@@ -1030,27 +1036,59 @@ class SaleRepository implements SaleRepositoryInterface
         $total_amount = 0;
         $purchase_amount = 0;
         foreach ($sale->items as $product) {
-            $productSku = ProductSku::find($product->product_sku_id);
+            $itemExpl = explode("\\", $product->productable_type);
+            $itemExpl = $itemExpl[3];
+            if ($itemExpl != "ComboProduct") {
 
-            if($productSku->product->product_type != 'Service' )
-            {
-                $history = ProductHistory::where('type', 'sales_return')->where('houseable_id', $product->itemable_id)->where('houseable_type', $product->itemable_type)
-                    ->where('product_sku_id', $product->product_sku_id)->first();
-                if ($history) {
-                    $history->status = 1;
-                    $history->save();
-                    $stocks = StockReport::where('houseable_type', $history->itemable_type)->where('houseable_id', $history->itemable_id)->where('product_sku_id', $history->product_sku_id)->first();
-                    $stocks->stock += $history->in_out;
-                    $stocks->save();
+                $productSku = ProductSku::find($product->product_sku_id);
+
+                if($productSku->product->product_type != 'Service' )
+                {
+                    $history = ProductHistory::where('type', 'sales_return')->where('houseable_id', $product->itemable_id)->where('houseable_type', $product->itemable_type)
+                        ->where('product_sku_id', $product->product_sku_id)->first();
+                    if ($history) {
+                        $history->status = 1;
+                        $history->save();
+                        $stocks = StockReport::where('houseable_type', $history->itemable_type)->where('houseable_id', $history->itemable_id)->where('product_sku_id', $history->product_sku_id)->first();
+                        $stocks->stock += $history->in_out;
+                        $stocks->save();
+                    }
                 }
-            }
 
-            if ($product->productable_type == get_class(new ProductSku)) {
-                $purchase_amount += $product->productable->purchase_price * $product->return_quantity;
+                if ($product->productable_type == get_class(new ProductSku)) {
+                    $purchase_amount += $product->productable->purchase_price * $product->return_quantity;
+                } else {
+                    $purchase_amount += $product->productable->total_purchase_price * $product->return_quantity;
+                }
             } else {
-                $purchase_amount += $product->productable->total_purchase_price * $product->return_quantity;
+                // $c_product_detail->product_sku_id
+                $combo = ComboProduct::find($product->product_sku_id);
+                foreach ($combo->combo_products as $c_product_detail) {
+                    $productSku = ProductSku::find($c_product_detail->product_sku_id);
+
+                    if($productSku->product->product_type != 'Service' )
+                    {
+                        $history = ProductHistory::where('type', 'sales_return')->where('houseable_id', $c_product_detail->itemable_id)->where('houseable_type', $c_product_detail->itemable_type)
+                            ->where('product_sku_id', $c_product_detail->product_sku_id)->first();
+                        if ($history) {
+                            $history->status = 1;
+                            $history->save();
+                            $stocks = StockReport::where('houseable_type', $history->itemable_type)->where('houseable_id', $history->itemable_id)->where('product_sku_id', $history->product_sku_id)->first();
+                            $stocks->stock += $history->in_out;
+                            $stocks->save();
+                        }
+                    }
+
+                    if ($product->productable_type == get_class(new ProductSku)) {
+                        $purchase_amount += $product->productable->purchase_price * $product->return_quantity;
+                    } else {
+                        $purchase_amount += $product->productable->total_purchase_price * $product->return_quantity;
+                    }
+                }
+                // $itemExpl = 'noncomb';
             }
         }
+        // return $itemExpl;
         if ($sale->items->sum('return_amount') > 0) {
             if ($sale->customer_id) {
                 $debit_account_id[] = $this->GetAccountId($sale->customer_id, get_class(new ContactModel));
@@ -1062,45 +1100,47 @@ class SaleRepository implements SaleRepositoryInterface
             $narration[] = 'Sales Return Supplier Account';
             $total_amount += $sale->items->sum('return_amount');
         }
-        $credit_account = $this->defaultSalesReturnAccount(); // Sales Return Account
-        $journal = new JournalRepository();
+        if (!empty($debit_account_id)) {
+            $credit_account = $this->defaultSalesReturnAccount(); // Sales Return Account
+            $journal = new JournalRepository();
 
-        $journal->create([
-            'voucher_type' => 'JV',
-            'amount' => $total_amount,
-            'date' => Carbon::now()->format('Y-m-d'),
-            'account_type' => 'debit',
-            'payment_type' => 'journal_voucher',
-            'account_id' => $credit_account->id,  //here will be changed
-            'main_amount' => $total_amount,  //debit side and credit side shoud be same
-            'narration' => 'Sales Return Account',  //debit side and credit side shoud be same
-            'sub_account_id' => $debit_account_id,   //debit side and credit side shoud be same
-            'sub_amount' => $debit_account_amount,
-            'sub_narration' => $narration,
-            'sale_id' => $sale->id,
-            'sale_class' => Sale::class,
-            'is_approve' => (app('business_settings')->where('type', 'sale_return_voucher_approval')->first()->status == 1) ? 1 : 0,
-        ]);
+            $journal->create([
+                'voucher_type' => 'JV',
+                'amount' => $total_amount,
+                'date' => Carbon::now()->format('Y-m-d'),
+                'account_type' => 'debit',
+                'payment_type' => 'journal_voucher',
+                'account_id' => $credit_account->id,  //here will be changed
+                'main_amount' => $total_amount,  //debit side and credit side shoud be same
+                'narration' => 'Sales Return Account',  //debit side and credit side shoud be same
+                'sub_account_id' => $debit_account_id,   //debit side and credit side shoud be same
+                'sub_amount' => $debit_account_amount,
+                'sub_narration' => $narration,
+                'sale_id' => $sale->id,
+                'sale_class' => Sale::class,
+                'is_approve' => (app('business_settings')->where('type', 'sale_return_voucher_approval')->first()->status == 1) ? 1 : 0,
+            ]);
 
-        $purchase_sub_account_id[] = $this->defaultCostofGoodsSoldAccount();
-        $purchase_sub_amount[] = $purchase_amount;
-        $purchase_sub_narration[] = 'Cost of goods sold return to customer/Retailer';
-        $journal->create([
-            'voucher_type' => 'JV',
-            'amount' => $purchase_amount,
-            'date' => Carbon::now()->format('Y-m-d'),
-            'account_type' => 'debit',
-            'payment_type' => 'journal_voucher',
-            'account_id' => $this->defaultPurchaseAccount(), //Purchase & Inventory Account
-            'main_amount' => $purchase_amount,
-            'narration' => 'Inventory deduct for sales return purpose',
-            'sub_account_id' => $purchase_sub_account_id,
-            'sub_amount' => $purchase_sub_amount,
-            'sub_narration' => $purchase_sub_narration,
-            'sale_id' => $sale->id,
-            'sale_class' => get_class(new Sale),
-            'is_approve' => (app('business_settings')->where('type', 'sale_return_voucher_approval')->first()->status == 1) ? 1 : 0,
-        ]);
+            $purchase_sub_account_id[] = $this->defaultCostofGoodsSoldAccount();
+            $purchase_sub_amount[] = $purchase_amount;
+            $purchase_sub_narration[] = 'Cost of goods sold return to customer/Retailer';
+            $journal->create([
+                'voucher_type' => 'JV',
+                'amount' => $purchase_amount,
+                'date' => Carbon::now()->format('Y-m-d'),
+                'account_type' => 'debit',
+                'payment_type' => 'journal_voucher',
+                'account_id' => $this->defaultPurchaseAccount(), //Purchase & Inventory Account
+                'main_amount' => $purchase_amount,
+                'narration' => 'Inventory deduct for sales return purpose',
+                'sub_account_id' => $purchase_sub_account_id,
+                'sub_amount' => $purchase_sub_amount,
+                'sub_narration' => $purchase_sub_narration,
+                'sale_id' => $sale->id,
+                'sale_class' => get_class(new Sale),
+                'is_approve' => (app('business_settings')->where('type', 'sale_return_voucher_approval')->first()->status == 1) ? 1 : 0,
+            ]);
+        }
 
         $sale->return_status = 1;
         $sale->save();

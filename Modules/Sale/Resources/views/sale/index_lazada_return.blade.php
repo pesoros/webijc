@@ -144,7 +144,7 @@
 @endsection
 @push("scripts")
     <script type="text/javascript">
-        let statusState = ''
+        let statusState = 'canceled'
         function printDiv(divName) {
             var printContents = document.getElementById(divName).innerHTML;
             var originalContents = document.body.innerHTML;
@@ -191,12 +191,19 @@
                 $('#getDetails').html(data);
                 $('#sale_info_modal').modal('show');
                 $('select').niceSelect();
+                if ( statusState != 'canceled' ) {
+                    $( ".order-action-spot" ).hide();
+                } else {
+                    $( ".order-action-spot" ).show();
+                }
             });
         }
 
         function getLazadaList(status = null) {
             if (status) {
                 statusState = status;
+            } else {
+                status = statusState;
             }
             $('.tab-content').empty();
             $('.tab-content').append('<img src="{{ asset('public/backEnd/img/spinner.gif') }}" style="margin-top: 90px;"/>');
@@ -217,6 +224,49 @@
                     $('.tab-content').append(result);
                 }
             })
+        }
+
+        function orderMovement(orderId, orderItemId, shippingType, token) {
+            var dataId = $("input[name='combo_id[]']").map(function(){return $(this).val();}).get();
+            var dataPrice= $("input[name='combo_price[]']").map(function(){return $(this).val();}).get();
+            var dataQty= $("input[name='combo_quantity[]']").map(function(){return $(this).val();}).get();
+            var dataTax= $("input[name='combo_tax[]']").map(function(){return $(this).val();}).get();
+            var dataDiscount= $("input[name='combo_discount[]']").map(function(){return $(this).val();}).get();
+            var data_total_amount = 0;
+            for (let index = 0; index < dataPrice.length; index++) {
+                data_total_amount = data_total_amount + parseInt(dataPrice[index]);
+            }
+
+            console.log(data_total_amount)
+
+            let reqUrl = '';
+            if (statusState == 'canceled') {
+                reqUrl = '{{route('setToCancel')}}';
+                dataToSend = {
+                    _token: "{{csrf_token()}}",
+                    date: "{{date('m/d/Y')}}",
+                    customer_id: "customer-2",
+                    warehouse_id: "{{ session()->get('showroom_id') }}-showroom",
+                    ref_no: "Super Admin",
+                    items: dataId,
+                    quantity: dataQty,
+                    product_subtotal: dataPrice,
+                    return_notes: null,
+                    notes: null,
+                    orderId: orderId
+                }
+            } 
+
+            $.ajax({
+                method: 'POST',
+                url: reqUrl,
+                data: dataToSend,
+                success: function (result) {
+                    console.log(result)
+                    location.reload();
+                }
+            })
+
         }
     </script>
 @endpush

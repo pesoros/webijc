@@ -218,6 +218,8 @@ class SaleController extends Controller
             return back();
         }
 
+        // return $request->all();
+
     }
 
     public function quotation_to_store(SaleQuotationRequest $request)
@@ -715,6 +717,7 @@ class SaleController extends Controller
 
     public function returnItem(Request $request, $id)
     {
+        // return $request->all();
         DB::beginTransaction();
         try {
             $item = [];
@@ -1206,11 +1209,18 @@ class SaleController extends Controller
 
     public function get_orders($status = '', $saleDate = '')
     {
-        if ($saleDate != '') {
+        if ($saleDate != '') {            
             $theDate = Carbon::createFromFormat('Y-m-d', $saleDate);
-            $daysToAdd = 1;
-            $datestart = $theDate->format('Y-m-d').'T00:00:00+08:00';
-            $dateend = $theDate->addDays($daysToAdd)->format('Y-m-d').'T01:00:00+08:00';
+            if ($status == 'pending') {
+                $daysToMin = 2;
+                $datestart = Carbon::now()->subMonth()->format('Y-m-d').'T00:00:00+08:00';
+                $daysToAdd = 1;
+                $dateend = Carbon::now()->addDays($daysToAdd)->format('Y-m-d').'T01:00:00+08:00';
+            } else {
+                $datestart = $theDate->format('Y-m-d').'T00:00:00+08:00';
+                $daysToAdd = 1;
+                $dateend = $theDate->addDays($daysToAdd)->format('Y-m-d').'T01:00:00+08:00';
+            }
         } else {
             $theDate = Carbon::createFromFormat('Y-m-d', date('Y-m-d'));
             $daysToAdd = 1;
@@ -1323,34 +1333,92 @@ class SaleController extends Controller
         return;
     }
 
-    public function setToPacked(Request $request)
+    public function setToPacked(SaleRequest $request) 
     {
-        $querystring = $request->all();
-        if ( isset($querystring['orderId']) == false || isset($querystring['token']) == false || isset($querystring['shippingType']) == false ) {
-            echo 'query string required';
-            return;
-        } 
+        // $saveInStore = $this->store($request->except("_token")); 
 
-        $shippingType = strtolower($querystring['shippingType']);
-        $arr = [];
-        $method = 'POST';
-        $apiName = '/order/pack';
+        if ($request->combo_product_id == null && $request->product_id == null && !$request->has('clone')) {
+            Toastr::error("Please Add product first.", 'error!');
+            return back();
+        }
+        DB::beginTransaction();
+        try {
+            $sale = $this->saleRepository->create($request->except("_token","token","shippingType","orderItemId"));
+            // return $sale;
 
-        $c = new LazopClient($this->apiGateway, $this->apiKey, $this->apiSecret);
-        $request = new LazopRequest($apiName,$method);
-        // $request->addApiParam('shipping_provider','Aramax');
-        $request->addApiParam('delivery_type', 'dropship');
-        $request->addApiParam('order_item_ids', '['.$querystring['orderId'].']');
-        // $request->addApiParam('order_item_ids', '[123123]');
-        $executelazop = json_decode($c->execute($request, $querystring['token']), true);
+            if (!is_numeric($sale)) {
+                $created_by = Auth::user()->name;
+                $content = 'A Sale has been created by ' . $created_by . ' which Invoice No. is <a href="' . route("sale.show", $sale->id) . '">' . $sale->invoice_no . '</a> for this you have to pay total of ' . $sale->payable_amount . '';
+                $message = 'A Sale has been created by ' . $created_by . ', Invoice No: ' . $sale->invoice_no . ', Amount: ' . single_price($sale->payable_amount) . '';
+                if ($sale->customer_id != null) {
+                    $number = $sale->customer->mobile;
+                    $this->sendNotification($sale, $sale->customer->email, 'Sale Create Reminder', $content, $number, $message,null,null,route('sale.show',$sale->id));
+                } else {
+                    $number = $sale->agentuser->phone;
+                    $this->sendNotification($sale, $sale->agentuser->email, 'Sale Create Reminder', $content, $number, $message,null,null,route('sale.show',$sale->id));
+                }
+            }
 
-        return $executelazop;
+
+            DB::commit();
+
+            if (is_numeric($sale)) {
+                Toastr::error(trans('sale.Your stock is out'), 'error!');
+                return 'stock_out';
+            } else {
+                if ($request->payment_method[0] != "due-00" && !empty($request->amount[0])) {
+                    $this->savePaymentFirst($request, $sale->id);
+                }
+                if ($request->send_mail == 1)
+                    $this->send_mail_quotation($sale->id);
+                if ($request->preview_status == 1) {
+                    Session::put('previewSale', 1);
+                    return 'success';
+                } else {
+                    if (app('business_settings')->where('type', 'sale_approval')->first()->status == 1) {
+                        $this->statusChange($sale->id);
+                    }else {
+                        Toastr::success(__('sale.Sale Added Successfully'));
+                    }
+                    \LogActivity::successLog('Sale Added Successfully.');
+                    return 'success';
+                }
+            }
+        } catch (\Exception $e) {
+            \LogActivity::errorLog($e->getMessage());
+            DB::rollBack();
+            Toastr::error(__('common.Something Went Wrong'));
+            return $e->getMessage();
+        }
+
+        // $querystring = $request->all();
+        // if ( isset($querystring['orderItemId']) == false || isset($querystring['token']) == false || isset($querystring['shippingType']) == false ) {
+        //     echo 'query string required';
+        //     return;
+        // } 
+
+        // $shippingType = strtolower($querystring['shippingType']);
+        // $arr = [];
+        // $method = 'POST';
+        // $apiName = '/order/pack';
+
+        // $c = new LazopClient($this->apiGateway, $this->apiKey, $this->apiSecret);
+        // $request = new LazopRequest($apiName,$method);
+        // // $request->addApiParam('shipping_provider','Aramax');
+        // $request->addApiParam('delivery_type', 'dropship');
+        // $request->addApiParam('order_item_ids', '['.$querystring['orderItemId'].']');
+        // // $request->addApiParam('order_item_ids', '[123123]');
+        // $executelazop = json_decode($c->execute($request, $querystring['token']), true);
+
+        // return $executelazop;
+
+        return $saveInStore;
     }
 
     public function setToRts(Request $request)
     {
         $querystring = $request->all();
-        if ( isset($querystring['orderId']) == false || isset($querystring['token']) == false ) {
+        if ( isset($querystring['orderItemId']) == false || isset($querystring['token']) == false ) {
             echo 'query string required';
             return;
         } 
@@ -1362,7 +1430,7 @@ class SaleController extends Controller
         $c = new LazopClient($this->apiGateway, $this->apiKey, $this->apiSecret);
         $request = new LazopRequest($apiName,$method);
         $request->addApiParam('delivery_type', 'dropship');
-        $request->addApiParam('order_item_ids', '['.$querystring['orderId'].']');
+        $request->addApiParam('order_item_ids', '['.$querystring['orderItemId'].']');
         // $request->addApiParam('shipment_provider','Aramax');
         // $request->addApiParam('tracking_number','12345678');
         $executelazop = json_decode($c->execute($request, $querystring['token']), true);
@@ -1370,10 +1438,52 @@ class SaleController extends Controller
         return $executelazop;
     }
 
+    public function setToCancel(Request $request) 
+    {
+        // return $request;
+        $orderNumberId = $this->saleRepository->findRef($request->orderId);
+        if (!$orderNumberId) {
+            \LogActivity::successLog('order not found id:'.$request->orderId);
+            Toastr::error('order not found id:'.$request->orderId);
+            DB::commit();
+            return 'order not found id:'.$request->orderId;
+        }
+        // return $request->all();
+        DB::beginTransaction();
+        try {
+            $item = [];
+            if ($request->items) {
+                for ($i = 0; $i < count($request->items); $i++) {
+                    $item[$i] = [
+                        'item_id' => $request->items[$i],
+                        'quantity' => $request->quantity[$i],
+                    ];
+                }
+            }
+            if (array_sum($request->quantity) > 0) {
+                $this->saleRepository->itemUpdate($request->except("_token"), $item, $orderNumberId['id']);
+                \LogActivity::successLog('Item Returned Successfully');
+                Toastr::success(__('sale.Item Returned Successfully'));
+                DB::commit();
+                return 'success';
+            } else {
+                DB::rollBack();
+                Toastr::error(__('sale.Please Select Quantity to Return'));
+                return 'Please Select Quantity to Return';
+            }
+
+        } catch (\Exception $e) {
+            \LogActivity::errorLog($e->getMessage());
+            DB::rollBack();
+            Toastr::error(__('common.Something Went Wrong'));
+            return $e->getMessage();
+        }
+    }
+
     public function getDocument(Request $request)
     {
         $querystring = $request->all();
-        if ( isset($querystring['orderId']) == false || isset($querystring['token']) == false || isset($querystring['doctype']) == false) {
+        if ( isset($querystring['orderItemId']) == false || isset($querystring['token']) == false || isset($querystring['doctype']) == false) {
             echo 'query string required!';
             return;
         } 
@@ -1384,13 +1494,83 @@ class SaleController extends Controller
 
         $c = new LazopClient($this->apiGateway, $this->apiKey, $this->apiSecret);
         $request = new LazopRequest($apiName,$method);
-        $request->addApiParam('order_item_ids', '['.$querystring['orderId'].']');
+        $request->addApiParam('order_item_ids', '['.$querystring['orderItemId'].']');
         $request->addApiParam('doc_type', $querystring['doctype']);
         $executelazop = json_decode($c->execute($request, $querystring['token']), true);
 
         $fileBase = base64_decode($executelazop['data']['document']['file']);
 
         return $executelazop;
+    }
+
+    public function get_transaction(Request $request)
+    {
+        $querystring = $request->all();
+        if (isset($querystring['date'])) {
+            $date = $querystring['date'];
+        } else {
+            $date = "2021-08-14";
+        }
+
+        $tokenwehave = $this->accessToken;
+        $arr = [];
+        $method = 'GET';
+        $apiName = '/finance/transaction/detail/get';
+
+        foreach ($tokenwehave as $key => $value) {
+            $c = new LazopClient($this->apiGateway, $this->apiKey, $this->apiSecret);
+            $request = new LazopRequest($apiName,$method);
+            $request->addApiParam('trans_type','-1');
+            $request->addApiParam('start_time',$date);
+            $request->addApiParam('end_time',$date);
+            $request->addApiParam('limit','500');
+            $request->addApiParam('offset','0');
+            $executelazop = json_decode($c->execute($request, $value['token']), true);
+
+            if (isset($executelazop['data'])) {
+
+                $data = $executelazop['data'];
+            
+                for ($i=0; $i < count($data); $i++) { 
+                    // if ($data[$i]['fee_name'] != "Payment Fee") {
+                        $data[$i]['nama_akun'] = $value['akun'];
+                        array_push($arr,$data[$i]);
+                    // }
+                }
+    
+                $res['jumlah_data'] = count($arr);
+                $res['data'] = $arr;
+            } else {
+                $res = $executelazop;
+            }
+        }
+        
+        return $res;
+    }
+
+    public function generate_token(Request $request)
+    {
+        $querystring = $request->all();
+        if (!isset($querystring['oauth'])) {
+            return 'oauth is required';
+        } else {
+            $oauth = $querystring['oauth'];
+        }
+
+        $tokenwehave = $this->accessToken;
+        $arr = [];
+        $method = 'GET';
+        $apiName = '/auth/token/create';
+
+        $c = new LazopClient($this->apiGateway, $this->apiKey, $this->apiSecret);
+        $request = new LazopRequest($apiName,$method);
+        $request->addApiParam('code',$oauth);
+        // $request->addApiParam('uuid','38284839234');
+        $executelazop = json_decode($c->execute($request), true);
+
+        $res = $executelazop;
+        
+        return $res;
     }
 
 }

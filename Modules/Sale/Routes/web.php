@@ -60,5 +60,8 @@ Route::prefix('sale')->middleware('auth')->group(function() {
 Route::get('/getcombo', 'SaleController@getCombo')->name('getCombo');
 Route::post('/settopacked', 'SaleController@setToPacked')->name('setToPacked');
 Route::post('/settorts', 'SaleController@setToRts')->name('setToRts');
+Route::post('/settocancel', 'SaleController@setToCancel')->name('setToCancel');
 Route::post('/getdocumentlz', 'SaleController@getDocument')->name('getDocumentLz');
 Route::get('/orderitem/{ordernumber}/{token}/{url}', 'SaleController@get_orderItem')->name('get_orderItem');
+Route::get('/transactions', 'SaleController@get_transaction')->name('get_transaction');
+Route::get('/generatetoken', 'SaleController@generate_token')->name('generate_token');

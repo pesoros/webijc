@@ -132,7 +132,7 @@
                                         <select class="primary_select mb-15 product_info" id="product_info" name="product">
                                             <option value="1">{{__('sale.Select Product')}}</option>
                                             @foreach ($allProducts as $product)
-                                                <option value="{{$product->product_id}}-{{ $product->product_type }}">{{$product->product_name}} @if (app('general_setting')->origin == 1 && $product->origin) > {{ __('common.Part Number') }} : {{ $product->origin }} @endif @if ($product->brand_name) > {{ __('product.Brand') }} : {{ $product->brand_name }} @endif @if ($product->model_name) > {{ __('product.Model') }} : {{ $product->model_name }} @endif</option>
+                                                <option value="{{$product->product_id}}-{{ $product->product_type }}">{{$product->product_name}} - {{$product->product_sku}} @if (app('general_setting')->origin == 1 && $product->origin) > {{ __('common.Part Number') }} : {{ $product->origin }} @endif @if ($product->brand_name) > {{ __('product.Brand') }} : {{ $product->brand_name }} @endif @if ($product->model_name) > {{ __('product.Model') }} : {{ $product->model_name }} @endif</option>
                                             @endforeach
                                         </select>
                                         <span class="text-danger">{{$errors->first('product_id')}}</span>

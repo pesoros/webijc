@@ -1,5 +1,12 @@
 @extends('backEnd.master')
 @section('mainContent')
+    @php
+        if (Modules\Sale\Entities\Sale::latest()->first()) {
+            $aid = Modules\Sale\Entities\Sale::latest()->first()->id + 1;
+        }else {
+            $aid = 1;
+        }
+    @endphp
     <div class="row justify-content-center">
         <div class="col-10">
             <div class="box_header common_table_header"> 
@@ -161,32 +168,98 @@
             document.body.innerHTML = originalContents;
             setTimeout(function(){ window.location.reload(); }, 15000);
         }
-        function orderMovement(orderId, shippingType, token) {
+        function orderMovement(orderId, orderItemId, shippingType, token) {
+            var dataId = $("input[name='combo_id[]']").map(function(){return $(this).val();}).get();
+            var dataPrice= $("input[name='combo_price[]']").map(function(){return $(this).val();}).get();
+            var dataQty= $("input[name='combo_quantity[]']").map(function(){return $(this).val();}).get();
+            var dataTax= $("input[name='combo_tax[]']").map(function(){return $(this).val();}).get();
+            var dataDiscount= $("input[name='combo_discount[]']").map(function(){return $(this).val();}).get();
+            var data_total_amount = 0;
+            for (let index = 0; index < dataPrice.length; index++) {
+                data_total_amount = data_total_amount + parseInt(dataPrice[index]);
+            }
+
+            console.log(data_total_amount)
+
             let reqUrl = '';
-            if (statusState == 'pending') {
+            if (statusState == 'pending' || statusState == 'unpaid') {
                 reqUrl = '{{route('setToPacked')}}';
+                dataToSend = {
+                    _token: "{{csrf_token()}}",
+                    date: "{{date('m/d/Y')}}",
+                    customer_id: "customer-2",
+                    warehouse_id: "showroom-{{ session()->get('showroom_id') }}",
+                    invoice_no: "{{ \Modules\Setup\Entities\IntroPrefix::find(3)->prefix . '-' . date('y') . date('m').Auth::id().$aid }}",
+                    ref_no: orderId,
+                    product: 1,
+                    shipping_name: null,
+                    total_discount: 0,
+                    discount_type: 1,
+                    sale_url: "{{urlShortener()}}",
+                    payment_method: [
+                        "cash-00"
+                    ],
+                    amount: [
+                        null
+                    ],
+                    bank_name: [
+                        null
+                    ],
+                    branch: [
+                        null
+                    ],
+                    account_no: [
+                        null
+                    ],
+                    account_owner: [
+                        null
+                    ],
+                    combo_product_id: dataId,
+                    combo_product_price: dataPrice,
+                    combo_product_quantity: dataQty,
+                    product_tax: dataTax,
+                    combo_product_discount: dataDiscount,
+                    item_amount: data_total_amount,
+                    total_quantity: 2,
+                    total_tax: "0-0",
+                    total_discount_amount: 0,
+                    shipping_charge: 0,
+                    other_charge: 0,
+                    total_amount: data_total_amount,
+                    preview_status: 0,
+                    notes: null,
+                    send_mail: null,
+                    customer: 3,
+                    type: "customer",
+                    serial_no: [null],
+                    sale_type: 1,
+                    shippingType: shippingType,
+                    orderItemId: orderItemId,
+                    token: token
+                }
             } else if (statusState == 'packed') {
                 reqUrl = '{{route('setToRts')}}';
+                dataToSend = {
+                    _token: "{{csrf_token()}}",
+                    shippingType: shippingType,
+                    orderItemId: orderItemId,
+                    token: token
+                }
             }
 
             $.ajax({
                 method: 'POST',
                 url: reqUrl,
-                data: {
-                    _token: "{{csrf_token()}}",
-                    shippingType: shippingType,
-                    orderId: orderId,
-                    token: token,
-                },
+                data: dataToSend,
                 success: function (result) {
-                    console.log('rsss1', reqUrl);
-                    console.log('rsss2', result);
+                    console.log(result)
+                    location.reload();
                 }
             })
 
         }
 
-        function getDocumentLz(orderId, token) {
+        function getDocumentLz(orderItemId, token) {
             let reqUrl = '{{route('getDocumentLz')}}';
 
             $.ajax({
@@ -194,7 +267,7 @@
                 url: reqUrl,
                 data: {
                     _token: "{{csrf_token()}}",
-                    orderId: orderId,
+                    orderItemId: orderItemId,
                     doctype: 'shippingLabel',
                     token: token,
                 },
@@ -245,7 +318,7 @@
                 $('#getDetails').html(data);
                 $('#sale_info_modal').modal('show');
                 $('select').niceSelect();
-                if ( statusState == 'ready_to_ship' || statusState == 'shipped' || statusState == 'delivered') {
+                if ( statusState == 'unpaid' || statusState == 'ready_to_ship' || statusState == 'shipped' || statusState == 'delivered') {
                     $( ".order-action-spot" ).hide();
                 } else {
                     $( ".order-action-spot" ).show();
@@ -256,6 +329,8 @@
         function getLazadaList(status = null) {
             if (status) {
                 statusState = status;
+            } else {
+                status = statusState;
             }
             $('.tab-content').empty();
             $('.tab-content').prepend('<img src="{{ asset('public/backEnd/img/spinner.gif') }}" style="margin-top: 90px;"/>');
