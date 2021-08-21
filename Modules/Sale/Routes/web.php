@@ -64,4 +64,3 @@ Route::post('/settocancel', 'SaleController@setToCancel')->name('setToCancel');
 Route::post('/getdocumentlz', 'SaleController@getDocument')->name('getDocumentLz');
 Route::get('/orderitem/{ordernumber}/{token}/{url}', 'SaleController@get_orderItem')->name('get_orderItem');
 Route::get('/transactions', 'SaleController@get_transaction')->name('get_transaction');
-Route::get('/generatetoken', 'SaleController@generate_token')->name('generate_token');

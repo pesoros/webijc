@@ -1,0 +1,13 @@
+{
+    "name": "LazadaToken",
+    "alias": "lazadatoken",
+    "description": "",
+    "keywords": [],
+    "order": 0,
+    "providers": [
+        "Modules\\LazadaToken\\Providers\\LazadaTokenServiceProvider"
+    ],
+    "aliases": {},
+    "files": [],
+    "requires": []
+}

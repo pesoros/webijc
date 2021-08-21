@@ -24,6 +24,7 @@ use Modules\Setup\Repositories\IntroPrefixRepositoryInterface;
 use Modules\Setup\Repositories\TaxRepositoryInterface;
 use Modules\Product\Repositories\VariantRepositoryInterface;
 use Modules\Setting\Model\EmailTemplate;
+use Modules\LazadaToken\Entities\lztoken;
 use App\Lazada_set;
 use Session;
 use PDF;
@@ -70,14 +71,7 @@ class SaleController extends Controller
         $this->introPrefixRepository = $introPrefixRepository;
         $this->variationRepository = $variationRepository;
         $this->lazadaSet = $lazadaSet;
-        $datatoken = [
-            [
-                "akun" => "juraganq89@gmail.com",
-                "token" => "50000200d119prpwoUBgZfX1b34985bflvfvui8Ear3ksuFgiNGwjryGEvjxAO3r",
-            ],
-        ];
-          
-        $this->accessToken = $datatoken;
+        $this->accessToken = lztoken::all();
         $this->apiGatewayGlobal = env('LZ_API_GATEWAY_GLOBAL');
         $this->apiGateway = env('LZ_API_GATEWAY');
         $this->apiKey = env('LZ_API_KEY');
@@ -1256,7 +1250,7 @@ class SaleController extends Controller
                 $data = $executelazop['data']['orders'];
             
                 for ($i=0; $i < count($data); $i++) { 
-                    $data[$i]['nama_akun'] = $value['akun'];
+                    $data[$i]['nama_akun'] = $value['akun_name'];
                     $data[$i]['token'] = $value['token'];
                     array_push($arr,$data[$i]);
                 }
@@ -1546,31 +1540,6 @@ class SaleController extends Controller
                 $res = $executelazop;
             }
         }
-        
-        return $res;
-    }
-
-    public function generate_token(Request $request)
-    {
-        $querystring = $request->all();
-        if (!isset($querystring['oauth'])) {
-            return 'oauth is required';
-        } else {
-            $oauth = $querystring['oauth'];
-        }
-
-        $tokenwehave = $this->accessToken;
-        $arr = [];
-        $method = 'GET';
-        $apiName = '/auth/token/create';
-
-        $c = new LazopClient($this->apiGatewayGlobal, $this->apiKey, $this->apiSecret);
-        $request = new LazopRequest($apiName,$method);
-        $request->addApiParam('code',$oauth);
-        // $request->addApiParam('uuid','38284839234');
-        $executelazop = json_decode($c->execute($request), true);
-
-        $res = $executelazop;
         
         return $res;
     }
