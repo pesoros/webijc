@@ -39,6 +39,7 @@ class SaleController extends Controller
     use PdfGenerate, Notification, SaleProductSelect;
 
     private $accessToken;
+    private $apiGatewayGlobal;
     private $apiGateway;
     private $appKey;
     private $appSecret;
@@ -77,6 +78,7 @@ class SaleController extends Controller
         ];
           
         $this->accessToken = $datatoken;
+        $this->apiGatewayGlobal = env('LZ_API_GATEWAY_GLOBAL');
         $this->apiGateway = env('LZ_API_GATEWAY');
         $this->apiKey = env('LZ_API_KEY');
         $this->apiSecret = env('LZ_API_SECRET');
@@ -1562,7 +1564,7 @@ class SaleController extends Controller
         $method = 'GET';
         $apiName = '/auth/token/create';
 
-        $c = new LazopClient('https://api.lazada.co.id/rest', $this->apiKey, $this->apiSecret);
+        $c = new LazopClient($this->apiGatewayGlobal, $this->apiKey, $this->apiSecret);
         $request = new LazopRequest($apiName,$method);
         $request->addApiParam('code',$oauth);
         // $request->addApiParam('uuid','38284839234');
