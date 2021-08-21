@@ -1562,7 +1562,7 @@ class SaleController extends Controller
         $method = 'GET';
         $apiName = '/auth/token/create';
 
-        $c = new LazopClient($this->apiGateway, $this->apiKey, $this->apiSecret);
+        $c = new LazopClient('https://api.lazada.co.id/rest', $this->apiKey, $this->apiSecret);
         $request = new LazopRequest($apiName,$method);
         $request->addApiParam('code',$oauth);
         // $request->addApiParam('uuid','38284839234');
