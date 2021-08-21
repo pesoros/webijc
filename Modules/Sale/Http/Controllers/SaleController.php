@@ -24,7 +24,7 @@ use Modules\Setup\Repositories\IntroPrefixRepositoryInterface;
 use Modules\Setup\Repositories\TaxRepositoryInterface;
 use Modules\Product\Repositories\VariantRepositoryInterface;
 use Modules\Setting\Model\EmailTemplate;
-use Modules\LazadaToken\Entities\lztoken;
+use Modules\LazadaToken\Entities\Lztoken;
 use App\Lazada_set;
 use Session;
 use PDF;
@@ -71,7 +71,7 @@ class SaleController extends Controller
         $this->introPrefixRepository = $introPrefixRepository;
         $this->variationRepository = $variationRepository;
         $this->lazadaSet = $lazadaSet;
-        $this->accessToken = lztoken::all();
+        $this->accessToken = Lztoken::all();
         $this->apiGatewayGlobal = env('LZ_API_GATEWAY_GLOBAL');
         $this->apiGateway = env('LZ_API_GATEWAY');
         $this->apiKey = env('LZ_API_KEY');

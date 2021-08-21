@@ -14,7 +14,7 @@ use App\Lazada_set;
 use Session;
 use PDF;
 use Mail;
-use Modules\LazadaToken\Entities\lztoken;
+use Modules\LazadaToken\Entities\Lztoken;
 use GuzzleHttp\Client;
 use Lazada\LazopClient;
 use Lazada\LazopRequest;
@@ -57,7 +57,7 @@ class LazadaTokenController extends Controller
     public function index()
     {
         try {
-            $tokendata = lztoken::all();
+            $tokendata = Lztoken::all();
             // return view('sale::sale.index', compact('sales'));
             return view('lazadatoken::lazadatoken.index', compact('tokendata'));
         } catch (\Exception $e) {

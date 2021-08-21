@@ -11,12 +11,12 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Modules\Account\Repositories\JournalRepository;
 use App\User;
-use Modules\LazadaToken\Entities\lztoken;
+use Modules\LazadaToken\Entities\Lztoken;
 
 class LazadaTokenRepository implements LazadaTokenRepositoryInterface
 {
     public function all()
     {
-        return lztoken::all();
+        return Lztoken::all();
     }
 }
