@@ -136,20 +136,48 @@ class LazadaTokenController extends Controller
             $oauth = $querystring['oauth'];
         }
 
-        $tokenwehave = $this->accessToken;
-        $arr = [];
-        $method = 'GET';
-        $apiName = '/auth/token/create';
+        $res = $this->__generate_token($oauth);
 
-        $c = new LazopClient($this->apiGatewayGlobal, $this->apiKey, $this->apiSecret);
-        $request = new LazopRequest($apiName,$method);
-        $request->addApiParam('code',$oauth);
-        // $request->addApiParam('uuid','38284839234');
-        $executelazop = json_decode($c->execute($request), true);
-
-        $res = $executelazop;
+        if (isset($querystring['save'])) {
+            if ($querystring['save'] == true && $res['code'] == '0') {
+                $Lztoken = new Lztoken;
+                $Lztoken->akun_name = $res['account'];
+                $Lztoken->token = $res['access_token'];
+                $Lztoken->refresh_token = $res['refresh_token'];
+                $Lztoken->token_expires_in = $res['expires_in'];
+                $Lztoken->refresh_token_expires_in = $res['refresh_expires_in'];
+                $Lztoken->api_key = $this->apiKey;
+                $Lztoken->api_secret = $this->apiSecret;
+                $Lztoken->status = 1;
+                $Lztoken->save();
+                $res['save'] = true;
+            }
+        }
         
         return $res;
+    }
+
+    public function refresh_token_all()
+    {
+        $result = [];
+        $tokendata = Lztoken::all();
+        foreach ($tokendata as $key => $value) {
+            $res = $this->__generate_refresh_token($value['refresh_token']);
+            $Lztoken = Lztoken::where('refresh_token', $value['refresh_token'])->first();
+            $Lztoken->akun_name = $res['account'];
+            $Lztoken->token = $res['access_token'];
+            $Lztoken->refresh_token = $res['refresh_token'];
+            $Lztoken->token_expires_in = $res['expires_in'];
+            $Lztoken->refresh_token_expires_in = $res['refresh_expires_in'];
+            $Lztoken->api_key = $this->apiKey;
+            $Lztoken->api_secret = $this->apiSecret;
+            $Lztoken->status = 1;
+            $Lztoken->save();
+            $result[$key] = $res;
+            $result[$key]['save'] = true;
+        }
+
+        return $result;
     }
 
     public function refresh_token(Request $request)
@@ -161,8 +189,43 @@ class LazadaTokenController extends Controller
             $refresh_token = $querystring['refresh_token'];
         }
 
-        $tokenwehave = $this->accessToken;
-        $arr = [];
+        $res = $this->__generate_refresh_token($refresh_token);
+
+        if (isset($querystring['save'])) {
+            if ($querystring['save'] == true && $res['code'] == '0') {
+                $Lztoken = Lztoken::where('refresh_token', $refresh_token)->first();
+                $Lztoken->akun_name = $res['account'];
+                $Lztoken->token = $res['access_token'];
+                $Lztoken->refresh_token = $res['refresh_token'];
+                $Lztoken->token_expires_in = $res['expires_in'];
+                $Lztoken->refresh_token_expires_in = $res['refresh_expires_in'];
+                $Lztoken->api_key = $this->apiKey;
+                $Lztoken->api_secret = $this->apiSecret;
+                $Lztoken->status = 1;
+                $Lztoken->save();
+                $res['save'] = true;
+            }
+        }
+        
+        return $res;
+    }
+
+    private function __generate_token($oauth)
+    {
+        $method = 'GET';
+        $apiName = '/auth/token/create';
+
+        $c = new LazopClient($this->apiGatewayGlobal, $this->apiKey, $this->apiSecret);
+        $request = new LazopRequest($apiName,$method);
+        $request->addApiParam('code',$oauth);
+        // $request->addApiParam('uuid','38284839234');
+        $executelazop = json_decode($c->execute($request), true);
+
+        return $executelazop;
+    }
+
+    private function __generate_refresh_token($refresh_token)
+    {
         $method = 'GET';
         $apiName = '/auth/token/refresh';
 
@@ -171,8 +234,6 @@ class LazadaTokenController extends Controller
         $request->addApiParam('refresh_token',$refresh_token);
         $executelazop = json_decode($c->execute($request), true);
 
-        $res = $executelazop;
-        
-        return $res;
+        return $executelazop;
     }
 }

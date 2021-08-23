@@ -6,11 +6,11 @@
             <div class="box_header common_table_header">
                 <div class="main-title d-md-flex">
                     <h3 class="mb-0 mr-30 mb_xs_15px mb_sm_20px">Lazada Token</h3>
-                    <ul class="d-flex">
+                    {{-- <ul class="d-flex">
                         <li><a class="primary-btn radius_30px mr-10 fix-gr-bg" href="{{route("create")}}"><i
                                     class="ti-plus"></i>New Token</a>
                         </li>
-                    </ul>
+                    </ul> --}}
                 </div>
             </div>
         </div>
@@ -24,13 +24,41 @@
                             <tr>
                                 <th scope="col">{{__('sale.Sl')}}</th>
                                 <th scope="col">Akun</th>
-                                <th scope="col">Expires in</th>
+                                <th scope="col">API Key</th>
+                                <th scope="col">Last Refresh</th>
                                 <th scope="col">{{__('common.Status')}}</th>
                                 <th scope="col">{{__('common.Action')}}</th>
                             </tr>
                             </thead>
                             <tbody>
-
+                                @foreach ($tokendata as $key => $item)
+                                <tr>
+                                    <td>{{ $key+1 }}</td>
+                                    <td>{{ $item->akun_name }}</td>
+                                    <td>{{ $item->api_key }}</td>
+                                    <td>{{ $item->updated_at }}</td>
+                                    <td>
+                                        @if ($item->status == 1)
+                                            Aktif
+                                        @else
+                                            Tidak Aktif
+                                        @endif
+                                    </td>
+                                    <td>
+                                        <div class="dropdown CRM_dropdown">
+                                            <button class="btn btn-secondary dropdown-toggle" type="button"
+                                                    id="dropdownMenu2" data-toggle="dropdown" aria-haspopup="true"
+                                                    aria-expanded="false"> {{__('common.select')}}
+                                            </button>
+                                            <div class="dropdown-menu dropdown-menu-right"
+                                                aria-labelledby="dropdownMenu2">
+                                                {{-- <a href="javascript:void(0)" onclick="getDetails('{{ $item['order_number'] }}','{{ $item['token'] }}')"
+                                                    class="dropdown-item" type="button">{{__('sale.Order Details')}}</a> --}}
+                                            </div>
+                                        </div>
+                                    </td>
+                                </tr>
+                                @endforeach
                             </tbody>
                         </table>
                     </div>
