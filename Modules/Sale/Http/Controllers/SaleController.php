@@ -1571,6 +1571,8 @@ class SaleController extends Controller
         $request->addApiParam('doc_type', $querystring['doctype']);
         $executelazop = json_decode($c->execute($request, $querystring['token']), true);
 
+        return $executelazop;
+
         $fileBase = base64_decode($executelazop['data']['document']['file']);
 
         if ($executelazop['data']['document']['document_type'] == 'shippingLabel') {
