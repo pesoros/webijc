@@ -332,7 +332,7 @@
                     $( ".order-invoice-spot" ).hide();
                     $( ".order-shipping-spot" ).hide();
                 }  if (statusState == 'packed') {
-                    $( ".order-action-spot" ).hide();
+                    $( ".order-action-spot" ).show();
                     $( ".order-invoice-spot" ).show();
                     $( ".order-shipping-spot" ).hide();
                 }  if (statusState == 'ready_to_ship') {
