@@ -323,15 +323,31 @@
                 $('#getDetails').html(data);
                 $('#sale_info_modal').modal('show');
                 $('select').niceSelect();    
-                if (statusState != 'unpaid' && statusState != 'pending') {
-                    $( ".order-invoice-spot" ).show();
-                    if (statusState == 'ready_to_ship') {
-                        $( ".order-shipping-spot" ).show();
-                    }
-                } 
-                if (statusState == 'pending') {
+                if (statusState == 'unpaid') {
+                    $( ".order-action-spot" ).hide();
+                    $( ".order-invoice-spot" ).hide();
+                    $( ".order-shipping-spot" ).hide();
+                } else if (statusState == 'pending') {
                     $( ".order-action-spot" ).show();
-                }
+                    $( ".order-invoice-spot" ).hide();
+                    $( ".order-shipping-spot" ).hide();
+                }  if (statusState == 'packed') {
+                    $( ".order-action-spot" ).hide();
+                    $( ".order-invoice-spot" ).show();
+                    $( ".order-shipping-spot" ).hide();
+                }  if (statusState == 'ready_to_ship') {
+                    $( ".order-action-spot" ).hide();
+                    $( ".order-invoice-spot" ).show();
+                    $( ".order-shipping-spot" ).show();
+                }  if (statusState == 'shipped') {
+                    $( ".order-action-spot" ).hide();
+                    $( ".order-invoice-spot" ).show();
+                    $( ".order-shipping-spot" ).show();
+                }  if (statusState == 'delivered') {
+                    $( ".order-action-spot" ).hide();
+                    $( ".order-invoice-spot" ).show();
+                    $( ".order-shipping-spot" ).show();
+                }  
                 
             });
         }
