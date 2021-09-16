@@ -1573,11 +1573,10 @@ class SaleController extends Controller
 
         
         $fileBase = base64_decode($executelazop['data']['document']['file']);
-        return $fileBase;
 
         if ($executelazop['data']['document']['document_type'] == 'shippingLabel') {
             return view('sale::sale.print_shipping', ['fileBase'=>$fileBase]);
-        } else if ($executelazop['data']['document']['document_type'] == 'shippingLabel') {
+        } else if ($executelazop['data']['document']['document_type'] == 'invoice') {
             return view('sale::sale.print_invoice', ['fileBase'=>$fileBase]);
         }
     }
