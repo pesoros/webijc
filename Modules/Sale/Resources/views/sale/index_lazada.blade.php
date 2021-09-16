@@ -259,23 +259,28 @@
 
         }
 
-        function getDocumentLz(orderItemId, token) {
+        function getDocumentLz(orderItemId, token, doctype) {
             let reqUrl = '{{route('getDocumentLz')}}';
+            reqUrl += '?orderItemId=' + orderItemId;
+            reqUrl += '&doctype=' + doctype;
+            reqUrl += '&token=' + token;
 
-            $.ajax({
-                method: 'POST',
-                url: reqUrl,
-                data: {
-                    _token: "{{csrf_token()}}",
-                    orderItemId: orderItemId,
-                    doctype: 'shippingLabel',
-                    token: token,
-                },
-                success: function (result) {
-                    console.log('rsss1', reqUrl);
-                    console.log('rsss2', result);
-                }
-            })
+            window.open(reqUrl, '_blank');
+            return;
+            // $.ajax({
+            //     method: 'POST',
+            //     url: reqUrl,
+            //     data: {
+            //         _token: "{{csrf_token()}}",
+            //         orderItemId: orderItemId,
+            //         doctype: 'shippingLabel',
+            //         token: token,
+            //     },
+            //     success: function (result) {
+            //         console.log('rsss1', reqUrl);
+            //         console.log('rsss2', result);
+            //     }
+            // })
 
         }
         function modal_close() {
@@ -317,12 +322,17 @@
             $.post('{{ route('get_sale_details_lazada') }}', {_token:'{{ csrf_token() }}', ordernumber:f_order_number, token:f_token}, function(data){
                 $('#getDetails').html(data);
                 $('#sale_info_modal').modal('show');
-                $('select').niceSelect();
-                if ( statusState == 'unpaid' || statusState == 'ready_to_ship' || statusState == 'shipped' || statusState == 'delivered') {
-                    $( ".order-action-spot" ).hide();
-                } else {
+                $('select').niceSelect();    
+                if (statusState != 'unpaid' && statusState != 'pending') {
+                    $( ".order-invoice-spot" ).show();
+                    if (statusState == 'ready_to_ship') {
+                        $( ".order-shipping-spot" ).show();
+                    }
+                } 
+                if (statusState == 'pending') {
                     $( ".order-action-spot" ).show();
                 }
+                
             });
         }
 

@@ -36,8 +36,12 @@
                        data-toggle="tab">Dibatalkan</a>
                 </li>
                 <li class="nav-item">
+                    <a class="nav-link" href="javascript:void(0)" onclick="getLazadaListReverse('getreverseordersforseller')" role="tab"
+                       data-toggle="tab">Permintaan Pengembalian</a>
+                </li>
+                <li class="nav-item">
                     <a class="nav-link" href="javascript:void(0)" onclick="getLazadaList('returned')" role="tab"
-                       data-toggle="tab">Pengembalian Barang / Dana</a>
+                       data-toggle="tab">Terima Pengembalian</a>
                 </li>
                 <li class="nav-item">
                     <a class="nav-link" href="javascript:void(0)" onclick="getLazadaList('failed')" role="tab"
@@ -197,6 +201,33 @@
                     $( ".order-action-spot" ).show();
                 }
             });
+        }
+
+        function getLazadaListReverse(status = null) {
+            if (status) {
+                statusState = status;
+            } else {
+                status = statusState;
+            }
+            $('.tab-content').empty();
+            $('.tab-content').append('<img src="{{ asset('public/backEnd/img/spinner.gif') }}" style="margin-top: 90px;"/>');
+            let theDate = $('#saleDate').val();
+            var pieces = theDate.split('/');
+            var saleDate = pieces[2] + '-' + pieces[0] + '-' + pieces[1];
+
+            $.ajax({
+                method: 'POST',
+                url: '{{route('sale.lazada_list_reverse')}}',
+                data: {
+                    status: status,
+                    saleDate: saleDate,
+                    _token: "{{csrf_token()}}",
+                },
+                success: function (result) {
+                    $('.tab-content').empty();
+                    $('.tab-content').append(result);
+                }
+            })
         }
 
         function getLazadaList(status = null) {

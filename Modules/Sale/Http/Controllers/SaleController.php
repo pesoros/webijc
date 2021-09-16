@@ -670,6 +670,7 @@ class SaleController extends Controller
         } else {
             $lazadaOrders = $this->get_orders('canceled');
             $dataOrders = $lazadaOrders['data'];
+            // return $lazadaOrders;
 
             return view('sale::sale.index_lazada_return', ['dataOrders'=>$dataOrders]);
         }
@@ -1203,11 +1204,57 @@ class SaleController extends Controller
         }
     }
 
+    public function get_reverse_orders($status = '') {
+        
+        $tokenwehave = $this->accessToken;
+        $arr = [];
+        $method = 'GET';
+        $apiName = '/reverse/getreverseordersforseller';
+        
+        foreach ($tokenwehave as $key => $value) {
+            $c = new LazopClient($this->apiGateway, $this->apiKey, $this->apiSecret);
+            $request = new LazopRequest($apiName,$method);
+            // $request->addApiParam('ofc_status_list','[\"RETURN\"]');
+            // $request->addApiParam('reverse_order_id','0');
+            // $request->addApiParam('trade_order_id','0');
+            $request->addApiParam('page_size','10');
+            // $request->addApiParam('reverse_status_list','[\"REQUEST_INITIATE\"]');
+            $request->addApiParam('page_no','1');
+            // $request->addApiParam('return_to_type','RTM');
+            // $request->addApiParam('dispute_in_progress','true');
+            if ($status != '') {
+                $request->addApiParam('status', $status);
+            }
+            $executelazop = json_decode($c->execute($request, $value['token']), true);
+
+            if (isset($executelazop['data']['orders'])) {
+
+                $data = $executelazop['data']['orders'];
+            
+                for ($i=0; $i < count($data); $i++) { 
+                    $data[$i]['nama_akun'] = $value['akun_name'];
+                    $data[$i]['token'] = $value['token'];
+                    array_push($arr,$data[$i]);
+                }
+    
+                $res['date_start'] = $datestart;
+                $res['date_end'] = $dateend;
+                $res['jumlah_data'] = count($arr);
+                $res['data'] = $arr;
+            } else {
+                $res = $executelazop;
+                $res['akun'] = $value['akun'];
+            }
+        }
+
+        return $res;
+    }
+
     public function get_orders($status = '', $saleDate = '')
     {
         if ($saleDate != '') {            
             $theDate = Carbon::createFromFormat('Y-m-d', $saleDate);
-            if ($status == 'pending') {
+            if ($status == 'pending' || $status == 'canceled' || $status == 'failed' || $status == 'lost_by_3pl') {
                 $daysToMin = 2;
                 $datestart = Carbon::now()->subMonth()->format('Y-m-d').'T00:00:00+08:00';
                 $daysToAdd = 1;
@@ -1301,12 +1348,42 @@ class SaleController extends Controller
     {
         $status = $request->status;
         $saleDate = $request->saleDate;
+        $arrStatus = [];
+        if ($status == 'returned') {
+            $arrStatus[0] = $status;
+        } else if ($status == 'failed') {
+            $arrStatus[0] = $status;
+            $arrStatus[1] = 'shipped_back';
+            $arrStatus[2] = 'shipped_back_success';
+            $arrStatus[3] = 'shiped_back_failed';
+            $arrStatus[4] = 'package_scrapped';
+        } else if ($status == 'lost_by_3pl') {
+            $arrStatus[0] = $status;
+            $arrStatus[1] = 'damaged_by_3pl';
+        } else {
+            $arrStatus[0] = $status;
+        }
+
         $lazadaOrders = $this->get_orders($status,$saleDate);
         $dataOrders = $lazadaOrders['data'];
 
         $htmlBody = view('sale::sale.lazadaSaleList', ['dataOrders'=>$dataOrders])->render();
 
         return $htmlBody;
+    }
+
+    public function lazadaListReverse(Request $request)
+    {
+        $status = $request->status;
+        $saleDate = $request->saleDate;
+        $arrStatus = [];
+
+        $lazadaOrders = $this->get_reverse_orders($status,$saleDate);
+        // $dataOrders = $lazadaOrders['data'];
+
+        // $htmlBody = view('sale::sale.lazadaSaleList', ['dataOrders'=>$dataOrders])->render();
+
+        return $lazadaOrders;
     }
 
     public function getCombo(Request $request)
@@ -1496,7 +1573,11 @@ class SaleController extends Controller
 
         $fileBase = base64_decode($executelazop['data']['document']['file']);
 
-        return $executelazop;
+        if ($executelazop['data']['document']['document_type'] == 'shippingLabel') {
+            return view('sale::sale.print_shipping', ['fileBase'=>$fileBase]);
+        } else if ($executelazop['data']['document']['document_type'] == 'shippingLabel') {
+            return view('sale::sale.print_invoice', ['fileBase'=>$fileBase]);
+        }
     }
 
     public function get_transaction(Request $request)
@@ -1542,6 +1623,27 @@ class SaleController extends Controller
         }
         
         return $res;
+    }
+
+    public function getReverseReason()
+    {
+        $tokenwehave = $this->accessToken;
+        $arr = [];
+        $method = 'GET';
+        $apiName = '/order/reverse/reason/list';
+
+        $c = new LazopClient($this->apiGateway, $this->apiKey, $this->apiSecret);
+        $request = new LazopRequest($apiName,$method);
+        $request->addApiParam('reverse_order_line_id','0');
+        $executelazop = json_decode($c->execute($request, $tokenwehave[0]['token']), true);
+
+        return $executelazop;
+    }
+
+    public function formrevrese($id)
+    {
+        // return $lazadaOrders = $this->getReverseReason();
+        return view('sale::sale.formreverse');
     }
 
 }
