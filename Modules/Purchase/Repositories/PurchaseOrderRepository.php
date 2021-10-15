@@ -384,7 +384,7 @@ class PurchaseOrderRepository implements PurchaseOrderRepositoryInterface
 //        saving purchase
         $purchase->save();
         if ($acoountBalance < 0) {
-            $extra_amount = abs($chart_account['balanceAmount']);
+            $extra_amount = abs($chart_account->balanceAmount);
             foreach ($purchase->supplier->purchases->where('is_paid', '!=', 2)->where('is_approved',1) as $key => $order) {
                 if ($order->is_paid != 2) {
                     $due_amount = $order->payable_amount - $order->payments->sum('amount');
