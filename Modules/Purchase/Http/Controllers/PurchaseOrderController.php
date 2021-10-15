@@ -194,7 +194,7 @@ class PurchaseOrderController extends Controller
 
         } catch (\Exception $e) {
             DB::rollBack();
-            Toastr::error(trans('common.Something Went Wrong'));
+            Toastr::error(trans($e->getMessage()));
             return back();
         }
     }
