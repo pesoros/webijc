@@ -261,10 +261,12 @@ if (!function_exists('stockList')) {
         if ($supplier)
         {
             $stocks->where('houseable_id', $houseable_id)->where('houseable_type', $houseable_type);
+        }
+        if ($supplier)
+        {            
             $stocks->Supplier($supplier);
         }if ($brand_id)
         {
-            $stocks->where('houseable_id', $houseable_id)->where('houseable_type', $houseable_type);
             $stocks->BrandProduct($brand_id);
         }
         if ($product_sku_id) {
