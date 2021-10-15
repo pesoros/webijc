@@ -64,7 +64,7 @@ class StockTransferController extends Controller
                     'supplier_id' => $request->supplier,
                     'product_sku_id' => $request->product_sku_id,
                     'brand_id' => $request->brand_id,
-                    'req_supplier' => $this->contactRepositories->find($request->supplier),
+                    // 'req_supplier' => $this->contactRepositories->find($request->supplier),
                     'suppliers' => $suppliers,
                     'products' => $productRepo->all(),
                     'brands' => $brandRepo->all(),
