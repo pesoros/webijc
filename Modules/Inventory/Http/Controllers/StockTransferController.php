@@ -85,7 +85,7 @@ class StockTransferController extends Controller
 
         }catch (\Exception $e) {
             \LogActivity::errorLog($e->getMessage());
-            Toastr::error('Operation failed');
+            Toastr::error('Operation failed '.$e->getMessage());
             return back();
         }
 
