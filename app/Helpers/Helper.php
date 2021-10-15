@@ -260,7 +260,7 @@ if (!function_exists('stockList')) {
         $stocks = StockReport::query();
         if ($supplier)
         {
-            $stocks->where('houseable_id', $houseable_id)->where('houseable_type', $houseable_type);
+            $stocks->where('houseable_id', $houseable_id);
         }
         if ($supplier)
         {            
