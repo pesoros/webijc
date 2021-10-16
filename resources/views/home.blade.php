@@ -137,19 +137,21 @@
                     </div>
                 @endif
 
-                @if (permissionCheck('widget.net_profit'))
-                    <div class="col-md-3 col-lg-3 col-sm-3">
-                        <div class="white-box single-summery">
-                            <div class="d-block mt-10">
-                                <div>
-                                    <h3>{{ __('dashboard.Net Profit') }}</h3>
+                @if (auth()->user()->role->type == "system_user")
+                    @if (permissionCheck('widget.net_profit'))
+                        <div class="col-md-3 col-lg-3 col-sm-3">
+                            <div class="white-box single-summery">
+                                <div class="d-block mt-10">
+                                    <div>
+                                        <h3>{{ __('dashboard.Net Profit') }}</h3>
+                                    </div>
+                                    <img class="demo_wait" height="60px" style="display: none"
+                                        src="{{asset('public/backEnd/img/loader.gif')}}" alt="">
+                                    <h1 class="gradient-color2 total_income">{{single_price($income)}}</h1>
                                 </div>
-                                <img class="demo_wait" height="60px" style="display: none"
-                                     src="{{asset('public/backEnd/img/loader.gif')}}" alt="">
-                                <h1 class="gradient-color2 total_income">{{single_price($income)}}</h1>
                             </div>
                         </div>
-                    </div>
+                    @endif
                 @endif
             </div>
         </div>
