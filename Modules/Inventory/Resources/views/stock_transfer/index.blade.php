@@ -63,10 +63,10 @@
                                                     <a onclick="approve_modal('{{route('stock-transfer.receive', $transfer->id)}}')"
                                                        class="dropdown-item" type="button">{{__('product.Receive')}}</a>
                                                 @endif
-                                                @if(permissionCheck('stock-transfer.edit') && $transfer->status == 0)
+                                                {{-- @if(permissionCheck('stock-transfer.edit') && $transfer->status == 0) --}}
                                                     <a href="{{route('stock-transfer.edit',$transfer->id)}}"
                                                        class="dropdown-item" type="button">{{__('common.Edit')}}</a>
-                                                @endif
+                                                {{-- @endif --}}
                                                 @if(permissionCheck('stock-transfer.delete'))
                                                     <a onclick="confirm_modal('{{route('stock-transfer.delete', $transfer->id)}}')"
                                                        class="dropdown-item edit_brand">{{__('common.Delete')}}</a>
