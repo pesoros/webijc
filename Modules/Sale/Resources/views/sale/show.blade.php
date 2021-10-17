@@ -2,7 +2,7 @@
 @section('mainContent')
     @push('css')
         <style>
-            @media print { #printablePos { width: 48mm } }
+            @media print { #printablePos { size: 48mm 210mm; } }
             .invoice_table {
                 border-collapse: collapse;
             }
