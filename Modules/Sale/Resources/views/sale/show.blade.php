@@ -2,7 +2,6 @@
 @section('mainContent')
     @push('css')
         <style>
-            @media print { #printablePos { size: 48mm 210mm; } }
             .invoice_table {
                 border-collapse: collapse;
             }
@@ -736,7 +735,7 @@
                                         <div class="row justify-content-center">
                                             <div class="col-lg-10">
                                                 <!-- invoice print part here -->
-                                                <div class="invoice_print">
+                                                <div id="ppp" class="invoice_print">
                                                     <div class="container">
                                                         <div id="printablePos" class="invoice_part_iner">
                                                             <table class="invoice_table invoice_info_table">
@@ -1329,7 +1328,7 @@
         @push("scripts")
             <script type="text/javascript">
                 function printDiv(divName) {
-                    var printContents = document.getElementById(divName).innerHTML;
+                    var printContents = document.getElementById('ppp').innerHTML;
                     var originalContents = document.body.innerHTML;
                     document.body.innerHTML = printContents;
                     window.print();
