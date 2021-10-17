@@ -739,7 +739,8 @@
                                                     <div class="container">
                                                         <div id="printablePos" class="invoice_part_iner">
                                                             <table class="invoice_table invoice_info_table">
-                                                                <h3 style="text-align: center; color: black">{{app('general_setting')->company_name}}</h3>
+                                                                {{-- <h3 style="text-align: center; color: black">{{app('general_setting')->company_name}}</h3> --}}
+                                                                <img src="{{asset('public/seztlogo.png')}}" alt="sezt" style="width: 100%;">
                                                                 <h5 style="text-align: center; color: black">{{app('general_setting')->country_name}}</h5>
                                                                 <p style="text-align: center;color: black">{{__('retailer.Phone')}}
                                                                     :{{app('general_setting')->phone}}
