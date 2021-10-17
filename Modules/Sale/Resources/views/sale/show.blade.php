@@ -2,6 +2,7 @@
 @section('mainContent')
     @push('css')
         <style>
+            @media print { #printablePos { width: 48mm } }
             .invoice_table {
                 border-collapse: collapse;
             }
