@@ -529,6 +529,29 @@ class SaleController extends Controller
         }
     }
 
+    public function print_view_pos($id)
+    {
+        try {
+            $due = 0;
+            $sale = $this->saleRepository->find($id);
+            if ($sale->customer_id) {
+                $due = $sale->customer->accounts['due'];
+            }else {
+                $due = $sale->user->accounts['due'];
+            }
+
+            $data = [
+                'sale' => $sale,
+                'due' => $due
+            ];
+            return view('sale::sale.print_view_pos',$data);
+        } catch (\Exception $e) {
+            \LogActivity::errorLog($e->getMessage());
+            Toastr::error('Operation Failed', 'Error!');
+            return back();
+        }
+    }
+
     public function challan_print_view($id)
     {
         try {

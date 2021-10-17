@@ -18,6 +18,7 @@ Route::prefix('sale')->middleware('auth')->group(function() {
     Route::get('sale-return-create', 'SaleController@make_return_list')->name('sale.sale_return_list');
     Route::get('sale-return-details/{id}', 'SaleController@return_details')->name('sale.return_detail_show');
     Route::get('sale-print-view/{id}', 'SaleController@print_view')->name('sale.print_view');
+    Route::get('sale-print-view-pos/{id}', 'SaleController@print_view_pos')->name('sale.print_view_pos');
     Route::get('sale-challan-print-view/{id}', 'SaleController@challan_print_view')->name('sale.challan_print_view');
 
     Route::get('/sale-pdf/{id}', 'SaleController@getPdf')->name('sale.pdf');

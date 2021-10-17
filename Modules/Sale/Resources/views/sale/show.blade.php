@@ -730,12 +730,12 @@
                                 </div>
                             </div>
                             <div role="tabpanel" class="tab-pane fade" id="pos_machine">
-                                <div class="invoice_wrapper">
+                                <div id="ip" class="invoice_wrapper">
                                     <div class="container">
                                         <div class="row justify-content-center">
                                             <div class="col-lg-10">
                                                 <!-- invoice print part here -->
-                                                <div id="ppp" class="invoice_print">
+                                                <div class="invoice_print">
                                                     <div class="container">
                                                         <div id="printablePos" class="invoice_part_iner">
                                                             <table class="invoice_table invoice_info_table">
@@ -1328,14 +1328,10 @@
         @push("scripts")
             <script type="text/javascript">
                 function printDiv(divName) {
-                    var printContents = document.getElementById('ppp').innerHTML;
-                    var originalContents = document.body.innerHTML;
-                    document.body.innerHTML = printContents;
-                    window.print();
-                    document.body.innerHTML = originalContents;
-                    setTimeout(function () {
-                        window.location.reload();
-                    }, 15000);
+                    var w = window.open('', 'printablePos', 'width=300,height=400');  
+                    var html = $("#printablePos").html(); 
+                    $(w.document.body).html(html); 
+                    w.print();
                 }
 
                 function send_mail(url) {
