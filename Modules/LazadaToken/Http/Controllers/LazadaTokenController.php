@@ -161,8 +161,6 @@ class LazadaTokenController extends Controller
     {
         $result = [];
         $tokendata = Lztoken::all();
-        $res = $this->__generate_refresh_token($tokendata[0]['refresh_token']);
-        return $res;
         foreach ($tokendata as $key => $value) {
             $res = $this->__generate_refresh_token($value['refresh_token']);
             $Lztoken = Lztoken::where('refresh_token', $value['refresh_token'])->first();
