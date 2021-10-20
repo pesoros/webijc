@@ -93,7 +93,7 @@ class SaleController extends Controller
             }
         } else {
             $lazadaOrders = $this->get_orders('unpaid');
-            return $lazadaOrders;
+            // return $lazadaOrders;
             $dataOrders = $lazadaOrders['data'];
 
             return view('sale::sale.index_lazada', ['dataOrders'=>$dataOrders]);
