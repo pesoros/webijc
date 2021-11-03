@@ -18,9 +18,9 @@
                         <div class="col-xl-6">
                             <p>{{__('product.Product Name')}} : <span>{{ $product->name }}</span></p>
                             <p>SKUL : <span>{{ $product->sku_lazada }}</span></p>
-                            <p>{{__('product.Price')}} : <span>{{single_price($product->price)}}</span></p>
+                            {{-- <p>{{__('product.Price')}} : <span>{{single_price($product->price)}}</span></p>
                             <p>{{__('product.Regular Price')}} : <span>{{ single_price($product->total_regular_price) }}</span></p>
-                            <p>{{__('product.Total Purchase Product')}} : <span>{{ single_price($product->total_purchase_price) }}</span></p>
+                            <p>{{__('product.Total Purchase Product')}} : <span>{{ single_price($product->total_purchase_price) }}</span></p> --}}
                         </div>
                         @if (count($product->combo_products) > 0)
                             <div class="col-xl-12">
@@ -28,31 +28,35 @@
                                     <table class="table">
                                         <thead id="variant_section_head">
                                         <tr>
-                                        <th scope="col">{{__('product.Image')}}</th>
+                                        {{-- <th scope="col">{{__('product.Image')}}</th> --}}
                                         <th scope="col">{{__('product.Name')}}</th>
-                                        <th scope="col">{{__('product.Category')}}</th>
-                                        <th scope="col">{{__('product.Brand')}}</th>
+                                        <th scope="col">SKU</th>
+                                        {{-- <th scope="col">{{__('product.Category')}}</th>
+                                        <th scope="col">{{__('product.Brand')}}</th> --}}
                                         <th scope="col">{{__('product.QTY')}}</th>
                                         </tr>
                                         </thead>
                                         <tbody>
                                         @foreach($product->combo_products as $key => $comboProduct)
                                             <tr class="variant_row_lists">
-                                                <td>
+                                                {{-- <td>
                                                     @if (@$comboProduct->productSku->product->product_type == "Single")
                                                         <img style="height:70px;" src="{{ asset(@$comboProduct->productSku->product->image_source) }}"></td>
                                                     @else
                                                         <img style="height:70px;" src="{{ asset(@$comboProduct->productSku->product_variation->image_source) }}"></td>
-                                                    @endif
+                                                    @endif --}}
                                                 <td>
-                                                   <input type="text" value="{{ @$comboProduct->productSku->product->product_name }}" readonly class="primary_input_field">
+                                                   <input type="text" value="{{Str::limit(@$comboProduct->productSku->product->product_name, 50, $end='...')}}" readonly class="primary_input_field">
                                                 </td>
                                                 <td>
+                                                    <input type="text" value="{{ @$comboProduct->productSku->sku }}" readonly class="primary_input_field">
+                                                </td>
+                                                {{-- <td>
                                                    <input type="text" value="{{ @$comboProduct->productSku->product->category->name }}" readonly class="primary_input_field">
                                                 </td>
                                                 <td>
                                                    <input type="text" value="{{ @$comboProduct->productSku->product->brand->name }}" readonly class="primary_input_field">
-                                                </td>
+                                                </td> --}}
                                                 <td>
                                                    <input type="text" value="{{ $comboProduct->product_qty }}" readonly class="primary_input_field">
                                                 </td>
