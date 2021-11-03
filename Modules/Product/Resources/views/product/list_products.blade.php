@@ -193,7 +193,7 @@
                                                 <th scope="col">{{__('product.Name')}}</th>
                                                 {{-- <th scope="col">{{__('product.Price')}}</th> --}}
                                                 <th scope="col">SKU</th>
-                                                <th scope="col">{{__('product.Regular Price')}}</th>
+                                                {{-- <th scope="col">{{__('product.Regular Price')}}</th> --}}
                                                 {{-- <th scope="col">{{__('product.Total Product')}}</th> --}}
                                                 {{-- <th scope="col">{{__('common.Status')}}</th> --}}
                                                 {{-- <th scope="col">{{__('common.Enable')}}</th> --}}
@@ -218,7 +218,7 @@
                                                     <td>{{$comboProduct->name}}</td>
                                                     {{-- <td>{{single_price($comboProduct->price)}}</td> --}}
                                                     <td>{{ $comboProduct->sku_lazada }}</td>
-                                                    <td>{{single_price($comboProduct->total_regular_price)}}</td>
+                                                    {{-- <td>{{single_price($comboProduct->total_regular_price)}}</td> --}}
                                                     {{-- <td class="text-center">{{count($comboProduct->combo_products)}} {{ __('product.pcs') }}</td> --}}
                                                     {{-- <td class="text-center">
                                                         @if ($comboProduct->status == 0)
