@@ -16,7 +16,7 @@
                         </div>
 
                         <div class="col-xl-6">
-                            <p>{{__('product.Product Name')}} : <span>{{ $product->name }}</span></p>
+                            <p>{{__('product.Product Name')}} : <span>{{Str::limit($product->name, 50, $end='...')}}</span></p>
                             <p>SKUL : <span>{{ $product->sku_lazada }}</span></p>
                             {{-- <p>{{__('product.Price')}} : <span>{{single_price($product->price)}}</span></p>
                             <p>{{__('product.Regular Price')}} : <span>{{ single_price($product->total_regular_price) }}</span></p>
