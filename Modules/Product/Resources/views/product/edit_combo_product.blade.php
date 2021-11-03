@@ -64,15 +64,7 @@
                                 <div class="col-lg-4">
                                     <div class="primary_input mb-15">
                                         <label class="primary_input_label" for="">{{__('product.Product Image')}} </label>
-                                        <div class="primary_file_uploader">
-                                            <input class="primary-input" type="text" id="placeholderFileOneName"
-                                                   placeholder="Browse file" readonly="">
-                                            <button class="" type="button">
-                                                <label class="primary-btn small fix-gr-bg"
-                                                       for="document_file_1">{{__("common.Browse")}} </label>
-                                                <input type="file" class="d-none" name="file" id="document_file_1">
-                                            </button>
-                                        </div>
+                                        <input type="text" name="imageurl" id="imageurl" value="" class="primary_input_field" >
                                     </div>
                                 </div>
                                 <div class="col-lg-4">

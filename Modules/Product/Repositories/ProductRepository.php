@@ -259,11 +259,8 @@ class ProductRepository implements ProductRepositoryInterface
             $comboProduct->min_selling_price = $data['min_selling_price'];
             $comboProduct->description = $data['product_description'];
             $comboProduct->sku_lazada = $data['sku_lazada'];
-            if (isset($data['file'])) {
-                if (File::exists($comboProduct->image_source)) {
-                    File::delete($comboProduct->image_source);
-                }
-                $comboProduct->image_source = $this->saveImage($data['file'], 94, 94);
+            if ($data['imageurl']) {
+                $comboProduct->image_source = isset($data['imageurl']) ? $data['imageurl'] : null;
             }
 
             if ($comboProduct->save()) {
@@ -277,10 +274,7 @@ class ProductRepository implements ProductRepositoryInterface
         } else {
             $product = Product::findOrFail($id);
             if (isset($data['file'])) {
-                if (File::exists($product->image_source)) {
-                    File::delete($product->image_source);
-                }
-                $data = Arr::add($data, 'image_source', $this->saveImage($data['file'], 94, 94));
+                $data = Arr::add($data, 'image_source', isset($data['imageurl']) ? $data['imageurl'] : null);
             }
             $data = Arr::add($data, 'description', $data['product_description']);
             $product->fill(Arr::except($data, ['product_description']))->save();
