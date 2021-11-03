@@ -215,7 +215,7 @@
                                                                  alt="{{@$comboProduct->name}}">
                                                         @endif
                                                     </td>
-                                                    <td>{{$comboProduct->name}}</td>
+                                                    <td>{{Str::limit($comboProduct->name, 50, $end='...')}}</td>
                                                     {{-- <td>{{single_price($comboProduct->price)}}</td> --}}
                                                     <td>{{ $comboProduct->sku_lazada }}</td>
                                                     {{-- <td>{{single_price($comboProduct->total_regular_price)}}</td> --}}
