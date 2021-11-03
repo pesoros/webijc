@@ -50,9 +50,6 @@
                                          @foreach($productCombo->combo_products as $key => $p_details)
                                          <option value="{{$p_details->id}}" selected>{{$p_details->productSku->product->product_name}} - {{ $p_details->productSku->sku }}</option>
                                          @endforeach
-                                         @foreach($productSkus as $key => $productSku)
-                                            <option value="{{$productSku->id}}">{{$productSku->product->product_name}} - {{ $productSku->sku }}</option>
-                                         @endforeach
                                       </select>
                                       <span class="text-danger">{{$errors->first('model_id')}}</span>
                                    </div>
@@ -70,38 +67,38 @@
                                         <input type="text" name="imageurl" id="imageurl" value="" class="primary_input_field" >
                                     </div>
                                 </div>
-                                <div class="col-lg-4">
+                                {{-- <div class="col-lg-4">
                                    <div class="primary_input mb-15">
                                       <label class="primary_input_label" for="">{{__("common.Purchase Price")}}  </label>
                                       <div class="">
                                          <input type="number" step="0.01" name="purchase_price" id="purchase_price" value="{{ $productCombo->total_purchase_price }}" class="primary_input_field" >
                                       </div>
                                    </div>
-                                </div>
-                                <div class="col-lg-4">
+                                </div> --}}
+                                {{-- <div class="col-lg-4">
                                    <div class="primary_input mb-15">
                                       <label class="primary_input_label" for="">{{__("common.Selling Price")}}  </label>
                                       <div class="">
                                          <input type="number" step="0.01" name="selling_price" id="selling_price" value="{{ $productCombo->total_regular_price }}" class="primary_input_field" >
                                       </div>
                                    </div>
-                                </div>
-                                <div class="col-lg-4">
+                                </div> --}}
+                                {{-- <div class="col-lg-4">
                                    <div class="primary_input mb-15">
                                       <label class="primary_input_label" for="">{{__("common.Min. Selling Price")}}  </label>
                                       <div class="">
                                          <input type="number" step="0.01" name="min_selling_price" id="selling_price" value="{{ $productCombo->min_selling_price }}" class="primary_input_field" >
                                       </div>
                                    </div>
-                                </div>
-                                <div class="col-lg-4" id="combo_sell_Price_div">
+                                </div> --}}
+                                {{-- <div class="col-lg-4" id="combo_sell_Price_div">
                                    <div class="primary_input mb-15">
                                       <label class="primary_input_label" for="">{{__("common.Combo Selling Price")}}  </label>
                                       <div class="">
                                          <input type="number" step="0.01" name="combo_selling_price" id="combo_selling_price" value="{{ $productCombo->price }}" class="primary_input_field" >
                                       </div>
                                    </div>
-                                </div>
+                                </div> --}}
                                 <div class="col-lg-4" id="showroom_div">
                                    <div class="primary_input mb-15">
                                       <label class="primary_input_label" for="">{{__("sale.Select Branch or WareHouse")}}</label>
