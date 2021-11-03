@@ -46,9 +46,12 @@
                                 <div class="col-lg-8" id="select_product">
                                    <div class="primary_input mb-15">
                                       <label class="primary_input_label" for="">{{__('product.Select Product')}}</label>
-                                      <select class="primary_select mb-15" id="selected_product_id" name="selected_product_id[]" multiple disabled>
+                                      <select class="primary_select mb-15" id="selected_product_id" name="selected_product_id[]" multiple >
                                          @foreach($productCombo->combo_products as $key => $p_details)
                                          <option value="{{$p_details->id}}" selected>{{$p_details->productSku->product->product_name}} - {{ $p_details->productSku->sku }}</option>
+                                         @endforeach
+                                         @foreach($productSkus as $key => $productSku)
+                                            <option value="{{$productSku->id}}">{{$productSku->product->product_name}} - {{ $productSku->sku }}</option>
                                          @endforeach
                                       </select>
                                       <span class="text-danger">{{$errors->first('model_id')}}</span>
