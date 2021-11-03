@@ -191,11 +191,12 @@
                                                 <th scope="col">{{__('product.Sl')}}</th>
                                                 <th scope="col">{{__('product.Image')}}</th>
                                                 <th scope="col">{{__('product.Name')}}</th>
-                                                <th scope="col">{{__('product.Price')}}</th>
+                                                {{-- <th scope="col">{{__('product.Price')}}</th> --}}
+                                                <th scope="col">SKU</th>
                                                 <th scope="col">{{__('product.Regular Price')}}</th>
-                                                <th scope="col">{{__('product.Total Product')}}</th>
-                                                <th scope="col">{{__('common.Status')}}</th>
-                                                <th scope="col">{{__('common.Enable')}}</th>
+                                                {{-- <th scope="col">{{__('product.Total Product')}}</th> --}}
+                                                {{-- <th scope="col">{{__('common.Status')}}</th> --}}
+                                                {{-- <th scope="col">{{__('common.Enable')}}</th> --}}
                                                 <th scope="col">{{__('common.Action')}}</th>
                                             </tr>
                                             </thead>
@@ -215,17 +216,18 @@
                                                         @endif
                                                     </td>
                                                     <td>{{$comboProduct->name}}</td>
-                                                    <td>{{single_price($comboProduct->price)}}</td>
+                                                    {{-- <td>{{single_price($comboProduct->price)}}</td> --}}
+                                                    <td>{{ $comboProduct->sku_lazada }}</td>
                                                     <td>{{single_price($comboProduct->total_regular_price)}}</td>
-                                                    <td class="text-center">{{count($comboProduct->combo_products)}} {{ __('product.pcs') }}</td>
-                                                    <td class="text-center">
+                                                    {{-- <td class="text-center">{{count($comboProduct->combo_products)}} {{ __('product.pcs') }}</td> --}}
+                                                    {{-- <td class="text-center">
                                                         @if ($comboProduct->status == 0)
                                                             <span class="badge_4">{{ __('product.Close') }}</span>
                                                         @else
                                                             <span class="badge_1">{{ __('product.Open') }}</span>
                                                         @endif
-                                                    </td>
-                                                    <td>
+                                                    </td> --}}
+                                                    {{-- <td>
                                                         <label class="switch_toggle"
                                                                for="active_checkbox{{ $comboProduct->id }}">
                                                             <input type="checkbox"
@@ -235,7 +237,7 @@
                                                                    onchange="update_active_status(this)">
                                                             <div class="slider round"></div>
                                                         </label>
-                                                    </td>
+                                                    </td> --}}
                                                     <td>
                                                         <!-- shortby  -->
                                                         <div class="dropdown CRM_dropdown">
