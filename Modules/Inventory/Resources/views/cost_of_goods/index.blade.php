@@ -35,11 +35,11 @@
                                             <th>{{ $key+1 }}</th>
                                             <td>
                                                 @if (@$cost_of_good->productSku->product->product_type == "Single" && @$cost_of_good->productSku->product->image_source != null)
-                                                    <img style="height: 36px;" src="{{asset($cost_of_good->productSku->product->image_source ?? 'public/backEnd/img/no_image.png')}}" alt="{{$cost_of_good->productSku->product->product_name}}">
+                                                    <img style="height: 80px;width: 80px" src="{{asset($cost_of_good->productSku->product->image_source ?? 'public/backEnd/img/no_image.png')}}" alt="{{$cost_of_good->productSku->product->product_name}}">
                                                 @elseif(@$cost_of_good->productSku->product->product_type == "Variable" && @$cost_of_good->productSku->product->image_source != null)
-                                                    <img style="height: 36px;" src="{{asset($cost_of_good->productSku->product_variation->image_source ?? 'backEnd/img/no_image.png')}}" alt="{{$cost_of_good->productSku->product->product_name}}">
+                                                    <img style="height: 80px;width: 80px" src="{{asset($cost_of_good->productSku->product_variation->image_source ?? 'backEnd/img/no_image.png')}}" alt="{{$cost_of_good->productSku->product->product_name}}">
                                                 @else
-                                                    <img style="height: 36px;" src="{{asset('backEnd/img/no_image.png')}}" alt="{{@$cost_of_good->productSku->product->product_name}}">
+                                                    <img style="height: 80px;width: 80px" src="{{asset('backEnd/img/no_image.png')}}" alt="{{@$cost_of_good->productSku->product->product_name}}">
                                                 @endif
                                             </td>
                                             <td>{{ ($cost_of_good->costable->invoice_no) ? $cost_of_good->costable->invoice_no : "Begining" }}</td>

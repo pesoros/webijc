@@ -68,7 +68,7 @@
                                                             </th>
                                                             <th>{{$key+1}}</th>
                                                             <td>
-                                                                <img style="height: 36px;" src="{{asset(@$product_stock->productSku->product->image_source)}}">
+                                                                <img style="height: 80px;width: 80px" src="{{asset(@$product_stock->productSku->product->image_source)}}">
                                                             </td>
                                                             <td>{{@$product_stock->productSku->product->product_name}}</td>
                                                             <td>{{@$product_stock->productSku->sku}}</td>

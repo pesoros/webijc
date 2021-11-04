@@ -51,15 +51,15 @@
                                                 <th>{{$key+1}}</th>
                                                 <td>
                                                     @if (@$productSku->product->product_type == "Single" && @$productSku->product->image_source != null)
-                                                        <img style="height: 36px;"
+                                                        <img style="height: 80px;width: 80px"
                                                              src="{{asset(@$productSku->product->image_source ?? 'public/backEnd/img/no_image.png')}}"
                                                              alt="{{@$productSku->product->product_name}}">
                                                     @elseif(@$productSku->product->product_type == "Variable" && @$productSku->product->image_source != null)
-                                                        <img style="height: 36px;"
+                                                        <img style="height: 80px;width: 80px"
                                                              src="{{asset(@$productSku->product_variation->image_source ?? 'public/backEnd/img/no_image.png')}}"
                                                              alt="{{@$productSku->product->product_name}}">
                                                     @else
-                                                        <img style="height: 36px;"
+                                                        <img style="height: 80px;width: 80px"
                                                              src="{{asset('public/backEnd/img/no_image.png')}}"
                                                              alt="{{@$productSku->product->product_name}}">
                                                     @endif
