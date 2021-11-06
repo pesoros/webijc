@@ -246,6 +246,8 @@
                                                                     data-toggle="dropdown" aria-haspopup="true"
                                                                     aria-expanded="false"> select
                                                             </button>
+                                                            <button class="btn btn-secondary dropdown-toggle" type="button"
+                                                                           onclick="product_detail({{ $comboProduct->id }} , 'combo')">{{__('common.View')}}</button>
                                                             <div class="dropdown-menu dropdown-menu-right"
                                                                  aria-labelledby="dropdownMenu2">
                                                                 @if (count($comboProduct->combo_products) > 0)

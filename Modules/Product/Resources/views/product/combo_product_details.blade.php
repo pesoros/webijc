@@ -46,7 +46,7 @@
                                                         <img style="height:70px;" src="{{ asset(@$comboProduct->productSku->product_variation->image_source) }}"></td>
                                                     @endif --}}
                                                 <td>
-                                                   <input type="text" value="{{Str::limit(@$comboProduct->productSku->product->product_name, 50, $end='...')}}" readonly class="primary_input_field">
+                                                   <input type="text" value="{{Str::limit(@$comboProduct->productSku->product->product_name, 120, $end='...')}}" readonly class="primary_input_field">
                                                 </td>
                                                 <td>
                                                     <input type="text" value="{{ @$comboProduct->productSku->sku }}" readonly class="primary_input_field">
