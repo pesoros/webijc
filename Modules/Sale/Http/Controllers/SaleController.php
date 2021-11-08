@@ -71,7 +71,7 @@ class SaleController extends Controller
         $this->introPrefixRepository = $introPrefixRepository;
         $this->variationRepository = $variationRepository;
         $this->lazadaSet = $lazadaSet;
-        $this->accessToken = Lztoken::where('akun_name','nomoruno1@gmail.com')->get();
+        $this->accessToken = Lztoken::where('akun_name','jegeteindonesia@gmail.com')->get();
         $this->apiGatewayGlobal = env('LZ_API_GATEWAY_GLOBAL');
         $this->apiGateway = env('LZ_API_GATEWAY');
         $this->apiKey = env('LZ_API_KEY');
