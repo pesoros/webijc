@@ -1277,7 +1277,7 @@ class SaleController extends Controller
     public function get_orders($status = '', $saleDate = '')
     {
         // if ($saleDate != '') {            
-            $theDate = Carbon::createFromFormat('Y-m-d', $saleDate);
+            $theDate = Carbon::createFromFormat('Y-m-d', date('Y-m-d'));
             // if ($status == 'pending' || $status == 'canceled' || $status == 'failed' || $status == 'lost_by_3pl') {
                 $daysToMin = 2;
                 $datestart = Carbon::now()->subMonth()->format('Y-m-d').'T00:00:00+08:00';
