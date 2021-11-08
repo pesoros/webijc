@@ -15,7 +15,7 @@
                 </div>
             </div>
         </div>
-        <div class="col-2" style="margin-bottom: 15px;">
+        {{-- <div class="col-2" style="margin-bottom: 15px;">
             <div class="primary_datepicker_input">
                 <div class="no-gutters input-right-icon">
                     <div class="col">
@@ -32,7 +32,7 @@
                     </button>
                 </div>
             </div>
-        </div>  
+        </div>   --}}
     </div>
     <div class="row">
         <!-- Start Sms Details -->
