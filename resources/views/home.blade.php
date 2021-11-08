@@ -137,7 +137,7 @@
                     </div>
                 @endif
 
-                @if (auth()->user()->role->type == "system_user")
+                {{-- @if (auth()->user()->role->type == "system_user") --}}
                     @if (permissionCheck('widget.net_profit'))
                         <div class="col-md-3 col-lg-3 col-sm-3">
                             <div class="white-box single-summery">
@@ -152,7 +152,7 @@
                             </div>
                         </div>
                     @endif
-                @endif
+                {{-- @endif --}}
             </div>
         </div>
         @endif
