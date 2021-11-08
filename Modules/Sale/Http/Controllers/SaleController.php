@@ -1276,24 +1276,24 @@ class SaleController extends Controller
 
     public function get_orders($status = '', $saleDate = '')
     {
-        if ($saleDate != '') {            
+        // if ($saleDate != '') {            
             $theDate = Carbon::createFromFormat('Y-m-d', $saleDate);
-            if ($status == 'pending' || $status == 'canceled' || $status == 'failed' || $status == 'lost_by_3pl') {
+            // if ($status == 'pending' || $status == 'canceled' || $status == 'failed' || $status == 'lost_by_3pl') {
                 $daysToMin = 2;
                 $datestart = Carbon::now()->subMonth()->format('Y-m-d').'T00:00:00+08:00';
                 $daysToAdd = 1;
                 $dateend = Carbon::now()->addDays($daysToAdd)->format('Y-m-d').'T01:00:00+08:00';
-            } else {
-                $datestart = $theDate->format('Y-m-d').'T00:00:00+08:00';
-                $daysToAdd = 1;
-                $dateend = $theDate->addDays($daysToAdd)->format('Y-m-d').'T01:00:00+08:00';
-            }
-        } else {
-            $theDate = Carbon::createFromFormat('Y-m-d', date('Y-m-d'));
-            $daysToAdd = 1;
-            $datestart = $theDate->format('Y-m-d').'T00:00:00+08:00';
-            $dateend = $theDate->addDays($daysToAdd)->format('Y-m-d').'T01:00:00+08:00';
-        }        
+        //     } else {
+        //         $datestart = $theDate->format('Y-m-d').'T00:00:00+08:00';
+        //         $daysToAdd = 1;
+        //         $dateend = $theDate->addDays($daysToAdd)->format('Y-m-d').'T01:00:00+08:00';
+        //     }
+        // } else {
+        //     $theDate = Carbon::createFromFormat('Y-m-d', date('Y-m-d'));
+        //     $daysToAdd = 1;
+        //     $datestart = $theDate->format('Y-m-d').'T00:00:00+08:00';
+        //     $dateend = $theDate->addDays($daysToAdd)->format('Y-m-d').'T01:00:00+08:00';
+        // }        
         
         $tokenwehave = $this->accessToken;
         $arr = [];
