@@ -1371,7 +1371,7 @@ class SaleController extends Controller
     public function lazadaList(Request $request)
     {
         $status = $request->status;
-        $saleDate = $request->saleDate;
+        $saleDate = '';
         $arrStatus = [];
         if ($status == 'returned') {
             $arrStatus[0] = $status;

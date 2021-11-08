@@ -360,16 +360,15 @@
             }
             $('.tab-content').empty();
             $('.tab-content').prepend('<img src="{{ asset('public/backEnd/img/spinner.gif') }}" style="margin-top: 90px;"/>');
-            let theDate = $('#saleDate').val();
+            // let theDate = $('#saleDate').val();
             var pieces = theDate.split('/');
-            var saleDate = pieces[2] + '-' + pieces[0] + '-' + pieces[1];
+            // var saleDate = pieces[2] + '-' + pieces[0] + '-' + pieces[1];
 
             $.ajax({
                 method: 'POST',
                 url: '{{route('sale.lazada_list')}}',
                 data: {
                     status: status,
-                    saleDate: saleDate,
                     _token: "{{csrf_token()}}",
                 },
                 success: function (result) {
