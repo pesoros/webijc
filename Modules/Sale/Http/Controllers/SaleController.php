@@ -1306,7 +1306,7 @@ class SaleController extends Controller
             // $request->addApiParam('update_before','2018-02-10T16:00:00+08:00');
             $request->addApiParam('sort_direction','DESC');
             $request->addApiParam('offset','0');
-            $request->addApiParam('limit','10');
+            $request->addApiParam('limit','100');
             // $request->addApiParam('update_after','2017-02-10T09:00:00+08:00');
             $request->addApiParam('sort_by','created_at');
             $request->addApiParam('created_before', $dateend);
