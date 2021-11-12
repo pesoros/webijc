@@ -1488,26 +1488,26 @@ class SaleController extends Controller
             return $e->getMessage();
         }
 
-        // $querystring = $request->all();
-        // if ( isset($querystring['orderItemId']) == false || isset($querystring['token']) == false || isset($querystring['shippingType']) == false ) {
-        //     echo 'query string required';
-        //     return;
-        // } 
+        $querystring = $request->all();
+        if ( isset($querystring['orderItemId']) == false || isset($querystring['token']) == false || isset($querystring['shippingType']) == false ) {
+            echo 'query string required';
+            return;
+        } 
 
-        // $shippingType = strtolower($querystring['shippingType']);
-        // $arr = [];
-        // $method = 'POST';
-        // $apiName = '/order/pack';
+        $shippingType = strtolower($querystring['shippingType']);
+        $arr = [];
+        $method = 'POST';
+        $apiName = '/order/pack';
 
-        // $c = new LazopClient($this->apiGateway, $this->apiKey, $this->apiSecret);
-        // $request = new LazopRequest($apiName,$method);
-        // // $request->addApiParam('shipping_provider','Aramax');
-        // $request->addApiParam('delivery_type', 'dropship');
-        // $request->addApiParam('order_item_ids', '['.$querystring['orderItemId'].']');
-        // // $request->addApiParam('order_item_ids', '[123123]');
-        // $executelazop = json_decode($c->execute($request, $querystring['token']), true);
+        $c = new LazopClient($this->apiGateway, $this->apiKey, $this->apiSecret);
+        $request = new LazopRequest($apiName,$method);
+        // $request->addApiParam('shipping_provider','Aramax');
+        $request->addApiParam('delivery_type', 'dropship');
+        $request->addApiParam('order_item_ids', '['.$querystring['orderItemId'].']');
+        // $request->addApiParam('order_item_ids', '[123123]');
+        $executelazop = json_decode($c->execute($request, $querystring['token']), true);
 
-        // return $executelazop;
+        return $executelazop;
 
         return $saveInStore;
     }
