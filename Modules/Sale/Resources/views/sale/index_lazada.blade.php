@@ -334,7 +334,7 @@
                 }  if (statusState == 'packed') {
                     $( ".order-action-spot" ).show();
                     $( ".order-invoice-spot" ).show();
-                    $( ".order-shipping-spot" ).hide();
+                    $( ".order-shipping-spot" ).show();
                 }  if (statusState == 'ready_to_ship') {
                     $( ".order-action-spot" ).hide();
                     $( ".order-invoice-spot" ).show();
