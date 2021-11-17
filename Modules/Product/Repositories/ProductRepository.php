@@ -128,6 +128,7 @@ class ProductRepository implements ProductRepositoryInterface
             $comboProduct->min_selling_price = $data['min_selling_price'];
             $comboProduct->description = $data['product_description'];
             $comboProduct->sku_lazada = $data['sku_lazada'];
+            $comboProduct->url_lazada = $data['url_lazada'];
             $comboProduct->image_source = isset($data['imageurl']) ? $data['imageurl'] : null;
             if ($comboProduct->save()) {
                 foreach ($data['selected_product_id'] as $key => $product_id) {
@@ -259,6 +260,7 @@ class ProductRepository implements ProductRepositoryInterface
             $comboProduct->min_selling_price = $data['min_selling_price'];
             $comboProduct->description = $data['product_description'];
             $comboProduct->sku_lazada = $data['sku_lazada'];
+            $comboProduct->url_lazada = $data['url_lazada'];
             if ($data['imageurl']) {
                 $comboProduct->image_source = isset($data['imageurl']) ? $data['imageurl'] : null;
             }
