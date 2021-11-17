@@ -267,7 +267,7 @@
                                                                        class="dropdown-item edit_brand">{{__('common.Delete')}}</a>
                                                                 @endif
                                                                 @if ($comboProduct->url_lazada)
-                                                                    <a href="{{ $comboProduct->url_lazada }}" data-toggle="modal"
+                                                                    <a href="{{ $comboProduct->url_lazada }}" target="_blank" data-toggle="modal"
                                                                         class="dropdown-item" >Link</a>
                                                                 @endif
                                                             </div>
