@@ -183,7 +183,7 @@
                                         </div>
                                         <div class="col-lg-4" id="url_lazada_div">
                                             <div class="primary_input mb-15">
-                                                <label class="primary_input_label" for="url_lazada">SKU Lazada</label>
+                                                <label class="primary_input_label" for="url_lazada">URL Lazada</label>
                                                 <input type="text" name="url_lazada" id="url_lazada" value="" class="primary_input_field" >
                                                 <span id="selected_product_id_error_container" ></span>
                                             </div>

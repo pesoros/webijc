@@ -63,7 +63,7 @@
                                 </div>
                                 <div class="col-lg-4" id="select_product">
                                     <div class="primary_input mb-15">
-                                        <label class="primary_input_label" for="selected_product_id">SKU Lazada</label>
+                                        <label class="primary_input_label" for="selected_product_id">URL Lazada</label>
                                         <input type="text" name="url_lazada" id="url_lazada" value="{{$productCombo->url_lazada}}" class="primary_input_field" >
                                         <span id="selected_product_id_error_container" ></span>
                                     </div>
