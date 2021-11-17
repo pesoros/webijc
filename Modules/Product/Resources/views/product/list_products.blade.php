@@ -268,7 +268,7 @@
                                                                 @endif
                                                                 @if ($comboProduct->url_lazada)
                                                                     <a href="{{ $comboProduct->url_lazada }}" target="_blank" data-toggle="modal"
-                                                                        class="dropdown-item" >Link</a>
+                                                                        class="dropdown-item" onclick="window.open('{{ $comboProduct->url_lazada }}')">Link</a>
                                                                 @endif
                                                             </div>
                                                         </div>
