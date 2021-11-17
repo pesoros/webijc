@@ -266,7 +266,7 @@
                                                                     <a onclick="confirm_modal('{{route('combo_product.destroy',$comboProduct->id)}}');"
                                                                        class="dropdown-item edit_brand">{{__('common.Delete')}}</a>
                                                                 @endif
-                                                                <a href="{{ $comboProduct->url_lazada }}" data-toggle="modal"
+                                                                <a href="//{{ $comboProduct->url_lazada }}" data-toggle="modal"
                                                                            class="dropdown-item" >Link</a>
                                                             </div>
                                                         </div>
