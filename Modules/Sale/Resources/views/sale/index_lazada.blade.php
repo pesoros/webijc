@@ -253,7 +253,7 @@
                 data: dataToSend,
                 success: function (result) {
                     console.log(result)
-                    location.reload();
+                    getLazadaList(null);
                 }
             })
 
