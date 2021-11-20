@@ -48,7 +48,7 @@
                 </li>
                 <li class="nav-item">
                     <a class="nav-link" href="javascript:void(0)" onclick="getLazadaList('packed')" role="tab"
-                       data-toggle="tab">Siap Packing</a>
+                       data-toggle="tab">Siap Packing <span>666</span></a>
                 </li>
                 <li class="nav-item">
                     <a class="nav-link" href="javascript:void(0)" onclick="getLazadaList('ready_to_ship')" role="tab"
