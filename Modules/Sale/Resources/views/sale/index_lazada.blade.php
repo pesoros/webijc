@@ -374,7 +374,7 @@
                 success: function (result) {
                     $('.tab-content').empty();
                     $('.tab-content').append(result.body);
-                    $('.countspan').val(result.countspan);
+                    $('.countspan').text(result.countspan);
                 }
             })
         }
