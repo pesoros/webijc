@@ -40,27 +40,27 @@
             <ul class="nav nav-tabs tab_column border-0" role="tablist">
                 <li class="nav-item">
                     <a class="nav-link active" href="javascript:void(0)" onclick="getLazadaList('unpaid')" role="tab" 
-                        data-toggle="tab">Belum Dibayar</a>
+                        data-toggle="tab">Belum Dibayar <span class="countspan"></span></a>
                 </li>
                 <li class="nav-item">
                     <a class="nav-link" href="javascript:void(0)" onclick="getLazadaList('pending')" role="tab"
-                       data-toggle="tab">Order Masuk</a>
+                       data-toggle="tab">Order Masuk <span class="countspan"></span></a>
                 </li>
                 <li class="nav-item">
                     <a class="nav-link" href="javascript:void(0)" onclick="getLazadaList('packed')" role="tab"
-                       data-toggle="tab">Siap Packing <span>666</span></a>
+                       data-toggle="tab">Siap Packing <span class="countspan"></span></a>
                 </li>
                 <li class="nav-item">
                     <a class="nav-link" href="javascript:void(0)" onclick="getLazadaList('ready_to_ship')" role="tab"
-                       data-toggle="tab">Siap Diambil</a>
+                       data-toggle="tab">Siap Diambil <span class="countspan"></span></a>
                 </li>
                 <li class="nav-item">
                     <a class="nav-link" href="javascript:void(0)" onclick="getLazadaList('shipped')" role="tab"
-                       data-toggle="tab">Dalam Pengiriman</a>
+                       data-toggle="tab">Dalam Pengiriman <span class="countspan"></span></a>
                 </li>
                 <li class="nav-item">
                     <a class="nav-link" href="javascript:void(0)" onclick="getLazadaList('delivered')" role="tab"
-                       data-toggle="tab">Diterima</a>
+                       data-toggle="tab">Diterima <span class="countspan"></span></a>
                 </li>
             </ul>
             <div class="tab-content" style="text-align: center !important;">  
@@ -373,7 +373,8 @@
                 },
                 success: function (result) {
                     $('.tab-content').empty();
-                    $('.tab-content').append(result);
+                    $('.tab-content').append(result.body);
+                    $('.countspan').val(result.countspan);
                 }
             })
         }

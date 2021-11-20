@@ -1392,8 +1392,10 @@ class SaleController extends Controller
         $dataOrders = $lazadaOrders['data'];
 
         $htmlBody = view('sale::sale.lazadaSaleList', ['dataOrders'=>$dataOrders])->render();
-
-        return $htmlBody;
+        $countspan = count($dataOrders);
+        $res['body'] = $htmlBody;
+        $res['countspan'] = $countspan;
+        return $res;
     }
 
     public function lazadaListReverse(Request $request)
