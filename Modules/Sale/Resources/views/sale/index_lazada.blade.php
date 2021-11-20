@@ -363,7 +363,6 @@
             // let theDate = $('#saleDate').val();
             // var pieces = theDate.split('/');
             // var saleDate = pieces[2] + '-' + pieces[0] + '-' + pieces[1];
-            countsnap()
             $.ajax({
                 method: 'POST',
                 url: '{{route('sale.lazada_list')}}',
@@ -375,6 +374,7 @@
                     $('.tab-content').empty();
                     $('.tab-content').append(result.body);
                     $('.countspan').text(result.countspan);
+                    countsnap()
                 }
             })
         }
