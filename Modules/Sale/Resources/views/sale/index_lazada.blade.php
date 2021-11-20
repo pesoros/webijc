@@ -40,27 +40,27 @@
             <ul class="nav nav-tabs tab_column border-0" role="tablist">
                 <li class="nav-item">
                     <a class="nav-link active" href="javascript:void(0)" onclick="getLazadaList('unpaid')" role="tab" 
-                        data-toggle="tab">Belum Dibayar <span class="countspan"></span></a>
+                        data-toggle="tab">Belum Dibayar <span class="countspan belumbayar"></span></a>
                 </li>
                 <li class="nav-item">
                     <a class="nav-link" href="javascript:void(0)" onclick="getLazadaList('pending')" role="tab"
-                       data-toggle="tab">Order Masuk <span class="countspan"></span></a>
+                       data-toggle="tab">Order Masuk <span class="countspan ordermasuk"></span></a>
                 </li>
                 <li class="nav-item">
                     <a class="nav-link" href="javascript:void(0)" onclick="getLazadaList('packed')" role="tab"
-                       data-toggle="tab">Siap Packing <span class="countspan"></span></a>
+                       data-toggle="tab">Siap Packing <span class="countspan siappacking"></span></a>
                 </li>
                 <li class="nav-item">
                     <a class="nav-link" href="javascript:void(0)" onclick="getLazadaList('ready_to_ship')" role="tab"
-                       data-toggle="tab">Siap Diambil <span class="countspan"></span></a>
+                       data-toggle="tab">Siap Diambil <span class="countspan siapdiambil"></span></a>
                 </li>
                 <li class="nav-item">
                     <a class="nav-link" href="javascript:void(0)" onclick="getLazadaList('shipped')" role="tab"
-                       data-toggle="tab">Dalam Pengiriman <span class="countspan"></span></a>
+                       data-toggle="tab">Dalam Pengiriman <span class="countspan dalampengiriman"></span></a>
                 </li>
                 <li class="nav-item">
                     <a class="nav-link" href="javascript:void(0)" onclick="getLazadaList('delivered')" role="tab"
-                       data-toggle="tab">Diterima <span class="countspan"></span></a>
+                       data-toggle="tab">Diterima <span class="countspan diterima"></span></a>
                 </li>
             </ul>
             <div class="tab-content" style="text-align: center !important;">  
@@ -377,6 +377,52 @@
                     $('.countspan').text(result.countspan);
                 }
             })
+        }
+
+        function countsnap() {
+            if (statusState == 'unpaid') {
+                $('.belumbayar').show();
+                $('.ordermasuk').hide();
+                $('.siappacking').hide();
+                $('.siapdiambil').hide();
+                $('.dalampengiriman').hide();
+                $('.diterima').hide();
+            } else if (statusState == 'pending') {
+                $('.belumbayar').hide();
+                $('.ordermasuk').show();
+                $('.siappacking').hide();
+                $('.siapdiambil').hide();
+                $('.dalampengiriman').hide();
+                $('.diterima').hide();
+            } else if (statusState == 'packed') {
+                $('.belumbayar').hide();
+                $('.ordermasuk').hide();
+                $('.siappacking').show();
+                $('.siapdiambil').hide();
+                $('.dalampengiriman').hide();
+                $('.diterima').hide();
+            } else if (statusState == 'ready_to_ship') {
+                $('.belumbayar').hide();
+                $('.ordermasuk').hide();
+                $('.siappacking').hide();
+                $('.siapdiambil').show();
+                $('.dalampengiriman').hide();
+                $('.diterima').hide();
+            } else if (statusState == 'shipped') {
+                $('.belumbayar').hide();
+                $('.ordermasuk').hide();
+                $('.siappacking').hide();
+                $('.siapdiambil').hide();
+                $('.dalampengiriman').show();
+                $('.diterima').hide();
+            } else if (statusState == 'delivered') {
+                $('.belumbayar').hide();
+                $('.ordermasuk').hide();
+                $('.siappacking').hide();
+                $('.siapdiambil').hide();
+                $('.dalampengiriman').hide();
+                $('.diterima').show();
+            }
         }
     </script>
 @endpush
