@@ -373,7 +373,7 @@
                 success: function (result) {
                     $('.tab-content').empty();
                     $('.tab-content').append(result.body);
-                    $('.countspan').text(result.countspan);
+                    $('.countspan').text("(" + result.countspan + ")");
                     countsnap()
                 }
             })
