@@ -92,7 +92,7 @@ class SaleController extends Controller
                 return back();
             }
         } else {
-            $lazadaOrders = $this->get_orders('unpaid');
+            $lazadaOrders = $this->get_orders('shipped');
             // return $lazadaOrders;
             $dataOrders = $lazadaOrders['data'];
 
@@ -1607,6 +1607,53 @@ class SaleController extends Controller
             return view('sale::sale.print_invoice', ['fileBase'=>$fileBase]);
         }
     }
+
+    public function getDocumentMultiple(Request $request)
+    {
+        $querystring = $request->all();
+        if ( isset($querystring['orderItemId']) == false || isset($querystring['doctype']) == false) {
+            echo 'query string required!';
+            return;
+        } 
+
+        $collect = [];
+        $orderitemar = explode(",",$querystring['orderItemId']);
+        foreach ($orderitemar as $key => $value) {
+            $expl = explode("-",$value);
+            $token = $expl[0];
+            $orderid = $expl[1];
+            $orderitem = $this->get_orderItem($orderid, $token);
+            $orderitem = $orderitem[0]['order_item_id'];
+            if (isset($collect[$token]) == false) {
+                $collect[$token] = $orderitem;
+            } else {
+                $collect[$token] = $collect[$token].','.$orderitem;
+            }
+        }
+
+        foreach ($collect as $key => $value) {
+            $arr = [];
+            $method = 'GET';
+            $apiName = '/order/document/awb/pdf/get';
+
+            $c = new LazopClient($this->apiGateway, $this->apiKey, $this->apiSecret);
+            $request = new LazopRequest('/order/document/awb/pdf/get',$method);
+            $request->addApiParam('order_item_ids', '['.$value.']');
+            $request->addApiParam('doc_type', $querystring['doctype']);
+            $executelazop = json_decode($c->execute($request, $key), true);
+
+            
+            $fileBase = base64_decode($executelazop['data']['document']['file']);
+        }     
+        
+        if ($executelazop['data']['document']['document_type'] == 'shippingLabel') {
+            return view('sale::sale.print_shipping', ['fileBase'=>$fileBase]);
+        } else if ($executelazop['data']['document']['document_type'] == 'invoice') {
+            return view('sale::sale.print_invoice', ['fileBase'=>$fileBase]);
+        }
+    }
+
+
 
     public function get_transaction(Request $request)
     {

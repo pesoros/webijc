@@ -8,15 +8,15 @@
         }
     @endphp
     <div class="row justify-content-center">
-        <div class="col-10">
+        <div class="col-6">
             <div class="box_header common_table_header"> 
                 <div class="main-title d-md-flex">
                     <h3 class="mb-0 mr-30 mb_xs_15px mb_sm_20px">Lazada {{__('sale.Sales')}}</h3>
                 </div>
             </div>
         </div>
-        {{-- <div class="col-2" style="margin-bottom: 15px;">
-            <div class="primary_datepicker_input">
+        <div class="col-6" style="margin-bottom: 15px;">
+            {{-- <div class="primary_datepicker_input">
                 <div class="no-gutters input-right-icon">
                     <div class="col">
                         <div class="">
@@ -31,37 +31,55 @@
                         <i class="ti-calendar" id="start-date-icon"></i>
                     </button>
                 </div>
+            </div> --}}
+            <div class="float-lg-right float-none pos_tab_btn justify-content-end">
+                <ul class="nav">
+                    <li class="nav-item">
+                        <a class="nav-link" href="javascript:void(0)" onclick="printChecked()" role="tab"
+                           data-toggle="tab">Print <span class="countspan diterima"></span></a>
+                    </li>
+                </ul>
             </div>
-        </div>   --}}
+            
+            <div class="float-lg-right float-none pos_tab_btn justify-content-end">
+                <ul class="nav">
+                    <li class="nav-item">
+                        <a class="nav-link" href="javascript:void(0)" id="CheckAll" role="tab"
+                           data-toggle="tab">Centang Semua <span class="countspan diterima"></span></a>
+                    </li>
+                </ul>
+            </div>
+        </div>  
     </div>
     <div class="row">
         <!-- Start Sms Details -->
         <div class="col-lg-12 student-details">
             <ul class="nav nav-tabs tab_column border-0" role="tablist">
-                <li class="nav-item">
+                {{-- <li class="nav-item">
                     <a class="nav-link active" href="javascript:void(0)" onclick="getLazadaList('unpaid')" role="tab" 
                         data-toggle="tab">Belum Dibayar <span class="countspan belumbayar"></span></a>
-                </li>
-                <li class="nav-item">
+                </li> --}}
+                {{-- <li class="nav-item">
                     <a class="nav-link" href="javascript:void(0)" onclick="getLazadaList('pending')" role="tab"
                        data-toggle="tab">Order Masuk <span class="countspan ordermasuk"></span></a>
-                </li>
-                <li class="nav-item">
+                </li> --}}
+                {{-- <li class="nav-item">
                     <a class="nav-link" href="javascript:void(0)" onclick="getLazadaList('packed')" role="tab"
                        data-toggle="tab">Siap Packing <span class="countspan siappacking"></span></a>
-                </li>
-                <li class="nav-item">
+                </li> --}}
+                {{-- <li class="nav-item">
                     <a class="nav-link" href="javascript:void(0)" onclick="getLazadaList('ready_to_ship')" role="tab"
                        data-toggle="tab">Siap Diambil <span class="countspan siapdiambil"></span></a>
-                </li>
-                <li class="nav-item">
+                </li> --}}
+                {{-- <li class="nav-item">
                     <a class="nav-link" href="javascript:void(0)" onclick="getLazadaList('shipped')" role="tab"
                        data-toggle="tab">Dalam Pengiriman <span class="countspan dalampengiriman"></span></a>
-                </li>
-                <li class="nav-item">
+                </li> --}}
+                {{-- <li class="nav-item">
                     <a class="nav-link" href="javascript:void(0)" onclick="getLazadaList('delivered')" role="tab"
                        data-toggle="tab">Diterima <span class="countspan diterima"></span></a>
-                </li>
+                </li> --}}
+
             </ul>
             <div class="tab-content" style="text-align: center !important;">  
                 <div role="tabpanel" class="tab-pane fade show active" id="saleList">
@@ -73,8 +91,9 @@
                                         <table class="table Crm_table_active3">
                                             <thead>
                                             <tr>
-                                                <th scope="col">{{__('sale.Sl')}}</th>
-                                                <th scope="col">Date</th>
+                                                <th>Centang</th>
+                                                {{-- <th scope="col">{{__('sale.Sl')}}</th> --}}
+                                                <th scope="col">Tanggal Order</th>
                                                 <th scope="col">Order Number</th>
                                                 <th scope="col">Akun</th>
                                                 <th scope="col">Price</th>
@@ -84,16 +103,17 @@
                                             <tbody>
                                             @foreach($dataOrders as $key => $item)
                                                 <tr>
-                                                    <td>{{ $key+1 }}</td>
-                                                    <td>{{ \Carbon\Carbon::parse($item['created_at'])->format('d F Y H:mm:s') }}</td>
+                                                    <td><input type="checkbox" class="editor-active"  value="{{ $item['token'] }}-{{ $item['order_number'] }}"></td>
+                                                    {{-- <td>{{ $key+1 }}</td> --}}
+                                                    <td>{{ \Carbon\Carbon::parse($item['created_at'])->format('d F Y') }}</td>
                                                     <td>
                                                         {{ $item['order_number'] }}
                                                         <br>
-                                                        @if ($item['statuses'][0] == 'INFO_ST_DOMESTIC_RETURN_WITH_LAST_MILE_3PL')
+                                                        {{-- @if ($item['statuses'][0] == 'INFO_ST_DOMESTIC_RETURN_WITH_LAST_MILE_3PL')
                                                             Returned                                        
                                                         @else
                                                             {{ $item['statuses'][0] }}
-                                                        @endif
+                                                        @endif --}}
                                                     </td>
                                                     <td>{{ $item['nama_akun'] }}</td>
                                                     <td>{{ single_price($item['price']) }}</td>
@@ -424,5 +444,41 @@
                 $('.diterima').show();
             }
         }
+        function printChecked() {
+            let checkedVals = [];
+            let querystring = "";
+            $("input:checkbox[class=editor-active]:checked").each(function () {
+                checkedVals.push($(this).val());
+            });
+
+            for (let i = 0; i < checkedVals.length; i++) {
+                const element = checkedVals[i];
+                if (i !== 0) {
+                    querystring += ','; 
+                }
+                querystring += element;
+            }
+            console.log(querystring)
+
+
+            let reqUrl = '{{route('getDocumentMultiple')}}';
+            reqUrl += '?orderItemId=' + querystring;
+            reqUrl += '&doctype=shippingLabel';
+
+            window.open(reqUrl, '_blank');
+            return;
+        }
+
+        let checkaAll = 0
+
+        $("#CheckAll").click(function () {
+            if (checkaAll == 0) {
+                $('.editor-active').prop('checked', true);  
+                checkaAll = 1              
+            } else {
+                $('.editor-active').prop('checked', false);
+                checkaAll = 0
+            }
+        });
     </script>
 @endpush
