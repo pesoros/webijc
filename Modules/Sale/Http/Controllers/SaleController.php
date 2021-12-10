@@ -71,7 +71,7 @@ class SaleController extends Controller
         $this->introPrefixRepository = $introPrefixRepository;
         $this->variationRepository = $variationRepository;
         $this->lazadaSet = $lazadaSet;
-        $this->accessToken = Lztoken::where('akun_name','jegeteindonesia@gmail.com')->get();
+        $this->accessToken = Lztoken::get();
         $this->apiGatewayGlobal = env('LZ_API_GATEWAY_GLOBAL');
         $this->apiGateway = env('LZ_API_GATEWAY');
         $this->apiKey = env('LZ_API_KEY');
@@ -1631,6 +1631,8 @@ class SaleController extends Controller
             }
         }
 
+        $fileBase = [];
+
         foreach ($collect as $key => $value) {
             $arr = [];
             $method = 'GET';
@@ -1643,7 +1645,7 @@ class SaleController extends Controller
             $executelazop = json_decode($c->execute($request, $key), true);
 
             
-            $fileBase = base64_decode($executelazop['data']['document']['file']);
+            $fileBase[] = base64_decode($executelazop['data']['document']['file']);
         }     
         
         if ($executelazop['data']['document']['document_type'] == 'shippingLabel') {
