@@ -92,7 +92,7 @@ class SaleController extends Controller
                 return back();
             }
         } else {
-            $lazadaOrders = $this->get_orders('shipped');
+            $lazadaOrders = $this->get_orders('ready_to_ship');
             // return $lazadaOrders;
             $dataOrders = $lazadaOrders['data'];
 
