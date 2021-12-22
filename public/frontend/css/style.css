@@ -3774,6 +3774,7 @@ table.dataTable.dtr-inline.collapsed > tbody > tr.parent > th:first-child::befor
     border: 1px solid var(--gradient_1);
     text-transform: uppercase;
     line-height: 16px;
+    margin-right: 10px;
 }
 
 @media (max-width: 575.98px) {

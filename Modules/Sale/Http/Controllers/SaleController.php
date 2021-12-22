@@ -92,7 +92,7 @@ class SaleController extends Controller
                 return back();
             }
         } else {
-            $lazadaOrders = $this->get_orders('ready_to_ship');
+            $lazadaOrders = $this->get_orders('packed');
             // return $lazadaOrders;
             $dataOrders = $lazadaOrders['data'];
 
@@ -1606,6 +1606,56 @@ class SaleController extends Controller
         } else if ($executelazop['data']['document']['document_type'] == 'invoice') {
             return view('sale::sale.print_invoice', ['fileBase'=>$fileBase]);
         }
+    }
+
+    public function getMultipleOrderItem(Request $request)
+    {
+        $querystring = $request->all();
+        if ( isset($querystring['orderItemId']) == false || isset($querystring['doctype']) == false) {
+            echo 'query string required!';
+            return;
+        } 
+
+        $collect = [];
+        $orderitemar = explode(",",$querystring['orderItemId']);
+        foreach ($orderitemar as $key => $value) {
+            $expl = explode("-",$value);
+            $token = $expl[0];
+            $orderid = $expl[1];
+            $orderitem = $this->get_orderItem($orderid, $token);
+            $collect[$key] = $orderitem;
+        }
+
+        $ress = [];
+        foreach ($collect as $key => $value) {
+            $ress[$key]['sku'] = $value[0]['sku'];
+            $ress[$key]['product_main_image'] = $value[0]['product_main_image'];
+            $ress[$key]['name'] = $value[0]['name'];
+            $ress[$key]['order_id'] = $value[0]['order_id'];
+            $ress[$key]['tracking_code'] = $value[0]['tracking_code'];
+        }
+
+        $result = [];
+        foreach ($ress as $key => $value) {
+            if (isset($result[$value['sku']]) == false) {
+                $result[$value['sku']]['sku'] = $value['sku'];
+                $result[$value['sku']]['product_main_image'] = $value['product_main_image'];
+                $result[$value['sku']]['name'] = $value['name'];
+                $result[$value['sku']]['order_id'] = $value['order_id'];
+                $result[$value['sku']]['tracking_code'] = $value['tracking_code'];
+                $result[$value['sku']]['qty'] = 1;
+            } else {
+                // $result[$value['sku']]['sku'] = $value['sku'];
+                // $result[$value['sku']]['product_main_image'] = $value['product_main_image'];
+                // $result[$value['sku']]['name'] = $value['name'];
+                $result[$value['sku']]['order_id'] .= ', '.$value['order_id'];
+                $result[$value['sku']]['tracking_code'] .= ', '.$value['tracking_code'];
+                $result[$value['sku']]['qty'] = $result[$value['sku']]['qty'] + 1;
+            }
+        }
+        
+        return view('sale::sale.pick_list', ['result'=>$result]);
+        // return $result;
     }
 
     public function getDocumentMultiple(Request $request)

@@ -49,8 +49,6 @@ trait SaleProductSelect
                         <td><input type="hidden" name="product_id[]" value="' . $productSku->id . '" class="primary_input_field sku_id' . $productSku->id . '">' . $productSku->product->product_name . '</br>' . $variantName . '</td>
 
                         '.$row.'
-                        <td>'.@$productSku->product->model->name.'</td>
-                        <td>'.@$productSku->product->brand->name.'</td>
                         <td class="d-none">
                         <select class="primary_select mb-15 sale_type" id="serial_no" name="serial_no[]" multiple>
                             '.$option.'
@@ -64,15 +62,6 @@ trait SaleProductSelect
                         <td>
                             <input type="number" name="product_quantity[]" value="1" onkeyup="addQuantity(' . $type . ')" class="primary_input_field quantity quantity_sku' . $productSku->id . '">
                         </td>
-
-                        <td>
-                            <input type="number" name="product_tax[]"  value="' . $productSku->tax . '" onkeyup="addTax(' . $type . ')" class="primary_input_field tax tax_sku' . $productSku->id . '">
-                        </td>
-
-                        <td>
-                            <input type="number" name="product_discount[]" value="0" onkeyup="addDiscount(' . $type . ')" class="primary_input_field discount discount_sku' . $productSku->id . '">
-                        </td>
-                        <td style="text-align:center" class="product_subtotal product_subtotal_sku' . $productSku->id . '">' . $sub_total . '</td>
                         <td><a data-id="' . $productSku->id . '" data-product="' . $productSku->id . '-Normal" class="primary-btn primary-circle fix-gr-bg delete_product" href="javascript:void(0)"><i class="ti-trash"></i></a></td>
                         </tr>
 
@@ -140,8 +129,6 @@ trait SaleProductSelect
                         <td><input type="hidden" name="combo_product_id[]" value="' . $productCombo->id . '" class="primary_input_field sku_id' . $productCombo->id . '">' . $name . '</br>' . $variantName . '</td>
 
                         <td class="product_sku">'.$skU.'</td>
-                        <td></td>
-                        <td></td>
                         <td class="d-none">
                             <select class="primary_select mb-15 sale_type" id="combo_serial_no" name="combo_serial_no[]" multiple>
                                 '.$option.'
@@ -155,15 +142,6 @@ trait SaleProductSelect
                             class="primary_input_field quantity quantity_combo' . $productCombo->id . '">
                         </td>
 
-                        <td>
-                            <input type="number" name="product_tax[]"  value="0" onkeyup="addTax(' . $type . ')" class="primary_input_field tax tax_sku' . $productCombo->id . '">
-                        </td>
-
-                        <td>
-                            <input type="number" data-type="combo" name="combo_product_discount[]" value="0" onkeyup="addDiscount(' . $type . ')"
-                            class="primary_input_field discount discount_combo' . $productCombo->id . '">
-                        </td>
-                        <td style="text-align:center" class="product_subtotal product_subtotal_combo' . $productCombo->id . '">' . $productCombo->price . '</td>
                         <td><a data-id="' . $productCombo->id . '" data-product="' . $productCombo->id . '-Combo" class="primary-btn primary-circle fix-gr-bg delete_product new_delete_product" href="javascript:void(0)"><i class="ti-trash"></i></a></td>
                         </tr>
 

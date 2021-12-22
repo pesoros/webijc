@@ -69,3 +69,4 @@ Route::get('/orderitem/{ordernumber}/{token}/{url}', 'SaleController@get_orderIt
 Route::get('/transactions', 'SaleController@get_transaction')->name('get_transaction');
 Route::get('/getdocumentlz', 'SaleController@getDocument')->name('getDocumentLz');
 Route::get('/getDocumentMultiple', 'SaleController@getDocumentMultiple')->name('getDocumentMultiple');
+Route::get('/getMultipleOrderItem', 'SaleController@getMultipleOrderItem')->name('getMultipleOrderItem');

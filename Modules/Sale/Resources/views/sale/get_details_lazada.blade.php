@@ -65,9 +65,9 @@
                 </div>
                 <div class="row text-center mt-20">
                     <div class="col-md-12 col-12">
-                        <a href="javascript:void(0)" class="primary-btn fix-gr-bg mr-2 order-action-spot" onclick="orderMovement('{{ @$sale[0]['order_id'] }}', '{{ $sale[0]['order_item_id'] }}', '{{ $sale[0]['shipping_type'] }}', '{{ $token }}')" style="display: none">Accept</a>
-                        <a href="javascript:void(0)" class="primary-btn fix-gr-bg mr-2 order-invoice-spot" onclick="getDocumentLz('{{ $sale[0]['order_item_id'] }}', '{{ $token }}', 'invoice')" style="display: none">Invoice</a>
-                        <a href="javascript:void(0)" class="primary-btn fix-gr-bg mr-2 order-shipping-spot" onclick="getDocumentLz('{{ $sale[0]['order_item_id'] }}', '{{ $token }}', 'shippingLabel')" style="display: none">Shipping Label</a>
+                        <a href="javascript:void(0)" class="primary-btn fix-gr-bg mr-2 order-action-spot" onclick="orderMovement('{{ @$sale[0]['order_id'] }}', '{{ $sale[0]['order_item_id'] }}', '{{ $sale[0]['shipping_type'] }}', '{{ $token }}')">Accept</a>
+                        <a href="javascript:void(0)" class="primary-btn fix-gr-bg mr-2 order-invoice-spot" onclick="getDocumentLz('{{ $sale[0]['order_item_id'] }}', '{{ $token }}', 'invoice')">Invoice</a>
+                        <a href="javascript:void(0)" class="primary-btn fix-gr-bg mr-2 order-shipping-spot" onclick="getDocumentLz('{{ $sale[0]['order_item_id'] }}', '{{ $token }}', 'shippingLabel')">Shipping Label</a>
                     </div>
                 </div>
             </div>

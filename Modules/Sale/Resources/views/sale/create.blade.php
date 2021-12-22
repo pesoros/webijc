@@ -35,9 +35,9 @@
                               enctype="multipart/form-data" >
                             @csrf
                             <div class="row">
-                                <div class="col-xl-4">
+                                <div class="col-lg-4 col-md-4 col-sm-12">
                                     <div class="primary_input mb-15">
-                                        <label class="primary_input_label" for="">{{ __('sale.Date') }} *</label>
+                                        <label class="primary_input_label" for="">Tanggal *</label>
                                         <div class="primary_datepicker_input">
                                             <div class="no-gutters input-right-icon">
                                                 <div class="col">
@@ -45,7 +45,7 @@
                                                         <input placeholder="Date"
                                                                class="primary_input_field primary-input date form-control"
                                                                id="date" type="text" name="date"
-                                                               value="{{date('m/d/Y')}}" autocomplete="off">
+                                                               value="{{date('m-d-Y')}}" autocomplete="off">
                                                     </div>
                                                 </div>
                                                 <button class="" type="button">
@@ -58,11 +58,10 @@
                                 <div class="col-lg-4 col-md-4 col-sm-12">
                                     <div class="primary_input mb-15">
                                         <label class="primary_input_label"
-                                               for="">{{__('sale.Select Customer')}}
-                                            *</label>
+                                               for="">Pilih Pembeli *</label>
                                         <select class="primary_select mb-15 contact_type" onchange="saleDetails()"
                                                 name="customer_id" required>
-                                            <option value="">{{__('sale.Select')}}</option>
+                                            <option value="">Pilih</option>
                                             @foreach($customers as $customer)
                                                 <option value="customer-{{$customer->id}}">{{$customer->name}}</option>
                                             @endforeach
@@ -71,7 +70,7 @@
                                         <span class="text-danger">{{$errors->first('customer_id')}}</span>
                                     </div>
                                 </div>
-                                <div class="col-lg-4 col-md-4 col-sm-12">
+                                {{-- <div class="col-lg-4 col-md-4 col-sm-12">
                                     <div class="primary_input mb-15">
                                         <label class="primary_input_label"
                                                for="">{{__('sale.Select Warehouse or Branch')}} *</label>
@@ -94,7 +93,7 @@
                                         </select>
                                         <span class="text-danger">{{$errors->first('warehouse_id')}}</span>
                                     </div>
-                                </div>
+                                </div> --}}
                                 @php
                                     if (Modules\Sale\Entities\Sale::latest()->first()) {
                                         $aid = Modules\Sale\Entities\Sale::latest()->first()->id + 1;
@@ -105,7 +104,7 @@
                                 <div class="col-lg-4 col-md-4 col-sm-12">
                                     <div class="primary_input mb-15">
                                         <label class="primary_input_label"
-                                               for="">{{__('sale.Invoice')}} {{__('common.No')}} *</label>
+                                               for="">Nomor Nota *</label>
                                         <input type="text" class="primary_input_field"
                                                placeholder="{{__('sale.Invoice')}} {{__('common.No')}}"
                                                name="invoice_no"
@@ -114,7 +113,7 @@
                                         <span class="text-danger">{{$errors->first('invoice_no')}}</span>
                                     </div>
                                 </div>
-                                <div class="col-lg-4 col-md-4 col-sm-12">
+                                {{-- <div class="col-lg-4 col-md-4 col-sm-12">
                                     <div class="primary_input mb-15">
                                         <label class="primary_input_label"
                                                for="">{{__('common.PO')}} {{__('common.No')}} </label>
@@ -123,37 +122,9 @@
                                                value="{{ old('ref_no') }}">
                                         <span class="text-danger">{{$errors->first('ref_no')}}</span>
                                     </div>
-                                </div>
+                                </div> --}}
 
-                                <div class="col-lg-4 col-md-4 col-sm-12">
-                                    <div class="primary_input mb-15">
-                                        <label class="primary_input_label" for="">{{__('sale.Select Product')}}
-                                            </label>
-                                        <select class="primary_select mb-15 product_info" id="product_info" name="product">
-                                            <option value="1">{{__('sale.Select Product')}}</option>
-                                            @foreach ($allProducts as $product)
-                                                <option value="{{$product->product_id}}-{{ $product->product_type }}">{{$product->product_name}} - {{$product->product_sku}} @if (app('general_setting')->origin == 1 && $product->origin) > {{ __('common.Part Number') }} : {{ $product->origin }} @endif @if ($product->brand_name) > {{ __('product.Brand') }} : {{ $product->brand_name }} @endif @if ($product->model_name) > {{ __('product.Model') }} : {{ $product->model_name }} @endif</option>
-                                            @endforeach
-                                        </select>
-                                        <span class="text-danger">{{$errors->first('product_id')}}</span>
-                                    </div>
-                                </div>
-
-                                <div class="col-lg-4 col-md-4 col-sm-12" style="display: none;">
-                                    <div class="primary_input mb-15">
-                                        <label class="primary_input_label" for="">{{__('sale.Select Service')}}
-                                            </label>
-                                        <select class="primary_select mb-15 product_info" id="product_info" name="product">
-                                            <option value="1">{{__('sale.Select Service')}}</option>
-                                            @foreach ($allServices as $product)
-                                                <option value="{{$product->product_id}}-{{ $product->product_type }}">{{$product->product_name}} @if (app('general_setting')->origin == 1 && $product->origin) > {{ __('common.Part Number') }} : {{ $product->origin }} @endif @if ($product->brand_name) > {{ __('product.Brand') }} : {{ $product->brand_name }} @endif @if ($product->model_name) > {{ __('product.Model') }} : {{ $product->model_name }} @endif</option>
-                                            @endforeach
-                                        </select>
-                                        <span class="text-danger">{{$errors->first('product_id')}}</span>
-                                    </div>
-                                </div>
-
-                                <div class="col-lg-4 col-md-4 col-sm-12">
+                                {{-- <div class="col-lg-4 col-md-4 col-sm-12">
                                     <div class="primary_input mb-15">
                                         <label class="primary_input_label" for="">{{__('sale.Shipping Name')}}
                                             ({{__('sale.optional')}})</label>
@@ -161,11 +132,11 @@
                                                placeholder="{{__('sale.Shipping Name')}}" name="shipping_name"
                                                value="{{ old('shipping_name') }}">
                                     </div>
-                                </div>
+                                </div> --}}
 
                                 <div class="col-lg-4 col-md-4 col-sm-6">
                                     <div class="primary_input mb-15">
-                                        <label class="primary_input_label" for="">{{__('sale.Discount')}} </label>
+                                        <label class="primary_input_label" for="">Diskon </label>
                                         <input onkeyup="billingInfo()" name="total_discount"
                                                type="number" step="0.01"
                                                value="0"
@@ -176,11 +147,11 @@
                                 <div class="col-lg-4 col-md-4 col-sm-6">
                                     <div class="primary_input mb-15">
                                         <label class="primary_input_label"
-                                               for="">{{__('quotation.Discount Type')}}</label>
+                                               for="">Tipe Diskon</label>
                                         <select class="primary_select mb-15 discount_type" onchange="billingInfo()"
                                                 id="discount_type" name="discount_type">
-                                            <option value="1">{{ __('quotation.Amount') }}</option>
-                                            <option value="2">{{ __('quotation.Percentage') }}</option>
+                                            <option value="1">Jumlah</option>
+                                            <option value="2">Persentase</option>
                                         </select>
                                         <span class="text-danger">{{$errors->first('discount_type')}}</span>
                                     </div>
@@ -189,7 +160,7 @@
                                 @if(request()->is('conditional-sale/create'))
                                     <input type="hidden" name="payment_method[]" value="due-00">
                                 @else
-                                    <div class="col-md-4 col-lg-4 col-sm-6">
+                                    {{-- <div class="col-md-4 col-lg-4 col-sm-6">
                                         <div class="primary_input mb-15">
                                             <label class="primary_input_label" for="">{{__('sale.Payment Method')}}
                                                 *</label>
@@ -205,16 +176,43 @@
                                             </select>
                                             <span class="text-danger">{{$errors->first('payment_method')}}</span>
                                         </div>
-                                    </div>
+                                    </div> --}}
                                     <div class="col-md-4 col-lg-4 col-sm-6 amount_div">
                                         <div class="primary_input mb-15">
-                                            <label class="primary_input_label" for="">{{__('sale.Amount')}}</label>
+                                            <label class="primary_input_label" for="">Nominal Pembayaran</label>
                                             <input type="text" name="amount[]"
                                                    class="primary_input_field amount_payment"
-                                                   placeholder="Enter Amount">
+                                                   placeholder="Masukkan Nominal">
                                         </div>
                                     </div>
                                 @endif
+                                <div class="col-lg-12 col-md-12 col-sm-12">
+                                    <div class="primary_input mb-15">
+                                        <label class="primary_input_label" for="">Pilih Produk
+                                            </label>
+                                        <select class="primary_select mb-15 product_info" id="product_info" name="product">
+                                            <option value="1">Pilih Produk</option>
+                                            @foreach ($allProducts as $product)
+                                                <option value="{{$product->product_id}}-{{ $product->product_type }}">{{$product->product_name}} - {{$product->product_sku}} @if (app('general_setting')->origin == 1 && $product->origin) > {{ __('common.Part Number') }} : {{ $product->origin }} @endif @if ($product->brand_name) > {{ __('product.Brand') }} : {{ $product->brand_name }} @endif @if ($product->model_name) > {{ __('product.Model') }} : {{ $product->model_name }} @endif</option>
+                                            @endforeach
+                                        </select>
+                                        <span class="text-danger">{{$errors->first('product_id')}}</span>
+                                    </div>
+                                </div>
+
+                                <div class="col-lg-12 col-md-12 col-sm-12" style="display: none;">
+                                    <div class="primary_input mb-15">
+                                        <label class="primary_input_label" for="">{{__('sale.Select Service')}}
+                                            </label>
+                                        <select class="primary_select mb-15 product_info" id="product_info" name="product">
+                                            <option value="1">{{__('sale.Select Service')}}</option>
+                                            @foreach ($allServices as $product)
+                                                <option value="{{$product->product_id}}-{{ $product->product_type }}">{{$product->product_name}} @if (app('general_setting')->origin == 1 && $product->origin) > {{ __('common.Part Number') }} : {{ $product->origin }} @endif @if ($product->brand_name) > {{ __('product.Brand') }} : {{ $product->brand_name }} @endif @if ($product->model_name) > {{ __('product.Model') }} : {{ $product->model_name }} @endif</option>
+                                            @endforeach
+                                        </select>
+                                        <span class="text-danger">{{$errors->first('product_id')}}</span>
+                                    </div>
+                                </div>
                             </div>
                             @if(!request()->is('conditional-sale/create'))
                                 <div class="row bank_info_div"
@@ -247,21 +245,21 @@
                             <table class="table">
                                 <thead>
                                 <tr>
-                                    <th width="20%" scope="col">{{__('sale.Product')}}</th>
+                                    <th width="30%" scope="col">{{__('sale.Product')}}</th>
                                     @if (app('general_setting')->origin == 1)
-                                        <th width="10%" scope="col">{{__('common.Part Number')}}</th>
+                                        <th width="20%" scope="col">{{__('common.Part Number')}}</th>
                                     @else
-                                        <th width="10%" scope="col">{{__('sale.SKU')}}</th>
+                                        <th width="20%" scope="col">{{__('sale.SKU')}}</th>
                                     @endif
-                                    <th scope="col">{{__('product.Model')}}</th>
-                                    <th scope="col">{{__('product.Brand')}}</th>
+                                    {{-- <th scope="col">{{__('product.Model')}}</th> --}}
+                                    {{-- <th scope="col">{{__('product.Brand')}}</th> --}}
                                     <th scope="col" class="d-none">{{__('common.Serial No')}}</th>
                                     <th scope="col">{{__('sale.Price')}}</th>
-                                    <th scope="col">{{__('sale.QTY')}}</th>
-                                    <th scope="col">{{__('sale.Tax')}} (%)</th>
-                                    <th scope="col">{{__('sale.Discount')}}</th>
-                                    <th scope="col">{{__('sale.SubTotal')}}</th>
-                                    <th scope="col">{{__('common.Action')}}</th>
+                                    <th width="10%">{{__('sale.QTY')}}</th>
+                                    {{-- <th scope="col">{{__('sale.Tax')}} (%)</th> --}}
+                                    {{-- <th scope="col">{{__('sale.Discount')}}</th> --}}
+                                    {{-- <th scope="col">{{__('sale.SubTotal')}}</th> --}}
+                                    <th width="10%">{{__('common.Action')}}</th>
                                 </tr>
                                 </thead>
                                 <tbody id="product_details">
@@ -276,31 +274,31 @@
                             <div class="col-12 mb-50">
                                 <div class="row justify-content-end">
                                     <div class="col-lg-4 col-md-6">
-                                        <div class="primary_input grid_input">
+                                        {{-- <div class="primary_input grid_input">
                                             <label class="font_13 theme_text f_w_500 mb-0"
                                                    for="">{{__('sale.Total Quantity')}}</label>
                                                 <input type="number"
                                                        class="primary_input_field total_quantity"
                                                        value="0" name="total_quantity" readonly>
 
-                                        </div>
-                                        <div class="primary_input grid_input">
+                                        </div> --}}
+                                        {{-- <div class="primary_input grid_input">
                                             <label class="font_13 theme_text f_w_500 mb-0"
                                                    for="">{{__('sale.SubTotal')}}</label>
                                                 <input type="text"
                                                        class="primary_input_field total_sub_total"
                                                        value="0" name="item_amount" readonly="readonly">
 
-                                        </div>
-                                        <div class="primary_input grid_input product_discounts" style="display: none;">
+                                        </div> --}}
+                                        {{-- <div class="primary_input grid_input product_discounts" style="display: none;">
                                             <label class="font_13 theme_text f_w_500 mb-0"
                                                    for="">{{__('sale.Product Wise Discount')}}</label>
                                                 <input type="text"
                                                        class="primary_input_field product_discounts"
                                                        value="0" name="item_amount" readonly="readonly">
 
-                                        </div>
-                                        <div class="primary_input grid_input product_tax" style="display: none;">
+                                        </div> --}}
+                                        {{-- <div class="primary_input grid_input product_tax" style="display: none;">
                                             <label class="font_13 theme_text f_w_500 mb-0"
                                                    for="">{{__('sale.Product Wise Tax')}}</label>
 
@@ -308,7 +306,7 @@
                                                        class="primary_input_field product_tax product_tax_input"
                                                        value="0" name="item_amount" readonly="readonly">
 
-                                        </div>
+                                        </div> --}}
                                         <div class="primary_input grid_input">
                                             <label class="font_13 theme_text f_w_500 mb-0"
                                                    for="">{{__('sale.Grand Total')}}</label>
@@ -317,7 +315,7 @@
                                                        value="0" name="item_amount" readonly="readonly">
 
                                         </div>
-                                        <div class="primary_input grid_input">
+                                        {{-- <div class="primary_input grid_input">
                                             <label class="font_13 theme_text f_w_500 mb-0"
                                                    for="">{{__('purchase.Order Tax')}}</label>
                                             <select onchange="billingInfo()" name="total_tax" id=""
@@ -328,8 +326,8 @@
                                                     </option>
                                                 @endforeach
                                             </select>
-                                        </div>
-                                        <div class="primary_input grid_input total_discount_tr" style="display: none;">
+                                        </div> --}}
+                                        {{-- <div class="primary_input grid_input total_discount_tr" style="display: none;">
                                             <label class="font_13 theme_text f_w_500 mb-0"
                                                    for="">{{__('sale.Discount')}}</label>
                                                 <input style="width: 100px !important" name="total_discount_amount"
@@ -337,31 +335,31 @@
                                                        class="primary_input_field total_discount_amount total_discount"
                                                        readonly>
 
-                                        </div>
-                                        <div class="primary_input grid_input">
+                                        </div> --}}
+                                        {{-- <div class="primary_input grid_input">
                                             <label class="font_13 theme_text f_w_500 mb-0"
                                                    for="">{{__('purchase.Shipping Charge')}}</label>
                                                 <input onkeyup="billingInfo()" name="shipping_charge" type="number"
                                                        step="0.01" value="0"
                                                        class="primary_input_field shipping_charge">
 
-                                        </div>
-                                        <div class="primary_input grid_input">
+                                        </div> --}}
+                                        {{-- <div class="primary_input grid_input">
                                             <label class="font_13 theme_text f_w_500 mb-0"
                                                    for="">{{__('purchase.Other Charge')}}</label>
                                                 <input onkeyup="billingInfo()" name="other_charge" type="number"
                                                        step="0.01" value="0"
                                                        class="primary_input_field other_charge">
 
-                                        </div>
-                                        <div class="primary_input grid_input">
+                                        </div> --}}
+                                        {{-- <div class="primary_input grid_input">
                                             <label class="font_13 theme_text f_w_500 mb-0"
                                                    for="">{{__('sale.Payable Amount')}}</label>
                                                 <input type="text" value="0"
                                                        class="primary_input_field total_amount"
                                                        name="total_amount" readonly>
 
-                                        </div>
+                                        </div> --}}
                                     </div>
                                 </div>
                             </div>

@@ -32,11 +32,30 @@
                     </button>
                 </div>
             </div> --}}
+
+            <div class="float-lg-right float-none pos_tab_btn justify-content-end">
+                <ul class="nav">
+                    <li class="nav-item">
+                        <a class="nav-link" href="javascript:void(0)" id="" role="tab"
+                           data-toggle="tab">Pindah RTS <span class="countspan diterima"></span></a>
+                    </li>
+                </ul>
+            </div>
+
+            <div class="float-lg-right float-none pos_tab_btn justify-content-end">
+                <ul class="nav">
+                    <li class="nav-item">
+                        <a class="nav-link" href="javascript:void(0)" onclick="picklistChecked()" role="tab"
+                           data-toggle="tab">Pick List <span class="countspan diterima"></span></a>
+                    </li>
+                </ul>
+            </div>
+
             <div class="float-lg-right float-none pos_tab_btn justify-content-end">
                 <ul class="nav">
                     <li class="nav-item">
                         <a class="nav-link" href="javascript:void(0)" onclick="printChecked()" role="tab"
-                           data-toggle="tab">Print <span class="countspan diterima"></span></a>
+                           data-toggle="tab">Shipping Label <span class="countspan diterima"></span></a>
                     </li>
                 </ul>
             </div>
@@ -49,6 +68,8 @@
                     </li>
                 </ul>
             </div>
+
+
         </div>  
     </div>
     <div class="row">
@@ -343,31 +364,31 @@
                 $('#getDetails').html(data);
                 $('#sale_info_modal').modal('show');
                 $('select').niceSelect();    
-                if (statusState == 'unpaid') {
-                    $( ".order-action-spot" ).hide();
-                    $( ".order-invoice-spot" ).hide();
-                    $( ".order-shipping-spot" ).hide();
-                } else if (statusState == 'pending') {
-                    $( ".order-action-spot" ).show();
-                    $( ".order-invoice-spot" ).hide();
-                    $( ".order-shipping-spot" ).hide();
-                }  if (statusState == 'packed') {
-                    $( ".order-action-spot" ).show();
-                    $( ".order-invoice-spot" ).show();
-                    $( ".order-shipping-spot" ).show();
-                }  if (statusState == 'ready_to_ship') {
-                    $( ".order-action-spot" ).hide();
-                    $( ".order-invoice-spot" ).show();
-                    $( ".order-shipping-spot" ).show();
-                }  if (statusState == 'shipped') {
-                    $( ".order-action-spot" ).hide();
-                    $( ".order-invoice-spot" ).show();
-                    $( ".order-shipping-spot" ).show();
-                }  if (statusState == 'delivered') {
-                    $( ".order-action-spot" ).hide();
-                    $( ".order-invoice-spot" ).show();
-                    $( ".order-shipping-spot" ).show();
-                }  
+                // if (statusState == 'unpaid') {
+                //     $( ".order-action-spot" ).hide();
+                //     $( ".order-invoice-spot" ).hide();
+                //     $( ".order-shipping-spot" ).hide();
+                // } else if (statusState == 'pending') {
+                //     $( ".order-action-spot" ).show();
+                //     $( ".order-invoice-spot" ).hide();
+                //     $( ".order-shipping-spot" ).hide();
+                // }  if (statusState == 'packed') {
+                //     $( ".order-action-spot" ).show();
+                //     $( ".order-invoice-spot" ).show();
+                //     $( ".order-shipping-spot" ).show();
+                // }  if (statusState == 'ready_to_ship') {
+                //     $( ".order-action-spot" ).hide();
+                //     $( ".order-invoice-spot" ).show();
+                //     $( ".order-shipping-spot" ).show();
+                // }  if (statusState == 'shipped') {
+                //     $( ".order-action-spot" ).hide();
+                //     $( ".order-invoice-spot" ).show();
+                //     $( ".order-shipping-spot" ).show();
+                // }  if (statusState == 'delivered') {
+                //     $( ".order-action-spot" ).hide();
+                //     $( ".order-invoice-spot" ).show();
+                //     $( ".order-shipping-spot" ).show();
+                // }  
                 
             });
         }
@@ -462,6 +483,31 @@
 
 
             let reqUrl = '{{route('getDocumentMultiple')}}';
+            reqUrl += '?orderItemId=' + querystring;
+            reqUrl += '&doctype=shippingLabel';
+
+            window.open(reqUrl, '_blank');
+            return;
+        }
+
+        function picklistChecked() {
+            let checkedVals = [];
+            let querystring = "";
+            $("input:checkbox[class=editor-active]:checked").each(function () {
+                checkedVals.push($(this).val());
+            });
+
+            for (let i = 0; i < checkedVals.length; i++) {
+                const element = checkedVals[i];
+                if (i !== 0) {
+                    querystring += ','; 
+                }
+                querystring += element;
+            }
+            console.log(querystring)
+
+
+            let reqUrl = '{{route('getMultipleOrderItem')}}';
             reqUrl += '?orderItemId=' + querystring;
             reqUrl += '&doctype=shippingLabel';
 
