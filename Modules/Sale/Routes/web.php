@@ -70,3 +70,4 @@ Route::get('/transactions', 'SaleController@get_transaction')->name('get_transac
 Route::get('/getdocumentlz', 'SaleController@getDocument')->name('getDocumentLz');
 Route::get('/getDocumentMultiple', 'SaleController@getDocumentMultiple')->name('getDocumentMultiple');
 Route::get('/getMultipleOrderItem', 'SaleController@getMultipleOrderItem')->name('getMultipleOrderItem');
+Route::get('/rtsMultiple', 'SaleController@rtsMultiple')->name('rtsMultiple');

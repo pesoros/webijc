@@ -1608,6 +1608,43 @@ class SaleController extends Controller
         }
     }
 
+    public function rtsMultiple(Request $request)
+    {
+        $querystring = $request->all();
+        if ( isset($querystring['orderItemId']) == false) {
+            echo 'query string required!';
+            return;
+        }  
+
+        $collect = [];
+        $orderitemar = explode(",",$querystring['orderItemId']);
+        foreach ($orderitemar as $key => $value) {
+            $expl = explode("-",$value);
+            $token = $expl[0];
+            $orderid = $expl[1];
+            $orderitem = $this->lazopSetToRts($orderid, $token);
+            $collect[$key] = $orderitem;
+        }
+
+        return $collect;
+    }
+
+    public function lazopSetToRts($orderItemId, $token)
+    {
+        $arr = [];
+        $method = 'POST';
+        $apiName = '/order/rts';
+
+        $c = new LazopClient($this->apiGateway, $this->apiKey, $this->apiSecret);
+        $request = new LazopRequest($apiName,$method);
+        $request->addApiParam('delivery_type', 'dropship');
+        $request->addApiParam('order_item_ids', '['.$orderItemId.']');
+        // $request->addApiParam('shipment_provider','Aramax');
+        // $request->addApiParam('tracking_number','12345678');
+        $executelazop = json_decode($c->execute($request, $token), true);
+        return $executelazop;
+    }
+
     public function getMultipleOrderItem(Request $request)
     {
         $querystring = $request->all();
@@ -1645,9 +1682,6 @@ class SaleController extends Controller
                 $result[$value['sku']]['tracking_code'] = $value['tracking_code'];
                 $result[$value['sku']]['qty'] = 1;
             } else {
-                // $result[$value['sku']]['sku'] = $value['sku'];
-                // $result[$value['sku']]['product_main_image'] = $value['product_main_image'];
-                // $result[$value['sku']]['name'] = $value['name'];
                 $result[$value['sku']]['order_id'] .= ', '.$value['order_id'];
                 $result[$value['sku']]['tracking_code'] .= ', '.$value['tracking_code'];
                 $result[$value['sku']]['qty'] = $result[$value['sku']]['qty'] + 1;

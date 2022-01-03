@@ -36,7 +36,7 @@
             <div class="float-lg-right float-none pos_tab_btn justify-content-end">
                 <ul class="nav">
                     <li class="nav-item">
-                        <a class="nav-link" href="javascript:void(0)" id="" role="tab"
+                        <a class="nav-link" href="javascript:void(0)" onclick="rtsChecked()" role="tab"
                            data-toggle="tab">Pindah RTS <span class="countspan diterima"></span></a>
                     </li>
                 </ul>
@@ -512,6 +512,30 @@
             reqUrl += '&doctype=shippingLabel';
 
             window.open(reqUrl, '_blank');
+            return;
+        }
+
+        function rtsChecked() {
+            let checkedVals = [];
+            let querystring = "";
+            $("input:checkbox[class=editor-active]:checked").each(function () {
+                checkedVals.push($(this).val());
+            });
+
+            for (let i = 0; i < checkedVals.length; i++) {
+                const element = checkedVals[i];
+                if (i !== 0) {
+                    querystring += ','; 
+                }
+                querystring += element;
+            }
+            console.log(querystring)
+
+
+            let reqUrl = '{{route('rtsMultiple')}}';
+            reqUrl += '?orderItemId=' + querystring;
+
+            // window.open(reqUrl, '_blank');
             return;
         }
 
