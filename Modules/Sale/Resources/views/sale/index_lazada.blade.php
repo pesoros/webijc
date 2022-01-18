@@ -33,7 +33,16 @@
                 </div>
             </div> --}}
 
-            <div class="float-lg-right float-none pos_tab_btn justify-content-end">
+            <div class="float-lg-right float-none pos_tab_btn justify-content-end packeddiv" style="display: none">
+                <ul class="nav">
+                    <li class="nav-item">
+                        <a class="nav-link" href="javascript:void(0)" onclick="packedChecked()" role="tab"
+                           data-toggle="tab">Pindah Packed <span class="countspan diterima"></span></a>
+                    </li>
+                </ul>
+            </div>
+
+            <div class="float-lg-right float-none pos_tab_btn justify-content-end rtsdiv" style="display: none">
                 <ul class="nav">
                     <li class="nav-item">
                         <a class="nav-link" href="javascript:void(0)" onclick="rtsChecked()" role="tab"
@@ -80,18 +89,18 @@
                     <a class="nav-link active" href="javascript:void(0)" onclick="getLazadaList('unpaid')" role="tab" 
                         data-toggle="tab">Belum Dibayar <span class="countspan belumbayar"></span></a>
                 </li> --}}
-                {{-- <li class="nav-item">
-                    <a class="nav-link" href="javascript:void(0)" onclick="getLazadaList('pending')" role="tab"
+                <li class="nav-item">
+                    <a class="nav-link active" href="javascript:void(0)" onclick="getLazadaList('pending')" role="tab"
                        data-toggle="tab">Order Masuk <span class="countspan ordermasuk"></span></a>
-                </li> --}}
-                {{-- <li class="nav-item">
+                </li>
+                <li class="nav-item">
                     <a class="nav-link" href="javascript:void(0)" onclick="getLazadaList('packed')" role="tab"
                        data-toggle="tab">Siap Packing <span class="countspan siappacking"></span></a>
-                </li> --}}
-                {{-- <li class="nav-item">
+                </li>
+                <li class="nav-item">
                     <a class="nav-link" href="javascript:void(0)" onclick="getLazadaList('ready_to_ship')" role="tab"
                        data-toggle="tab">Siap Diambil <span class="countspan siapdiambil"></span></a>
-                </li> --}}
+                </li>
                 {{-- <li class="nav-item">
                     <a class="nav-link" href="javascript:void(0)" onclick="getLazadaList('shipped')" role="tab"
                        data-toggle="tab">Dalam Pengiriman <span class="countspan dalampengiriman"></span></a>
@@ -103,64 +112,7 @@
 
             </ul>
             <div class="tab-content" style="text-align: center !important;">  
-                <div role="tabpanel" class="tab-pane fade show active" id="saleList">
-                    <div class="white-box mt-2">
-                        <div class="row">
-                            <div class="col-12 select_sms_services">
-                                <div class="QA_section QA_section_heading_custom check_box_table mt-50">
-                                    <div class="QA_table ">
-                                        <table class="table Crm_table_active3">
-                                            <thead>
-                                            <tr>
-                                                <th>Centang</th>
-                                                {{-- <th scope="col">{{__('sale.Sl')}}</th> --}}
-                                                <th scope="col">Tanggal Order</th>
-                                                <th scope="col">Order Number</th>
-                                                <th scope="col">Akun</th>
-                                                <th scope="col">Price</th>
-                                                <th scope="col">{{__('common.Action')}}</th>
-                                            </tr>
-                                            </thead>
-                                            <tbody>
-                                            @foreach($dataOrders as $key => $item)
-                                                <tr>
-                                                    <td><input type="checkbox" class="editor-active"  value="{{ $item['token'] }}-{{ $item['order_number'] }}"></td>
-                                                    {{-- <td>{{ $key+1 }}</td> --}}
-                                                    <td>{{ \Carbon\Carbon::parse($item['created_at'])->format('d F Y') }}</td>
-                                                    <td>
-                                                        {{ $item['order_number'] }}
-                                                        <br>
-                                                        {{-- @if ($item['statuses'][0] == 'INFO_ST_DOMESTIC_RETURN_WITH_LAST_MILE_3PL')
-                                                            Returned                                        
-                                                        @else
-                                                            {{ $item['statuses'][0] }}
-                                                        @endif --}}
-                                                    </td>
-                                                    <td>{{ $item['nama_akun'] }}</td>
-                                                    <td>{{ single_price($item['price']) }}</td>
-                                                    <td>
-                                                        <div class="dropdown CRM_dropdown">
-                                                            <button class="btn btn-secondary dropdown-toggle" type="button"
-                                                                    id="dropdownMenu2" data-toggle="dropdown" aria-haspopup="true"
-                                                                    aria-expanded="false"> {{__('common.select')}}
-                                                            </button>
-                                                            <div class="dropdown-menu dropdown-menu-right"
-                                                                aria-labelledby="dropdownMenu2">
-                                                                <a href="javascript:void(0)" onclick="getDetails('{{ $item['order_number'] }}','{{ $item['token'] }}')"
-                                                                    class="dropdown-item" type="button">{{__('sale.Order Details')}}</a>
-                                                            </div>
-                                                        </div>
-                                                    </td>
-                                                </tr>
-                                            @endforeach
-                                            </tbody>
-                                        </table>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
+                
             </div>
         </div>
     </div>
@@ -201,6 +153,7 @@
 @push("scripts")
     <script type="text/javascript">
         let statusState = 'unpaid'
+        getLazadaList('pending')
         function printDiv(divName) {
             var printContents = document.getElementById(divName).innerHTML;
             var originalContents = document.body.innerHTML;
@@ -394,6 +347,8 @@
         }
 
         function getLazadaList(status = null) {
+            $('.packeddiv').hide();
+            $('.rtsdiv').hide();
             if (status) {
                 statusState = status;
             } else {
@@ -435,6 +390,8 @@
                 $('.siapdiambil').hide();
                 $('.dalampengiriman').hide();
                 $('.diterima').hide();
+                $('.packeddiv').show();
+                $('.rtsdiv').hide();
             } else if (statusState == 'packed') {
                 $('.belumbayar').hide();
                 $('.ordermasuk').hide();
@@ -442,6 +399,8 @@
                 $('.siapdiambil').hide();
                 $('.dalampengiriman').hide();
                 $('.diterima').hide();
+                $('.packeddiv').hide();
+                $('.rtsdiv').show();
             } else if (statusState == 'ready_to_ship') {
                 $('.belumbayar').hide();
                 $('.ordermasuk').hide();
@@ -533,6 +492,30 @@
 
 
             let reqUrl = '{{route('rtsMultiple')}}';
+            reqUrl += '?orderItemId=' + querystring;
+
+            // window.open(reqUrl, '_blank');
+            return;
+        }
+
+        function packedChecked() {
+            let checkedVals = [];
+            let querystring = "";
+            $("input:checkbox[class=editor-active]:checked").each(function () {
+                checkedVals.push($(this).val());
+            });
+
+            for (let i = 0; i < checkedVals.length; i++) {
+                const element = checkedVals[i];
+                if (i !== 0) {
+                    querystring += ','; 
+                }
+                querystring += element;
+            }
+            console.log(querystring)
+
+
+            let reqUrl = '{{route('packedMultiple')}}';
             reqUrl += '?orderItemId=' + querystring;
 
             // window.open(reqUrl, '_blank');

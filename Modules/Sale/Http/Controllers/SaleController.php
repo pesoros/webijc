@@ -92,11 +92,11 @@ class SaleController extends Controller
                 return back();
             }
         } else {
-            $lazadaOrders = $this->get_orders('packed');
+            // $lazadaOrders = $this->get_orders('pending');
             // return $lazadaOrders;
-            $dataOrders = $lazadaOrders['data'];
+            // $dataOrders = $lazadaOrders['data'];
 
-            return view('sale::sale.index_lazada', ['dataOrders'=>$dataOrders]);
+            return view('sale::sale.index_lazada');
         }        
     }
 
@@ -1622,18 +1622,39 @@ class SaleController extends Controller
             $expl = explode("-",$value);
             $token = $expl[0];
             $orderid = $expl[1];
-            $orderitem = $this->lazopSetToRts($orderid, $token);
+            $orderitem = $this->lazopSetToAction($orderid, $token, 'rts');
             $collect[$key] = $orderitem;
         }
 
         return $collect;
     }
 
-    public function lazopSetToRts($orderItemId, $token)
+    public function packedMultiple(Request $request)
+    {
+        $querystring = $request->all();
+        if ( isset($querystring['orderItemId']) == false) {
+            echo 'query string required!';
+            return;
+        }  
+
+        $collect = [];
+        $orderitemar = explode(",",$querystring['orderItemId']);
+        foreach ($orderitemar as $key => $value) {
+            $expl = explode("-",$value);
+            $token = $expl[0];
+            $orderid = $expl[1];
+            $orderitem = $this->lazopSetToAction($orderid, $token, 'packed');
+            $collect[$key] = $orderitem;
+        }
+
+        return $collect;
+    }
+
+    public function lazopSetToAction($orderItemId, $token, $actionto)
     {
         $arr = [];
         $method = 'POST';
-        $apiName = '/order/rts';
+        $apiName = '/order/'.$actionto;
 
         $c = new LazopClient($this->apiGateway, $this->apiKey, $this->apiSecret);
         $request = new LazopRequest($apiName,$method);
