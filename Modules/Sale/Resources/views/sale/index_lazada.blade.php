@@ -478,11 +478,21 @@
             reqUrl += '?orderItemId=' + querystring;
             reqUrl += '&doctype=shippingLabel';
 
-            window.open(reqUrl, '_blank');
+            $.ajax({
+                method: 'GET',
+                url: reqUrl,
+                success: function (result) {
+                    console.log(result)
+                    getLazadaList('rts');
+                }
+            })
             return;
         }
 
         function rtsChecked() {
+            $('.tab-content').empty();
+            $('.tab-content').prepend('<img src="{{ asset('public/backEnd/img/spinner.gif') }}" style="margin-top: 90px;"/>');
+            
             let checkedVals = [];
             let querystring = "";
             $("input:checkbox[class=editor-active]:checked").each(function () {
@@ -502,16 +512,28 @@
             let reqUrl = '{{route('rtsMultiple')}}';
             reqUrl += '?orderItemId=' + querystring;
 
-            // window.open(reqUrl, '_blank');
+            $.ajax({
+                method: 'GET',
+                url: reqUrl,
+                success: function (result) {
+                    console.log(result)
+                    getLazadaList('packed');
+                }
+            })
             return;
         }
 
         function packedChecked() {
+            $('.tab-content').empty();
+            $('.tab-content').prepend('<img src="{{ asset('public/backEnd/img/spinner.gif') }}" style="margin-top: 90px;"/>');
+
             let checkedVals = [];
             let querystring = "";
             $("input:checkbox[class=editor-active]:checked").each(function () {
                 checkedVals.push($(this).val());
             });
+
+            console.log('ppp',checkedVals)
 
             for (let i = 0; i < checkedVals.length; i++) {
                 const element = checkedVals[i];
@@ -526,7 +548,14 @@
             let reqUrl = '{{route('packedMultiple')}}';
             reqUrl += '?orderItemId=' + querystring;
 
-            // window.open(reqUrl, '_blank');
+            $.ajax({
+                method: 'GET',
+                url: reqUrl,
+                success: function (result) {
+                    console.log(result)
+                    getLazadaList('pending');
+                }
+            })
             return;
         }
 

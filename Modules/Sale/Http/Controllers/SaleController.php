@@ -1643,7 +1643,7 @@ class SaleController extends Controller
             $expl = explode("-",$value);
             $token = $expl[0];
             $orderid = $expl[1];
-            $orderitem = $this->lazopSetToAction($orderid, $token, 'packed');
+            $orderitem = $this->lazopSetToAction($orderid, $token, 'pack');
             $collect[$key] = $orderitem;
         }
 
@@ -1652,18 +1652,28 @@ class SaleController extends Controller
 
     public function lazopSetToAction($orderItemId, $token, $actionto)
     {
-        $arr = [];
-        $method = 'POST';
-        $apiName = '/order/'.$actionto;
+        $result = [];
+        $itemId = [];
+        $getiditem = $this->get_orderItem($orderItemId, $token);
+        // $itemId[$key]['iditem'] = $orderitem;
+        // $itemId[$key]['token'] = $token;
 
-        $c = new LazopClient($this->apiGateway, $this->apiKey, $this->apiSecret);
-        $request = new LazopRequest($apiName,$method);
-        $request->addApiParam('delivery_type', 'dropship');
-        $request->addApiParam('order_item_ids', '['.$orderItemId.']');
-        // $request->addApiParam('shipment_provider','Aramax');
-        // $request->addApiParam('tracking_number','12345678');
-        $executelazop = json_decode($c->execute($request, $token), true);
-        return $executelazop;
+        foreach ($getiditem as $key => $value) {
+            $arr = [];
+            $method = 'POST';
+            $apiName = '/order/'.$actionto;
+
+            $c = new LazopClient($this->apiGateway, $this->apiKey, $this->apiSecret);
+            $request = new LazopRequest($apiName,$method);
+            $request->addApiParam('delivery_type', 'dropship');
+            $request->addApiParam('order_item_ids', '['.$value['order_item_id'].']');
+            // $request->addApiParam('shipment_provider','Aramax');
+            // $request->addApiParam('tracking_number','12345678');
+            $executelazop = json_decode($c->execute($request, $token), true);
+            $result[$key] = $executelazop;
+        }
+
+        return $result;
     }
 
     public function getMultipleOrderItem(Request $request)
