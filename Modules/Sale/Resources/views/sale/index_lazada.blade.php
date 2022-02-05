@@ -51,7 +51,7 @@
                 </ul>
             </div>
 
-            <div class="float-lg-right float-none pos_tab_btn justify-content-end">
+            <div class="float-lg-right float-none pos_tab_btn justify-content-end picklistdiv">
                 <ul class="nav">
                     <li class="nav-item">
                         <a class="nav-link" href="javascript:void(0)" onclick="picklistChecked()" role="tab"
@@ -60,7 +60,7 @@
                 </ul>
             </div>
 
-            <div class="float-lg-right float-none pos_tab_btn justify-content-end">
+            <div class="float-lg-right float-none pos_tab_btn justify-content-end printdiv">
                 <ul class="nav">
                     <li class="nav-item">
                         <a class="nav-link" href="javascript:void(0)" onclick="printChecked()" role="tab"
@@ -349,6 +349,8 @@
         function getLazadaList(status = null) {
             $('.packeddiv').hide();
             $('.rtsdiv').hide();
+            $('.picklistdiv').hide();
+            $('.printdiv').hide();
             if (status) {
                 statusState = status;
             } else {
@@ -392,6 +394,8 @@
                 $('.diterima').hide();
                 $('.packeddiv').show();
                 $('.rtsdiv').hide();
+                $('.picklistdiv').hide();
+                $('.printdiv').hide();
             } else if (statusState == 'packed') {
                 $('.belumbayar').hide();
                 $('.ordermasuk').hide();
@@ -401,6 +405,8 @@
                 $('.diterima').hide();
                 $('.packeddiv').hide();
                 $('.rtsdiv').show();
+                $('.picklistdiv').show();
+                $('.printdiv').show();
             } else if (statusState == 'ready_to_ship') {
                 $('.belumbayar').hide();
                 $('.ordermasuk').hide();
@@ -408,6 +414,8 @@
                 $('.siapdiambil').show();
                 $('.dalampengiriman').hide();
                 $('.diterima').hide();
+                $('.picklistdiv').show();
+                $('.printdiv').show();
             } else if (statusState == 'shipped') {
                 $('.belumbayar').hide();
                 $('.ordermasuk').hide();
